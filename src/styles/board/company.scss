@@ -1,0 +1,62 @@
+.write-btn{
+    margin-bottom: 30px;
+}
+
+.pepole-icon{
+    width: 40px;
+    height: 40px;
+    color: #939090;
+}
+
+.Company-card{
+    width: 530px;
+    height: 200px;
+    // margin-bottom: 30px;
+    padding: 15px;
+    box-shadow: 4px 12px 40px 6px rgba(0, 0, 0, 0.09);
+
+    // &:hover {
+    //     width: 700px; 
+    // }
+}
+
+.apply-btn{
+    width: 120px;
+    height: 40px;
+    border: 1px solid #F9F3CC;
+    border-radius: 20px;
+    background-color: #F9F3CC;
+    color: #000000;
+    transition: background-color 0.3s, color 0.3s;
+
+    .ariPlane-btn {
+        padding-left: 3px;
+        width: 20px;
+        height: 20px;
+        color: #000000;
+    }
+
+    &:hover {
+        background-color: #D2E0FB; 
+        color: #000000;
+    }
+}
+
+// .area-img {
+//     width: 30px;
+//     height: 30px;
+//     background-position: center; 
+//     background-size: cover;
+//     background-image: url('../../..//public/assets/etc/icon_area.png');
+//     background-position: 0 0;
+// }
+
+.tag{
+    // padding: 15px 0 10px 0;
+    font-size: 14px;
+    font-weight: 300;
+    line-height: 19px;
+    margin: 0 3px 0 0;
+    text-decoration: none solid rgb(102, 102, 102);
+    color: #666666;
+  }

@@ -1,0 +1,26 @@
+.underline{
+    margin: 30px 0 30px 0;
+    color: #ede7e7d2;
+    width: 100%;
+    
+    @media (max-width: 768px) {
+        height: 1px; /* 화면 크기가 작을 때 더 얇은 밑줄로 변경 */
+    }
+
+}
+
+.bottom{
+    width: 1246px;
+}
+
+.TourisSpot-Card{
+    border: none;
+    padding: 25px;
+
+    .TourisSpot-Img{
+        width: 280px;
+        height: 150px;
+        border-radius: 3px;
+    }
+
+}

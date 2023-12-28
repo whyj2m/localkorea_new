@@ -1,0 +1,371 @@
+hr {
+  margin: 5rem 0;
+  color: inherit;
+  border: 0;
+  border-top: var(--bs-border-width) solid;
+  opacity: 0.25;
+  width: 100%;
+}
+
+.mainpage {
+  margin-top: 100px;
+  width: 100%;
+}
+
+/* 메인페이지 와 비디오 구역 구분하려고 Margin */
+#pageline {
+  margin-top: 0px;
+  margin-bottom: 75px;
+  width: 100%;
+}
+
+.section1 {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background-color: wheat;
+}
+
+.section1-item1 {
+  flex: 5;
+  background-color: white;
+}
+
+.section1-item2 {
+  flex: 7;
+  background-color: white;
+  text-align: center;
+  /* 제목,지역 가운데 정렬 */
+}
+
+.section-place-info {
+  padding-left: 0;
+  z-index: 0;
+}
+
+.section-place-info li {
+  padding-top: 30px;
+}
+
+.place-info {
+  position: relative;
+}
+
+.place-info img {
+  width: 100%;
+  height: 200px;
+  border-radius: 15px;
+}
+
+.place-info-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding-left: 20px;
+  padding-top: 10px;
+  border-radius: 0 0 15px 15px;
+}
+
+.place-info-text strong {
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #333;
+}
+
+.place-info-text p {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+}
+
+/* 지도 부분 CSS */
+
+.section1-item2-title {
+  font-weight: bold;
+  font-size: 30px;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.section1-item2-name {
+  font-size: 30px;
+  color: #666;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* ----------------------------------------------------------------section2 CSS ---------------------------------------------------------------------------- */
+.section2 {
+  height: 100%;
+  text-align: center;
+}
+
+.section2 h3 {
+  font-size: 35px;
+  font-weight: bold;
+}
+
+.section2 img {
+  width: 100%;
+}
+
+.section2-slider-item img {
+  width: 100%;
+  height: 100%;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  /* opacity: 1; */
+}
+
+.section2-slider-text {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(204, 185, 185, 0.7);
+  padding-left: 20px;
+  padding-top: 10px;
+  z-index: 1;
+}
+
+.section2-slider-text strong {
+  font-size: 20px;
+}
+
+.section2-slider-text p {
+  margin-bottom: 0;
+  /* reset.scss p태그 마진바텀 값 1rem 을 여기선 0으로 처리함 */
+}
+
+.section2-item-button {
+  margin-top: 20px;
+  z-index: 1;
+  /*  앞으로 효과 보이게 하려고 인덱스 앞으로 */
+}
+
+/*  ----------------------------------------------------Section2 축제 부분 끝 ---------------------------------------------------------------------------- */
+.section3 {
+  height: 100%;
+  text-align: center;
+}
+
+/* .section3 h3 {
+      font-size: 35px;
+      font-weight: bold;
+  } */
+/* reset.scss에서 한번에 처리 section > h3 */
+.section3 img {
+  width: 100%;
+}
+
+.section3-slider-text {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background-color: rgba(240, 225, 225, 0.7);
+  padding-left: 20px;
+  padding-top: 10px;
+  z-index: 1;
+}
+
+.section3-slider-item img {
+  width: 100%;
+  height: 150px;
+  /* 슬라이더 이미지 높이조정 ( 일정하게 맞추려고 )  */
+}
+
+.section3-slider-text strong {
+  font-size: 20px;
+}
+
+.section3-slider-text p {
+  margin-bottom: 0;
+  /* reset.scss p태그 마진바텀 값 1rem 을 여기선 0으로 처리함 */
+}
+
+/* --------------------------------------------------------------section3 부분 끝 -------------------------------------------------------------------------- */
+/* .section4 {
+} */
+.section4-slider-item {
+  position: relative;
+  /* 부모 요소의 position을 relative로 설정 */
+  display: flex;
+  justify-content: center;
+  align-items: end;
+  /* 내부에 텍스트 상자 가운데 정렬 및 아래에 붙기 위해서 설정했습니다. */
+  height: 100%;
+  /*  스와이퍼랑 맞추려고 */
+}
+
+.section4-slider-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 이미지가 부모 요소에 맞춰지도록 설정 */
+}
+
+.section4-slider-text {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  width: 70%;
+  max-width: 700px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+}
+
+.section4-slider-text strong {
+  font-size: 16px;
+  color: white;
+  font-weight: normal;
+}
+
+.section4-slider-text p {
+  margin-top: 20px;
+  padding-bottom: 10px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #ffd700;
+}
+
+.board-view {
+  width: 100%;
+  margin-top: 20px;
+}
+
+.board-view-icon {
+  color: #fffef9;
+  font-size: 25px;
+  margin-right: 10px;
+}
+
+.board-view span {
+  font-size: 15px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+/* -------------------------------------------------------------section4 부분 끝 ------------------------------------------------------------------------------ */
+
+@media screen and (max-width: 768px) {
+  .mainpage {
+    margin-top: 50px;
+  }
+
+  #pageline {
+    margin-bottom: 50px;
+  }
+
+  .section1 {
+    flex-direction: column;
+  }
+
+  .section1-item1,
+  .section1-item2 {
+    flex: 12;
+  }
+
+  .section1-item2 {
+    text-align: left;
+  }
+
+  .section-place-info li {
+    padding-top: 20px;
+  }
+
+  /* 여기부턴 축제 섹션 */
+  .section2-slider-item {
+    width: 100%; /* 슬라이더2의 너비를 100%로 설정 */
+    box-sizing: border-box; /* 너비에 padding과 border를 포함 */
+    margin-right: 0; /* 오른쪽 마진 제거 */
+  }
+
+  .section2-slider-text {
+    width: 100%; /* 슬라이더2 텍스트의 너비를 100%로 설정 */
+  }
+
+  .section2-slider-item img {
+    width: 100%; /* 슬라이더2 이미지의 너비를 100%로 설정 */
+    height: auto; /* 높이는 자동으로 조정 */
+  }
+
+  .section2-slider-text p {
+    margin-bottom: 10px; /* 단락 사이의 간격 조정 */
+  }
+
+  .section2-slider-text .section2-item-button {
+    margin-top: 10px; /* 버튼 상단 간격 조정 */
+  }
+
+  /* 반응형에서는 1개의 슬라이드만 표시 */
+  .swiper-container {
+    width: 100%;
+    padding-top: 50px; /* 슬라이더 위 여백 조정 */
+  }
+
+  .swiper-wrapper {
+    width: 100%;
+  }
+
+  .swiper-slide {
+    width: 100%;
+  }
+}
+
+/*  여기부터 버튼이벤트 (사용 : 메인페이지 - 축제정보 (더보기 버튼)  )  : */
+.w-btn-neon2 {
+  position: relative;
+  border: none;
+  min-width: 200px;
+  min-height: 50px;
+  background: linear-gradient(
+    90deg,
+    rgba(129, 230, 217, 1) 0%,
+    rgba(79, 209, 197, 1) 100%
+  );
+  border-radius: 1000px;
+  color: darkslategray;
+  cursor: pointer;
+  box-shadow: 12px 12px 24px rgba(79, 209, 197, 0.64);
+  font-weight: 700;
+  transition: 0.3s;
+}
+
+.w-btn-neon2:hover {
+  transform: scale(1.2);
+}
+
+.w-btn-neon2:hover::after {
+  content: "";
+  width: 30px;
+  height: 30px;
+  border-radius: 100%;
+  border: 6px solid #00ffcb;
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: ring 1.5s infinite;
+}
+
+@keyframes ring {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 1;
+  }
+
+  100% {
+    width: 300px;
+    height: 300px;
+    opacity: 0;
+  }
+}
+
+/*                                                                 어떻게 할까 생각중                                                 */
