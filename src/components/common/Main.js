@@ -2,6 +2,7 @@ import "../../styles/Main.css";
 import SouthKoreaMap from "../common/SouthKoreaMap.js";
 import Video from "./Video.js";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import { FaRegEye } from "react-icons/fa";
 
@@ -15,7 +16,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useEffect, useState } from "react";
 
-function Section2Swiper() {
+function Section2Swiper({ festivalData, localNo, handlePlaceUpdate }) {
   return (
     <Swiper
       style={{
@@ -29,53 +30,35 @@ function Section2Swiper() {
       spaceBetween={50}
       slidesPerView={3}
       slidesPerGroup={1}
-      autoplay={{ delay: 2000000 }}
+      autoplay={{ delay: 2000 }}
       loop={true}
     >
-      <SwiperSlide>
-        <div className="section2-slider-item">
-          <img src="/assets/local/slide1.jpg" alt="" />
-          <div className="section2-slider-text">
-            <strong>서울시 관광지1</strong>
-            <p>날짜 : 2023.12.12 ~ 2023.12.19</p>
-            <p>위치 : 서울시 구로디지털단지 어딘가역 4번출구</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="section2-slider-item">
-          <img src="/assets/local/slide2.jpg" alt="" />
-          <div className="section2-slider-text">
-            <strong>서울시 관광지2</strong>
-            <p>날짜 : 2023.12.12 ~ 2023.12.19</p>
-            <p>위치 : 서울시 구로디지털단지 어딘가역 4번출구</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="section2-slider-item">
-          <img src="/assets/local/slide3.jpg" alt="" />
-          <div className="section2-slider-text">
-            <strong>서울시 관광지3</strong>
-            <p>날짜 : 2023.12.12 ~ 2023.12.19</p>
-            <p>위치 : 서울시 구로디지털단지 어딘가역 4번출구</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="section2-slider-item">
-          <img src="/assets/local/slide4.jpg" alt="" />
-          <div className="section2-slider-text">
-            <strong>서울시 관광지4</strong>
-            <p>날짜 : 2023.12.12 ~ 2023.12.19</p>
-            <p>위치 : 서울시 구로디지털단지 어딘가역 4번출구</p>
-          </div>
-        </div>
-      </SwiperSlide>
+      {festivalData.map((festival, index) => (
+        <SwiperSlide key={index}>
+          <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
+            {/* Link를 사용하여 클릭 시 라우팅 경로 설정 */}
+            <div
+              className="section2-slider-item"
+              onClick={() => handlePlaceUpdate(festival, localNo)}
+            >
+              <img
+                src={`/assets/festival/${localNo}/${index + 1}.jpg`}
+                alt=""
+              />
+              <div className="section2-slider-text">
+                <strong>{festival.name}</strong>
+                <p>{`날짜: ${festival.schedule}`}</p>
+                <p>{`위치: ${festival.location}`}</p>
+              </div>
+            </div>
+          </Link>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }
-function Section3Swiper() {
+
+function Section3Swiper({ foods, localNo, handlePlaceUpdate }) {
   return (
     <Swiper
       style={{
@@ -91,72 +74,32 @@ function Section3Swiper() {
       autoplay={{ delay: "3000" }}
       loop={true}
     >
-      <SwiperSlide>
-        <div className="section3-slider-item">
-          <img src="/assets/regionfood/berry.jpg" alt="" />
-          <div className="section3-slider-text">
-            <strong>딸기</strong>
-            <p>경상북도 - 울산시</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="section3-slider-item">
-          <img src="/assets/regionfood/section3-apple.jpg" alt="" />
-          <div className="section3-slider-text">
-            <strong>사과</strong>
-            <p>경상북도 - 울산시</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="section3-slider-item">
-          <img src="/assets/regionfood/orange.jpg" alt="" />
-          <div className="section3-slider-text">
-            <strong>오렌지</strong>
-            <p>경상북도 - 울산시</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="section3-slider-item">
-          <img src="/assets/regionfood/watermelon.jpg" alt="" />
-          <div className="section3-slider-text">
-            <strong>수박</strong>
-            <p>경상북도 - 울산시</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="section3-slider-item">
-          <img src="/assets/test/dog.jpg" alt="" />
-          <div className="section3-slider-text">
-            <strong>강아지</strong>
-            <p>경상북도 - 울산시</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="section3-slider-item">
-          <img src="/assets/test/cat.jpg" alt="" />
-          <div className="section3-slider-text">
-            <strong>고양이</strong>
-            <p>경상북도 - 울산시</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="section3-slider-item">
-          <img src="/assets/test/kapi.jpg" alt="" />
-          <div className="section3-slider-text">
-            <strong>카피바라</strong>
-            <p>경상북도 - 부산시</p>
-          </div>
-        </div>
-      </SwiperSlide>
+      {foods && foods.length > 0 ? (
+        foods.map((food, index) => (
+          <SwiperSlide
+            key={index}
+            // 여긴 클릭이벤트가 필요없다.. 그냥 정보만 보여준다
+            // onClick={() => handlePlaceUpdate(food, localNo)}
+          >
+            <div className="section3-slider-item">
+              <img
+                src={`/assets/regionfood/${localNo}/${index + 1}.jpg`}
+                alt=""
+              />
+              <div className="section3-slider-text">
+                <strong>{food.name}</strong>
+                <p>{localNo.name}</p>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))
+      ) : (
+        <p>No data available</p>
+      )}
     </Swiper>
   );
 }
+
 function Section4Swiper() {
   return (
     <Swiper
@@ -170,7 +113,7 @@ function Section4Swiper() {
       modules={[Autoplay]}
       spaceBetween={0}
       slidesPerView={1}
-      autoplay={{ delay: "3003330" }}
+      autoplay={{ delay: "3333" }}
       loop={true}
     >
       <SwiperSlide>
@@ -251,20 +194,16 @@ function Main() {
 
         // 데이터와 localNo를 업데이트
         handlePlaceUpdate(
-          {
-            location: response.data,
-            festival: festivalResponse.data,
-            food: foodResponse.data,
-          },
-          festivalResponse.data, // 여기에 festival 데이터도 전달하도록 수정
-          foodResponse.data, // 여기에 food 데이터도 전달하도록 수정
+          response.data,
+          festivalResponse.data,
+          foodResponse.data,
           localNo
         );
 
-        console.log(" 로딩 지역 : ", response.data);
-        console.log(" 로딩 축제: ", festivalResponse.data);
-        console.log(" 로딩 특산물: ", foodResponse.data);
-        console.log(" 로컬 지역 초기값:", localNo);
+        console.log("로딩 지역 : ", response.data);
+        console.log("로딩 축제: ", festivalResponse.data);
+        console.log("로딩 특산물: ", foodResponse.data);
+        console.log("로컬 지역 초기값:", localNo);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -278,12 +217,14 @@ function Main() {
       <Video />{" "}
       {/* 비디오 처리 위해서 Import 각자 지역별로 Video 넣을수 있습니다! */}
       <div className="mainpage container">
+        <h3>{locationData.length > 0 && locationData[0].location}</h3>
         <img
           src="/assets/etc/line.png"
           alt="line"
           id="pageline"
           style={{ paddingTop: "50px" }}
         />
+
         {/* 여기만 구분주려고 paddingtop 50px만 줬습니다 이상하면 뺄예정 */}
         <div className="section1 section">
           <div className="section1-item1">
@@ -292,21 +233,29 @@ function Main() {
               <p>Trendings Places</p>
             </div>
             <ul className="section-place-info">
-              {locationData.places &&
-                locationData.places.slice(0, 3).map((place, index) => (
-                  <li key={index}>
-                    <div className="place-info">
-                      <img
-                        src={`/assets/place/${localNo}/${index + 1}.jpg`}
-                        alt={place.name}
-                      />
-                      <div className="place-info-text">
-                        <strong>{place.name}</strong>
-                        <p>{place.address}</p>
-                      </div>
-                    </div>
-                  </li>
-                ))}
+              {locationData.map((place, index) => {
+                // 최대 3개의 요소만 렌더링
+                if (index < 3) {
+                  return (
+                    <li key={index}>
+                      <Link to={`/place/${localNo}/${place.placeNo}`}>
+                        {/* Link를 사용하여 클릭 시 라우팅 경로 설정 */}
+                        <div className="place-info">
+                          <img
+                            src={`/assets/place/${localNo}/${index + 1}.jpg`}
+                            alt={place.name}
+                          />
+                          <div className="place-info-text">
+                            <strong>{place.name}</strong>
+                            <p>{place.address}</p>
+                          </div>
+                        </div>
+                      </Link>
+                    </li>
+                  );
+                }
+                return null; // index가 3 이상이면 렌더링하지 않음
+              })}
             </ul>
           </div>
           <div className="section1-item2">
@@ -315,9 +264,10 @@ function Main() {
               대한민국 방방곡곡 "Click!"{" "}
             </strong>
             <p className="section1-item2-name"> </p>
+            {/* 빈배열로 festival 과 foods 데이터 그리고 마지막으로 localNo를 받아온답니다.. 초기화? 대박 */}
             <SouthKoreaMap
               onLocationClick={(data, localNo) =>
-                handlePlaceUpdate(data, localNo)
+                handlePlaceUpdate(data, [], [], localNo)
               }
               className="koreamap"
             />
@@ -326,21 +276,34 @@ function Main() {
         </div>
         <hr />
         <div className="section2 section">
-          <h3> 방방곡곡 축제 정보 </h3>
+          {/* 로케이션데이터에 지역정보가 있어서 [0]번 베열 이용해서 지역이름 설정 */}
+          <h3>{locationData.length > 0 && locationData[0].location}</h3>
+          <h3> 방방곡곡 축제정보</h3>
+
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
           <div>
-            <Section2Swiper />
-            <button className="w-btn-neon2 section2-item-button" type="button">
+            <Section2Swiper
+              festivalData={festivalData}
+              localNo={localNo}
+              handlePlaceUpdate={handlePlaceUpdate}
+            />
+            {/* 일단 주석 */}
+            {/* <button className="w-btn-neon2 section2-item-button" type="button">
               더보기
-            </button>
+            </button> */}
           </div>
         </div>
         <hr />
         <div className="section3 section">
+          <h3>{locationData.length > 0 && locationData[0].location}</h3>
           <h3> 방방곡곡 특산물'S </h3>
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
           <div>
-            <Section3Swiper />
+            <Section3Swiper
+              foods={foodData}
+              localNo={localNo}
+              handlePlaceUpdate={handlePlaceUpdate}
+            />
           </div>
           <hr />
         </div>

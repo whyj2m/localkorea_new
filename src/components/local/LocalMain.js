@@ -1,4 +1,5 @@
 import "../../styles/local/LocalMain.css";
+import { Link } from "react-router-dom";
 
 import Location from "../common/Location";
 import { FaPeopleGroup } from "react-icons/fa6";
@@ -16,8 +17,10 @@ import "swiper/css/pagination";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getLocation } from "../../api/locationApi";
+import { getLocalFestivals, getLocalPlace } from "../../api/LocalPlaceApi";
+import { getLocalFestival } from "../../api/LocalFestivalApi";
 
-function LocalmainSwiper() {
+function LocalmainSwiper({ places, localNo }) {
   return (
     <Swiper
       style={{
@@ -33,55 +36,25 @@ function LocalmainSwiper() {
       autoplay={{ delay: "3000" }}
       loop={true}
     >
-      <SwiperSlide>
-        <div className="localmain-slider-main">
-          <img src="/assets/local/cherry.jpg" alt="" />
-          <div className="localmain-slider-text">
-            <strong>서울</strong>
-            <p>서울 여의도</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="localmain-slider-main">
-          <img src="/assets/local/main-board.jpg" alt="" />
-          <div className="localmain-slider-text">
-            <strong>서울</strong>
-            <p>서울 경복궁 </p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="localmain-slider-main">
-          <img src="/assets/local/main-board2.jpg" alt="" />
-          <div className="localmain-slider-text">
-            <strong>서울</strong>
-            <p>서울 중구</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="localmain-slider-main">
-          <img src="/assets/local/main-board3.jpg" alt="" />
-          <div className="localmain-slider-text">
-            <strong>서울</strong>
-            <p>서울 종로</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="localmain-slider-main">
-          <img src="/assets/local/main-sample1.jpg" alt="" />
-          <div className="localmain-slider-text">
-            <strong>서울</strong>
-            <p>서울 영등포</p>
-          </div>
-        </div>
-      </SwiperSlide>
+      {places.map((place, index) => (
+        <SwiperSlide key={index}>
+          {/* Link 추가 */}
+          <Link to={`/place/${localNo}/${place.placeNo}`}>
+            <div className="localmain-slider-main">
+              <img src={`/assets/place/${localNo}/${index + 1}.jpg`} alt="" />
+              <div className="localmain-slider-text">
+                <strong>{place.name}</strong>
+                <p>{place.location}</p>
+              </div>
+            </div>
+          </Link>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }
-function LocalmainSwiper2() {
+
+function LocalmainSwiper2({ festivals, localNo }) {
   return (
     <Swiper
       style={{
@@ -94,84 +67,91 @@ function LocalmainSwiper2() {
       modules={[Autoplay]}
       spaceBetween={30}
       slidesPerView={4}
-      autoplay={{ delay: "4000" }}
+      autoplay={{ delay: "2500" }}
       loop={true}
     >
-      <SwiperSlide>
-        <div className="localmain-slider-main">
-          <img src="/assets/festival/seoul/K-푸드페스타 in 서울.jpg" alt="" />
-          <div className="localmain-slider-text">
-            <strong>K-푸드페스타 in 서울</strong>
-            <span>2023.12.23 ~ 2023.12.25</span>
-            <p>서울시 서초구</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="localmain-slider-main">
-          <img src="/assets/festival/seoul/강동북페스티벌.jpg" alt="" />
-          <div className="localmain-slider-text">
-            <strong>강동북페스티벌</strong>
-            <span>2023.10.28, 10:00 ~ 17:00</span>
-            <p>서울시 강동구</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="localmain-slider-main">
-          <img src="/assets/festival/seoul/대한민국청소년미디어대전.jpg" />
-          <div className="localmain-slider-text">
-            <strong>대한민국청소년미디어대전</strong>
-            <span>2023.11.2부터 4.</span>
-            <p>서울시 중구</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="localmain-slider-main">
-          <img src="/assets/festival/seoul/문화가 있는 날 10주년 페스타.jpg" />
-          <div className="localmain-slider-text">
-            <strong>문화 있는날 10주년 페스타</strong>
-            <span>2023.10.1부터 31.</span>
-            <p>서울시 종로구</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="localmain-slider-main">
-          <img src="/assets/festival/seoul/밤의 석조전.jpg" />
-          <div className="localmain-slider-text">
-            <strong>밤의 석조전</strong>
-            <span>2023.10.6부터 11.2</span>
-            <p>서울시 중구</p>
-          </div>
-        </div>
-      </SwiperSlide>
+      {festivals.map((festival, index) => (
+        <SwiperSlide key={index}>
+          {/* Link 추가 */}
+          <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
+            <div className="localmain-slider-main">
+              <img
+                src={`/assets/festival/${localNo}/${index + 1}.jpg`}
+                alt=""
+              />
+              <div className="localmain-slider-text">
+                <strong>{festival.name}</strong>
+                <span>{`${festival.schedule}`}</span>
+                <p>{festival.location}</p>
+              </div>
+            </div>
+          </Link>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }
 function LocalMain() {
-  // localNo 이름으로 params 값 가져옴 로그확인 완료
+  // URL에서 localNo 파라미터를 가져옵니다.
   const { localNo } = useParams();
   console.log("localNo:", localNo);
 
-  const [localData, setLocalData] = useState("");
+  // 지역 정보, 관광지 정보, 축제 정보를 저장할 상태 변수들을 정의합니다.
+  const [localData, setLocalData] = useState(""); // 지역 정보
+  const [localPlaces, setLocalPlaces] = useState([]); // 관광지 정보
+  const [localFestivals, setLocalFestivals] = useState([]); // 축제 정보
 
   useEffect(() => {
+    // localNo에 해당하는 지역 정보를 가져오는 함수
     const fetchLocalData = async () => {
       try {
+        // API를 통해 데이터를 가져옵니다.
         const response = await getLocation(localNo);
         const data = response.data;
 
-        console.log(" localData: ", data);
+        // 콘솔에 지역 정보를 출력하고 상태를 업데이트합니다.
+        console.log("localData: ", data);
         setLocalData(data);
       } catch (error) {
         console.error("Error fetching local data:", error);
       }
     };
 
+    // localNo에 해당하는 관광지 정보를 가져오는 함수
+    const fetchLocalPlaces = async () => {
+      try {
+        // API를 통해 데이터를 가져옵니다.
+        const response = await getLocalPlace(localNo);
+        const data = response.data;
+
+        // 콘솔에 관광지 정보를 출력하고 상태를 업데이트합니다.
+        console.log("localPlaces: ", data);
+        setLocalPlaces(data);
+      } catch (error) {
+        console.error("Error fetching local places:", error);
+      }
+    };
+
+    // localNo에 해당하는 축제 정보를 가져오는 함수
+    const fetchLocalFestivals = async () => {
+      try {
+        // API를 통해 데이터를 가져옵니다.
+        const response = await getLocalFestival(localNo);
+        const data = response.data;
+
+        // 콘솔에 축제 정보를 출력하고 상태를 업데이트합니다.
+        console.log("localFestivals: ", data);
+        setLocalFestivals(data);
+      } catch (error) {
+        console.error("Error fetching local festivals:", error);
+      }
+    };
+
+    // 각각의 데이터를 가져오는 함수들을 호출합니다.
     fetchLocalData();
-  }, [localNo]);
+    fetchLocalPlaces();
+    fetchLocalFestivals();
+  }, [localNo]); // localNo가 변경될 때마다 실행되도록 설정합니다.
 
   return (
     <div className="container">
@@ -224,14 +204,14 @@ function LocalMain() {
       <div className="localmain-swiper-title">
         <h2> 추천 관광지 </h2>
       </div>
-      <LocalmainSwiper />
+      <LocalmainSwiper places={localPlaces} localNo={localNo} />
 
       <hr style={{ marginBottom: "0" }} />
       {/* 스와이퍼 */}
       <div className="localmain-swiper-title">
         <h2> 추천 축제 </h2>
       </div>
-      <LocalmainSwiper2 />
+      <LocalmainSwiper2 festivals={localFestivals} localNo={localNo} />
     </div>
   );
 }

@@ -8,7 +8,7 @@ const axiosInstance = axios.create({
   },
 });
 
-export const getLocalFestivals = async () => {
+export const getLocalPlaces = async () => {
   try {
     const response = await axiosInstance.get("/localPlaces");
     return response;
