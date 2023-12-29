@@ -17,6 +17,8 @@ import "swiper/css/pagination";
 import { getLocalFestivalView } from "../../api/LocalFestivalApi";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
+import Kakaomap from "../../api/Kakaomap";
+import Kakaomap2 from "../../api/Kakaomap2";
 
 function FestivalViewSwiper() {
   return (
@@ -183,8 +185,12 @@ function FestivalView() {
       {/* 분할선 */}
       <hr style={{ marginTop: "0" }} />
       <div className="festivalView-map">
-        <strong> 길찾기 </strong>
-        {festivalData && <div> 맵 들어갈 구역 카카오맵 API </div>}
+        {festivalData && (
+          <Kakaomap2
+            location={festivalData.location}
+            name={festivalData.name}
+          />
+        )}
       </div>
       {/* 분할선 */}
       <hr />

@@ -8,23 +8,33 @@ const axiosInstance = axios.create({
     }
 })
 
-   // get tourisSpot 게시글 목록조회 
-   export const getTourBaordList = async() => {
+// get tourisSpot 게시글 목록조회 
+export const getTourBaordList = async () => {
     try {
         const response = await axiosInstance.get("/board/tourisSpot")
         return response;
-    } catch(error){
+    } catch (error) {
         throw error;
     }
-   }
+}
 
-   // get tourisSpot 게시글 목록조회 
-   export const getCompanyBaordList = async() => {
+// get tourisSpot 게시글 목록조회 
+export const getCompanyBaordList = async () => {
     try {
         const response = await axiosInstance.get("/board/company")
         return response;
-    } catch(error){
+    } catch (error) {
         throw error;
     }
-   }
-  
+}
+
+// post 게시글 작성 
+export const postBoardWrite = async () => {
+    try {
+        const response = await axiosInstance.post("/board/boardWrite")
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
