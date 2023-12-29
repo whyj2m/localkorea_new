@@ -8,6 +8,8 @@ import LikeList from "./record/LikeList";
 import ChangePw from "./modal/ChangePw";
 import ChangeInfo from "./modal/ChangeInfo";
 import { BsFileRichtext } from "react-icons/bs";
+import { FaRegCommentDots } from "react-icons/fa";
+import { FaHeart } from "react-icons/fa";
 
 import axios from "axios";
 
@@ -31,22 +33,27 @@ function Mypage() {
       }
     }
     fetchUserInfo();
-  }, []);
+  }, [showModalCI]);
 
   return (
     <Container className="mypage">
       <h2 className="title">마이페이지</h2>
       <div className="d-block d-lg-flex">
         <div className="tab d-lg-block d-flex col-lg-3 mb-5">
-          <div className="board" onClick={() => setComp(BoardList)}>
-          <BsFileRichtext />게시글
+          <div className="board tab_inner" onClick={() => setComp(BoardList)}>
+            <div class="icon d-lg-none"><BsFileRichtext /></div>
+            게시글
           </div>
           <hr className="d-none d-lg-block" />
-          <div className="reply" onClick={() => setComp(ReplyList)}>
+          <div className="reply tab_inner" onClick={() => setComp(ReplyList)}>
+            <div class="icon d-lg-none"><FaRegCommentDots /></div>
             댓글
           </div>
           <hr className="d-none d-lg-block" />
-          <div className="like" onClick={() => setComp(LikeList)}>좋아요</div>
+          <div className="like tab_inner" onClick={() => setComp(LikeList)}>
+            <div class="icon d-lg-none"><FaHeart/></div>
+            좋아요
+          </div>
         </div>
         <div className="content col-lg-9">
           <div className="profile d-flex">
