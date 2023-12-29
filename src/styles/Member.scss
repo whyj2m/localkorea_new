@@ -185,6 +185,10 @@
       margin: 15px 0;
       width: 80%;
     }
+    .tab_inner{
+      width: 30%;
+      .icon {font-size: 40px; margin-bottom: 10px; color: purple;}
+    }
   }
 
   .content {
@@ -296,10 +300,10 @@
 
 @media screen and (max-width: 992px) {
   .mypage {
+    padding-top: 60px;
     .tab {
       justify-content: space-between;
       div {
-        width: 30%;
         text-align: center;
       }
     }
