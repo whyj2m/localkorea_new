@@ -1,27 +1,33 @@
 .land {
-    fill: #CCCCCC;
-    fill-opacity: 1;
-    stroke: white;
-    stroke-opacity: 1;
-    stroke-width: 0.5;
+  fill: #cccccc;
+  fill-opacity: 1;
+  stroke: white;
+  stroke-opacity: 1;
+  stroke-width: 0.5;
+}
+.landNo {
+  fill: #cccccc;
 }
 .land:hover {
-    fill: #000;
+  fill: #8eaccd;
 }
 .SeoulLand {
-    fill: #2524FF;
+  fill: #d2e0fb;
 }
 
+.selected {
+  fill: #8eaccd !important;
+}
 .mapstyle {
-    width: 100%; 
-    height: 100%; 
-    margin-left: 170px;
-    margin-top: -100px;
+  width: 100%;
+  height: 100%;
+  margin-left: 170px;
+  margin-top: -100px;
 }
 
 @media screen and (max-width: 768px) {
-    .mapstyle{
-        margin-left: 100px;
-        width: 100%;
-    }
+  .mapstyle {
+    margin-left: 100px;
+    width: 100%;
+  }
 }
