@@ -18,15 +18,13 @@ const axiosInstance = axios.create({
     }
    }
 
-
-//    export const getBoard = async (course) => {
-//     try {
-//       const response = await axiosInstance.get("/board/list", {
-//         params: course // 쿼리 파라미터 설정
-//       });
-//       return response.data;
-//     } catch (error) {
-//       throw error;
-//     }
-//   };
+   // get tourisSpot 게시글 목록조회 
+   export const getCompanyBaordList = async() => {
+    try {
+        const response = await axiosInstance.get("/board/company")
+        return response;
+    } catch(error){
+        throw error;
+    }
+   }
   
