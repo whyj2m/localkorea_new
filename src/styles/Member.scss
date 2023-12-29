@@ -225,12 +225,14 @@
         top: 50%;
         left: 55%;
         transform: translate(-45%, -50%);
+        width: 70%;
         .greeting {
           font-size: 20px;
         }
         .menu {
           display: flex;
           gap: 10px;
+          justify-content: center;
           .btn:hover {background: #7D7D7D; border: 1px solid #7D7D7D;}
         }
       }
@@ -292,7 +294,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
   .mypage {
     .tab {
       justify-content: space-between;
