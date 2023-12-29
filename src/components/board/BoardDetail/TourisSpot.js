@@ -1,11 +1,13 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { Form, Button, Card, Pagination, Col, Row } from 'react-bootstrap';
+import moment from 'moment'; // 시간
+
+import { getTourBaordList } from '../../../api/BoardApi';
 import BoardNav from '../BoardNav';
 
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from "react";
-
 import '../../../styles/board/board.scss';
-import { getTourBaordList } from '../../../api/BoardApi';
+import '../../../styles/board/tourisSpot.scss'
 
 function SearchForm() {
     return (
@@ -34,11 +36,12 @@ function TourisSpot() {
 
     const navigate = useNavigate();
 
+    // 글작성 버튼 입력시 boardWrite 페이지로 이동
     const handleButtonClick = () => {
         navigate('/board/boardWrite');
     };
 
-
+    // 관광지 추천 게시판 글 가져오기
     const [TourBoardListData, setTourBoardListData] = useState([]);
 
     useEffect(() => {
@@ -58,7 +61,6 @@ function TourisSpot() {
 
 
 
-
     return (
         <>
             <BoardNav />
@@ -66,34 +68,45 @@ function TourisSpot() {
             {/* 검색창 */}
             <SearchForm />
 
+
+
             {/* 관광지 카드 */}
             <div className="container">
-            {TourBoardListData.map(item => (
-        <Card key={item.id} className='TourisSpot-Card'>
-            <Row className="g-0 align-items-center">
-                <Col md={8}>
-                    <Card.Body>
-                        <Card.Title>{item.locationCno} / {item.title}</Card.Title>
-                        <Card.Text>
-                           {item.content}
-                        </Card.Text>
-                        <Card.Text>{item.regDate}</Card.Text>
-                    </Card.Body>
-                </Col>
-                <Col md={4}>
-                    <div className="d-flex justify-content-center">
-                        <Card.Img className='TourisSpot-Img' variant="top" src="../../assets/test/testImg.png" />
-                    </div>
-                </Col>
-            </Row>
-        </Card>
-    ))}
+                <Row className='align-items-center'>
+                    <Col md={11} className="place-total">
+                        <strong>
+                            {/* 총건수 확인 */}
+                            총<span> {TourBoardListData.length} </span>건
+                        </strong>
+                    </Col>
+                    <Col md={1} className="d-flex justify-content-end">
+                        <Button className='write-btn' as="input" type="submit" value="글작성" onClick={handleButtonClick} />
+                    </Col>
+                </Row>
+
+                {TourBoardListData.map(item => (
+                    <Card key={item.id} className='TourisSpot-Card'>
+                        <Row className="g-0 align-items-center">
+                            <Col md={3}>
+                                <div className="d-flex justify-content-center">
+                                    <Card.Img className='TourisSpot-Img' variant="top" src="../../assets/test/testImg.png" />
+                                </div>
+                            </Col>
+                            <Col md={9}>
+                                <Card.Body className="body">
+                                    <Card.Title className="title">[{item.location}] {item.title}</Card.Title>
+                                    <Card.Text className="content">
+                                        {item.content}
+                                    </Card.Text>
+                                    <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
+                                </Card.Body>
+                            </Col>
+                        </Row>
+                        <div class="underline"></div>
+                    </Card>
+                ))}
 
 
-
-                <div className="underline"></div>
-
-                <div class="underline"></div>
 
                 {/* 페이징 */}
                 <Row className='justify-content-center align-items-center bottom'>
@@ -110,9 +123,7 @@ function TourisSpot() {
                             <Pagination.Last />
                         </Pagination>
                     </Col>
-                    <Col md={1}>
-                        <Button className='write-btn' as="input" type="submit" value="글작성" onClick={handleButtonClick} />
-                    </Col>
+
                 </Row>
             </div>
 
