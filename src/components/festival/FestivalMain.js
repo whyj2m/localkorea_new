@@ -49,50 +49,29 @@ function FestivalMain() {
       <div className="festival-content container">
         <div className="festival-content-wrap">
           <ul>
-            <li className="content content1">
-              <a>
-                <Link to="/festival/location/no">
+            {localData.slice(0, 3).map((festival, index) => (
+              <li key={index} className={`content`}>
+                <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
+                  <img
+                    src={`/assets/festival/${localNo}/${index + 1}.jpg`}
+                    alt={festival.name}
+                  />
                   <div className="festival-text-area">
                     <div className="festival-text-title">
-                      <strong> 서울숲 걷기 축제 </strong>
+                      <strong>{festival.name}</strong>
                     </div>
                     <div className="festival-text-desc">
-                      <span> 2023.12.23 ~ 2023.12.25 </span>
-                      <span> 서울특별시 서울대공원 </span>
+                      <span>{`${festival.schedule}`}</span>
+                      <span>{festival.location}</span>
                     </div>
                   </div>
                 </Link>
-              </a>
-            </li>
-            <li className="content content2">
-              <a href="#">
-                <div className="festival-text-area">
-                  <div className="festival-text-title">
-                    <strong> 서울숲 걷기 축제 </strong>
-                  </div>
-                  <div className="festival-text-desc">
-                    <span> 2023.12.23 ~ 2023.12.25 </span>
-                    <span> 서울특별시 서울대공원 </span>
-                  </div>
-                </div>
-              </a>
-            </li>
-            <li className="content content3">
-              <a href="#">
-                <div className="festival-text-area">
-                  <div className="festival-text-title">
-                    <strong> 서울숲 걷기 축제 </strong>
-                  </div>
-                  <div className="festival-text-desc">
-                    <span> 2023.12.23 ~ 2023.12.25 </span>
-                    <span> 서울특별시 서울대공원 </span>
-                  </div>
-                </div>
-              </a>
-            </li>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
+
       {/* 줄바꿈 */}
       <hr className="container" />
       <div className="festival-list container">
