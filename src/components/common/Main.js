@@ -217,7 +217,6 @@ function Main() {
       <Video />{" "}
       {/* 비디오 처리 위해서 Import 각자 지역별로 Video 넣을수 있습니다! */}
       <div className="mainpage container">
-        <h3>{locationData.length > 0 && locationData[0].location}</h3>
         <img
           src="/assets/etc/line.png"
           alt="line"
@@ -225,17 +224,28 @@ function Main() {
           style={{ paddingTop: "50px" }}
         />
 
-        {/* 여기만 구분주려고 paddingtop 50px만 줬습니다 이상하면 뺄예정 */}
+        <div className="section1-headname">
+          <h3>
+            "지역으로 보는"
+            <strong> 방방곡곡 관광지 </strong>
+          </h3>
+        </div>
+        {/* 여기 구분선 */}
+        <hr style={{ marginBottom: "25px", marginTop: "0" }} />
         <div className="section1 section">
           <div className="section1-item1">
             <div className="section1-place">
-              <h2>요즘뜨는 관광지</h2>
-              <p>Trendings Places</p>
+              <h3>
+                <strong>
+                  {locationData.length > 0 && locationData[0].location}
+                </strong>
+                요즘뜨는 관광지
+              </h3>
             </div>
             <ul className="section-place-info">
               {locationData.map((place, index) => {
                 // 최대 3개의 요소만 렌더링
-                if (index < 3) {
+                if (index < 4) {
                   return (
                     <li key={index}>
                       <Link to={`/place/${localNo}/${place.placeNo}`}>
@@ -247,7 +257,6 @@ function Main() {
                           />
                           <div className="place-info-text">
                             <strong>{place.name}</strong>
-                            <p>{place.address}</p>
                           </div>
                         </div>
                       </Link>
@@ -260,8 +269,7 @@ function Main() {
           </div>
           <div className="section1-item2">
             <strong className="section1-item2-title">
-              {" "}
-              대한민국 방방곡곡 "Click!"{" "}
+              조회할 지역을 선택하세요.
             </strong>
             <p className="section1-item2-name"> </p>
             {/* 빈배열로 festival 과 foods 데이터 그리고 마지막으로 localNo를 받아온답니다.. 초기화? 대박 */}

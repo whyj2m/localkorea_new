@@ -29,9 +29,9 @@ export const getCompanyBaordList = async () => {
 }
 
 // post 게시글 작성 
-export const postBoardWrite = async () => {
+export const postBoardWrite = async (formData) => {
     try {
-        const response = await axiosInstance.post("/board/boardWrite")
+        const response = await axiosInstance.post("/board/boardWrite", formData)
         return response;
     } catch (error) {
         throw error;
