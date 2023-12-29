@@ -6,6 +6,7 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getLocalPlaceView } from "../../api/LocalPlaceApi";
+import Kakaomap from "../../api/Kakaomap";
 
 function PlaceView() {
   const { localNo, placeNo } = useParams();
@@ -58,8 +59,11 @@ function PlaceView() {
             <p>{placeData.content}</p>
           </div>
           <div className="placeview-map">
-            {/* 여기에 추후에 맵 들어갑니다 */}
-            <div>맵 들어갈 구역 카카오맵 API</div>
+            <Kakaomap
+              latitude={parseFloat(placeData.latitude)}
+              longitude={parseFloat(placeData.longitude)}
+              name={placeData.name}
+            />
           </div>
         </>
       )}

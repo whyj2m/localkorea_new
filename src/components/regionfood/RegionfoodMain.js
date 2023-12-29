@@ -17,7 +17,7 @@ import Location2 from "../common/Location2";
 import { useParams } from "react-router-dom";
 import { getLocation } from "../../api/locationApi";
 
-function RegionfoodRandom() {
+function RegionfoodRandom({ localFoods, localNo }) {
   return (
     <Swiper
       style={{
@@ -33,63 +33,24 @@ function RegionfoodRandom() {
       autoplay={{ delay: 3000 }}
       loop={true}
     >
-      <SwiperSlide>
-        <div className="regionfood-slider-item">
-          <img src="/assets/regionfood/berry.jpg" alt="" />
-          <div className="regionfood-slider-text">
-            <strong> 딸기 </strong>
-            <p> 가나 </p>
+      {localFoods.map((food, index) => (
+        <SwiperSlide key={index}>
+          <div className="regionfood-slider-item">
+            <img
+              src={`/assets/regionfood/${localNo}/${index + 1}.jpg`}
+              alt={food.name}
+            />
+            <div className="regionfood-slider-text">
+              <strong>{food.name}</strong>
+              <p>{food.description}</p>
+            </div>
           </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="regionfood-slider-item">
-          <img src="/assets/regionfood/berry.jpg" alt="" />
-          <div className="regionfood-slider-text">
-            <strong> 딸기 </strong>
-            <p> 다라 </p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="regionfood-slider-item">
-          <img src="/assets/regionfood/apple.png" alt="" />
-          <div className="regionfood-slider-text">
-            <strong>사과</strong>
-            <p> 마바 </p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="regionfood-slider-item">
-          <img src="/assets/regionfood/orange.jpg" alt="" />
-          <div className="regionfood-slider-text">
-            <strong>오렌지</strong>
-            <p> 사아 </p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="regionfood-slider-item">
-          <img src="/assets/regionfood/watermelon.jpg" alt="" />
-          <div className="regionfood-slider-text">
-            <strong>수박</strong>
-            <p> 자차 </p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="regionfood-slider-item">
-          <img src="/assets/regionfood/watermelon.jpg" alt="" />
-          <div className="regionfood-slider-text">
-            <strong>수박</strong>
-            <p> 자차 </p>
-          </div>
-        </div>
-      </SwiperSlide>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }
+
 function RegionfoodMain() {
   const { localNo } = useParams();
   const [localFoods, setLocalFoods] = useState([]);
@@ -213,7 +174,7 @@ function RegionfoodMain() {
         <h3>대한민국 특산물들</h3>
         <img src="/assets/etc/line.png" alt="line" className="pageline" />
         <div>
-          <RegionfoodRandom />
+          <RegionfoodRandom localFoods={localFoods} localNo={localNo} />
         </div>
       </div>
     </>
