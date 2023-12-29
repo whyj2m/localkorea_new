@@ -1,6 +1,46 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Form, Button, Modal, InputGroup } from "react-bootstrap";
 
+const userId = "test3";
+
 function ChangeInfo(props) {
+
+  const [memberInfo, setMemberInfo] = useState({
+    id:"", name:"", phoneNum:"", email:""
+  })
+
+  useEffect(()=>{
+    async function fetchMemberInfo() {
+      try {
+        const response = await axios.get(`http://localhost:8081/mypage/${userId}`);
+        setMemberInfo(response.data)
+      } catch (error) {
+        console.error("Error fetching member info:", error);
+      }
+    }
+    fetchMemberInfo();
+  }, []);
+
+  const handleInfoChange = async () => {
+    try {
+      const changedName = document.getElementById("chgName").value;
+      const changedPhone = document.getElementById("chgPH").value;
+      const changedEmail = document.getElementById("chgEmail").value;
+
+      const response = await axios.put(`http://localhost:8081/mypage/${userId}/editInfo`, {
+        name: changedName,
+        phoneNum: changedPhone,
+        email: changedEmail,
+      })
+      // 응답 처리
+      alert(response.data)
+      props.onHide();
+    } catch (error) {
+      console.error("Error changing member info:", error);
+      // 에러 처리 로직 추가
+    }
+  }
 
   return (
     <Modal
@@ -22,7 +62,8 @@ function ChangeInfo(props) {
                 type="text"
                 id="chgName"
                 placeholder="변경할 이름을 입력하세요."
-                value="변경전 이름 불러오기"
+                value={memberInfo.name}
+                onChange={(e) => setMemberInfo({ ...memberInfo, name: e.target.value })}
               />
             </Form.Group>
             <Form.Group className="mb-3">
@@ -31,13 +72,15 @@ function ChangeInfo(props) {
                 type="text"
                 id="chgPH"
                 placeholder="변경할 휴대폰번호를 입력하세요."
-                value="010-3333-3222"
+                value={memberInfo.phoneNum}
+                onChange={(e) => setMemberInfo({ ...memberInfo, phoneNum: e.target.value })}
               />
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="inputEmail">Email Address</Form.Label>
               <InputGroup>
                 <Form.Control
+                  id="chgEmail"
                   placeholder="Enter your Email"
                   aria-label="Recipient's username"
                   aria-describedby="basic-addon2"
@@ -57,7 +100,7 @@ function ChangeInfo(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.onHide}>취소</Button>
-        <Button variant="primary" onClick={props.onHide}>
+        <Button variant="primary" onClick={handleInfoChange}>
             변경
           </Button>
       </Modal.Footer>
