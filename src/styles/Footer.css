@@ -19,7 +19,6 @@
 .inner-service {
   width: 100%;
   display: flex;
-  margin-bottom: 28px;
 }
 
 .wrap-service {
@@ -130,4 +129,9 @@
 /* 푸터 히든처리 */
 .hidden {
   display: none;
+}
+
+.arrow_icon{
+  width: 35px;
+  height: 35px;
 }

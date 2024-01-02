@@ -13,7 +13,7 @@ function BoardNav() {
                     <Nav>
                         <Nav.Link as={Link} to="/board/tourisSpot" className='category'>관광지 추천</Nav.Link>
                         <Nav.Link as={Link} to="/board/company" className='category'>여행 메이트</Nav.Link>
-                        <Nav.Link as={Link} to="/board/notice" className='category'>공지사항</Nav.Link>
+                        <Nav.Link as={Link} to="/board/notice" className='category'>FAQ</Nav.Link>
                     </Nav>
                 </Container>
             </Navbar>
