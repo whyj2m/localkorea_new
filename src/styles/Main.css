@@ -325,6 +325,26 @@ hr {
   color: #333; /* 부가 정보 색상 */
 }
 
+/* 특산물 더보기 버튼 */
+.section-localfood-more {
+  /* 기본 스타일 */
+  margin: 50px;
+  background-color: #fff; /* 배경색을 하얀색으로 변경 */
+  color: #d2e0fb; /* 텍스트 색상 */
+  width: 120px;
+  font-size: 15px;
+  font-weight: bold;
+  text-shadow: #333;
+  /* 호버 효과 */
+  transition: background-color 0.7s ease, color 0.5s ease;
+}
+
+.section-localfood-more:hover {
+  background-color: #d2e0fb;
+  color: black;
+  border-radius: 15px;
+}
+
 /* --------------------------------------------------------------section3 부분 끝 -------------------------------------------------------------------------- */
 /* .section4 {
 } */
