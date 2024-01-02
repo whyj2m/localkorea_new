@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { Form, Button, Card, Pagination, Col, Row } from 'react-bootstrap';
+import { Form, Button, Card, Col, Row } from 'react-bootstrap';
 import moment from 'moment'; // 시간
 
 import { getTourBaordList } from '../../../api/BoardApi';
 import BoardNav from '../BoardNav';
 
 import '../../../styles/board/board.scss';
-import '../../../styles/board/tourisSpot.scss'
+import '../../../styles/board/tourisSpot.scss';
 
 function SearchForm() {
     return (
@@ -59,7 +59,21 @@ function TourisSpot() {
         fetchTourBoardListData();
     }, []);
 
-    
+    // 게시글 역순으로
+    // const [posts, setPosts] = useState([]);
+
+    // useEffect(() => {
+    //     // 글 목록을 가져오는 API 호출 (예시)
+    //     axios.get('your_api_endpoint')
+    //       .then(response => {
+    //         // 받아온 데이터를 역순으로 정렬하여 설정
+    //         const reversedPosts = response.data.reverse();
+    //         setPosts(reversedPosts);
+    //       })
+    //       .catch(error => {
+    //         console.error('Error fetching data: ', error);
+    //       });
+    //   }, []);
 
 
     return (
@@ -86,11 +100,11 @@ function TourisSpot() {
                 </Row>
 
                 {TourBoardListData.map(item => (
-                    <Card key={item.id} className='TourisSpot-Card'>
+                    <Card key={item.bno} className='TourisSpot-Card'>
                         <Row className="g-0 align-items-center">
                             <Col md={3}>
                                 <div className="d-flex justify-content-center">
-                                    <Card.Img className='TourisSpot-Img' variant="top" src="../../assets/test/testImg.png" />
+                                    <Card.Img className='TourisSpot-Img' variant="top" src={item.imageSrc} />
                                 </div>
                             </Col>
                             <Col md={9}>
@@ -103,29 +117,29 @@ function TourisSpot() {
                                 </Card.Body>
                             </Col>
                         </Row>
-                        <div class="underline"></div>
+                        <div className="underline"></div>
                     </Card>
                 ))}
 
 
 
                 {/* 페이징 */}
-                <Row className='justify-content-center align-items-center bottom'>
-                    <Col md={11}>
-                        <Pagination className='pagination justify-content-center'>
-                            <Pagination.First />
-                            <Pagination.Prev />
-                            <Pagination.Item active>{1}</Pagination.Item>
-                            <Pagination.Item>{2}</Pagination.Item>
-                            <Pagination.Item>{3}</Pagination.Item>
-                            <Pagination.Item>{4}</Pagination.Item>
-                            <Pagination.Item>{5}</Pagination.Item>
-                            <Pagination.Next />
-                            <Pagination.Last />
-                        </Pagination>
-                    </Col>
+                {/* <Row className='justify-content-center align-items-center bottom'>
+                        <Col md={11}>
+                            <Pagination className='pagination justify-content-center'>
+                                <Pagination.First />
+                                <Pagination.Prev />
+                                <Pagination.Item active>{1}</Pagination.Item>
+                                <Pagination.Item>{2}</Pagination.Item>
+                                <Pagination.Item>{3}</Pagination.Item>
+                                <Pagination.Item>{4}</Pagination.Item>
+                                <Pagination.Item>{5}</Pagination.Item>
+                                <Pagination.Next />
+                                <Pagination.Last />
+                            </Pagination>
+                        </Col>
 
-                </Row>
+                    </Row> */}
             </div>
 
         </>
