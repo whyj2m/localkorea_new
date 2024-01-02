@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Card, Col, Row } from 'react-bootstrap';
 import moment from 'moment'; // 시간
 
@@ -8,6 +8,7 @@ import BoardNav from '../BoardNav';
 
 import '../../../styles/board/board.scss';
 import '../../../styles/board/tourisSpot.scss';
+
 
 function SearchForm() {
     return (
@@ -59,21 +60,6 @@ function TourisSpot() {
         fetchTourBoardListData();
     }, []);
 
-    // 게시글 역순으로
-    // const [posts, setPosts] = useState([]);
-
-    // useEffect(() => {
-    //     // 글 목록을 가져오는 API 호출 (예시)
-    //     axios.get('your_api_endpoint')
-    //       .then(response => {
-    //         // 받아온 데이터를 역순으로 정렬하여 설정
-    //         const reversedPosts = response.data.reverse();
-    //         setPosts(reversedPosts);
-    //       })
-    //       .catch(error => {
-    //         console.error('Error fetching data: ', error);
-    //       });
-    //   }, []);
 
 
     return (
@@ -87,59 +73,60 @@ function TourisSpot() {
 
             {/* 관광지 카드 */}
             <div className="container">
-                <Row className='align-items-center'>
-                    <Col md={11} className="place-total">
-                        <strong>
-                            {/* 총건수 확인 */}
-                            총<span> {TourBoardListData.length} </span>건
-                        </strong>
-                    </Col>
-                    <Col md={1} className="d-flex justify-content-end">
-                        <Button className='write-btn' as="input" type="submit" value="글작성" onClick={handleButtonClick} />
-                    </Col>
-                </Row>
-
-                {TourBoardListData.map(item => (
-                    <Card key={item.bno} className='TourisSpot-Card'>
-                        <Row className="g-0 align-items-center">
-                            <Col md={3}>
-                                <div className="d-flex justify-content-center">
-                                    <Card.Img className='TourisSpot-Img' variant="top" src={item.imageSrc} />
-                                </div>
-                            </Col>
-                            <Col md={9}>
-                                <Card.Body className="body">
-                                    <Card.Title className="title">[{item.location}] {item.title}</Card.Title>
-                                    <Card.Text className="content">
-                                        {item.content}
-                                    </Card.Text>
-                                    <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
-                                </Card.Body>
-                            </Col>
-                        </Row>
-                        <div className="underline"></div>
-                    </Card>
-                ))}
-
-
-
-                {/* 페이징 */}
-                {/* <Row className='justify-content-center align-items-center bottom'>
-                        <Col md={11}>
-                            <Pagination className='pagination justify-content-center'>
-                                <Pagination.First />
-                                <Pagination.Prev />
-                                <Pagination.Item active>{1}</Pagination.Item>
-                                <Pagination.Item>{2}</Pagination.Item>
-                                <Pagination.Item>{3}</Pagination.Item>
-                                <Pagination.Item>{4}</Pagination.Item>
-                                <Pagination.Item>{5}</Pagination.Item>
-                                <Pagination.Next />
-                                <Pagination.Last />
-                            </Pagination>
+                <div className="touriSpot-cotent">
+                    <Row className='align-items-center'>
+                        <Col md={11} className="place-total d-flex align-items-center">
+                            <strong>
+                                {/* 총건수 확인 */}
+                                총<span> {TourBoardListData.length} </span>건
+                            </strong>
                         </Col>
+                        <Col md={1} className="d-flex justify-content-end">
+                            <Button className='write-btn' as="input" type="submit" value="글작성" onClick={handleButtonClick} />
+                        </Col>
+                    </Row>
 
-                    </Row> */}
+                    {TourBoardListData.map(item => (
+                        <Link to={`/boardView/${item.bno}`}>
+                            <Card key={item.bno} className='TourisSpot-Card'>
+                                <Row className="g-0 align-items-center">
+                                    <Col md={3}>
+                                        <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
+                                            <Card.Img className='TourisSpot-Img' variant="top" src={item.imageSrc} />
+                                        </div>
+                                    </Col>
+                                    <Col md={9}>
+                                        <Card.Body className="body">
+                                            <Card.Title className="title">[{item.location}] {item.title}</Card.Title>
+                                            {/* <Card.Text className="content">
+                                                {item.content}
+                                            </Card.Text> */}
+                                            <Card.Text className="time">{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
+                                        </Card.Body>
+                                    </Col>
+                                </Row>
+
+                                <div className="underline" />
+                            </Card>
+                        </Link>
+                    ))}
+                    {/* 페이징 */}
+                    {/* <Row className='justify-content-center align-items-center bottom'>
+                            <Col md={11}>
+                                <Pagination className='pagination justify-content-center'>
+                                    <Pagination.First />
+                                    <Pagination.Prev />
+                                    <Pagination.Item active>{1}</Pagination.Item>
+                                    <Pagination.Item>{2}</Pagination.Item>
+                                    <Pagination.Item>{3}</Pagination.Item>
+                                    <Pagination.Item>{4}</Pagination.Item>
+                                    <Pagination.Item>{5}</Pagination.Item>
+                                    <Pagination.Next />
+                                    <Pagination.Last />
+                                </Pagination>
+                            </Col>
+                        </Row> */}
+                </div>
             </div>
 
         </>
