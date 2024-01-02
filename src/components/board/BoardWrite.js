@@ -18,7 +18,6 @@ function BoardWrite() {
         setIsFileUploadDisabled(false); // 처음 로드할 때 파일 업로드 활성화
     }, []);
 
-    // 카테고리 2(여행메이트)일 때 파일 업로드 비활성화
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -34,9 +33,37 @@ function BoardWrite() {
         // 폼 데이터 업데이트
         setFormData((prevData) => ({
             ...prevData,
-            [name]: value
+            [name]: value,
+            location: (name === 'locationCno') ? getLocationName(value) : prevData.location
         }));
     };
+
+    // 선택한 값을 토대로 location 값을 반환하는 함수
+    const getLocationName = (value) => {
+        switch (value) {
+            case '1':
+                return '서울';
+            case '2':
+                return '인천';
+            case '3':
+                return '대전';
+            case '4':
+                return '부산';
+            case '5':
+                return '경기';
+            case '6':
+                return '충청';
+            case '7':
+                return '강원';
+            case '8':
+                return '전라';
+            case '9':
+                return '경상';
+            default:
+                return '';
+        }
+    };
+
 
     const navigate = useNavigate();
     const [formData, setFormData] = useState({
@@ -62,35 +89,6 @@ function BoardWrite() {
         }
     }
 
-    // const handleChange = (e) => {
-    //     setFormData({ ...formData, [e.target.name]: e.target.value })
-    // }
-
-    // const handleChange = (e) => {
-    //     const { name, value } = e.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value
-    //     }));
-    //     // console.log("test : ",value);
-    // };
-
-    // // 카테고리 2(여행메이트)일 때 파일 업로드 비활성화
-    // const handleSelectChange = (event) => {
-    //     if (event.target.value === '2') {
-    //         setIsFileUploadDisabled(true); // 비활성화
-    //     } else {
-    //         setIsFileUploadDisabled(false);
-    //     }
-    //     setFormData({ ...formData, [event.target.name]: event.target.value });
-    // };
-
-
-
-
-
-
-
 
 
 
@@ -99,13 +97,16 @@ function BoardWrite() {
             <BoardNav />
 
             <div className="container">
-                <div className='write'>
-                    <div className='write-explanation'>작성 안내</div>
-                    <div>
+                <div className='instructions'>
+                    <img src='../../assets/etc/pointbar.png' alt='pointbar' />
+                    <div className='instructions-explanation'>작성 안내</div>
+                    <div className='instructions-content'>
                         새하마노 방방곡곡은 대한민국의 문화와 자연을 사랑하는 이들에게 맞춤형 여행을 제공하고,
                         지역 문화와 자연환경을 소개합니다. 저희는 새로운 장소와 경험을 찾고, 좋은 곳을 알리며,
                         관심과 사랑으로 대한민국의 다양한 매력을 세계에 알리고자 합니다. 여러분의 많은 관심과 참여를 부탁드립니다.
                     </div>
+                </div>
+                <div className='write'>
                     <Form onSubmit={handleSubmit}>
                         <Row className="align-items-center">
                             <Col xs={4} md={1}>
@@ -125,7 +126,7 @@ function BoardWrite() {
 
 
                         </Row>
-                        <div className='underline'></div>
+                        <div className='underline' />
                         <Row>
                             <Col xs={4} md={1}>
                                 <Form.Group controlId="cate" className="mb-0">
@@ -170,14 +171,14 @@ function BoardWrite() {
                                 </select>
                             </Col>
                         </Row>
-                        <div className='underline'></div>
+                        <div className='underline' />
 
                         <Col md={6} className='d-flex justify-content-end'>
                             <BoardUploadFile isDisabled={isFileUploadDisabled} />
                         </Col>
 
 
-                        <div className='underline'></div>
+                        <div className='underline' />
                         <Form.Group controlId="content">
                             <Form.Label>내용 *</Form.Label>
                             <Form.Control

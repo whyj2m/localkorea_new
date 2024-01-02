@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
@@ -15,6 +15,7 @@ import SearchFestival from "./components/search/SearchFestival.js";
 import SearchRegionalItem from "./components/search/SearchRegionalItem.js";
 import SearchDetail from "./components/search/SearchDetail.js";
 import Notice from "./components/board/BoardDetail/Notice.js";
+import BoardView from "./components/board/BoardView.js";
 import FestivalMain from "./components/festival/FestivalMain.js";
 import FestivalView from "./components/festival/FestivalView.js";
 import PlaceMain from "./components/place/PlaceMain.js";
@@ -25,11 +26,14 @@ import Signup from "./components/member/Signup.js";
 import PlcaeView from "./components/place/PlaceView.js";
 import BoardWrite from "./components/board/BoardWrite.js";
 import Mypage from "./components/member/Mypage.js";
+import ScrollToTop from "./components/common/ScrolltoTop.js";
 
 function App() {
   return (
     <div className="App" id="App">
       <Header />
+      {/* 스크롤 탑 이동 */}
+      <ScrollToTop />
       <Routes>
         <Route path="/" element={<Main />} />
 
@@ -51,6 +55,7 @@ function App() {
         <Route path="/board/company" element={<Company />} />
         <Route path="/board/notice" element={<Notice />} />
         <Route path="/board/boardWrite" element={<BoardWrite />} />
+        <Route path="/boardView/:bno" element={<BoardView />} />
 
         <Route path="/search/whole" element={<SearchDetail />} />
         <Route path="/search/local" element={<SearchLocal />} />

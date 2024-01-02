@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import "../../styles/Footer.css";
 
 import { LuExternalLink } from "react-icons/lu";
-import { FaArrowUp } from "react-icons/fa";
+
 function Footer() {
   const location = useLocation();
   // 특정 페이지 일때에 헤더를 숨기는 조건을 확인하는 함수 ( 로그인,회원가입 사용)
@@ -21,10 +21,13 @@ function Footer() {
           <h2 className="screen-out">하단 메뉴</h2>
           <ul className="inner-service">
             <li className="wrap-service">
-              <strong className="tit_service_name"> <img
+              <strong className="tit_service_name"> 
+              {/* <img
                 src="/assets/etc/logo.png"
                 style={{ width: "120px", height: "100%" }}
-              /></strong>
+              /> */}
+              새하마노 방방곡곡
+              </strong>
               <ul className="list_service">
                 <li className="list_service_item">
                   <a href="#"> 대표자 : 백혜윤 백승현 윤주민</a>

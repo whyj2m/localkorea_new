@@ -61,17 +61,20 @@ function Header() {
     setLogoImage(scrolling ? "logo.png" : "logonew.png");
   }, [scrolling]);
 
-  // 마우스 호버 상태에 따라 로고 이미지 변경
   const handleMouseOver = () => {
-    setLogoImage("logo.png");
     setIsHovering(true);
   };
 
   const handleMouseOut = () => {
-    setLogoImage("logonew.png");
     setIsHovering(false);
   };
 
+  // 경로에 따라 사용할 로고 이미지 설정
+  const getLogoImage = () => {
+    return location.pathname === "/" && !scrolling && !isHovering
+      ? "logonew.png"
+      : "logo.png";
+  };
   // 현재 경로에 따라 스크롤링을 하면 색상이 변하는 함수 (메인페이지사용) 스크롤 이벤트도
   const getHeaderColor = () => {
     if (location.pathname === "/") {
@@ -126,7 +129,7 @@ function Header() {
       >
         <Navbar.Brand as={Link} to="/" className="header-logo">
           <img
-            src={`/assets/etc/${logoImage}`}
+            src={`/assets/etc/${getLogoImage()}`}
             style={{ width: "120px", height: "100%" }}
           />
         </Navbar.Brand>
