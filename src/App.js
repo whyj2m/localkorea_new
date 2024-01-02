@@ -1,8 +1,9 @@
 import React from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-import "./App.css";
-import "./reset.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./index.css";
+import "./reset.scss";
+
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer.js";
 import Main from "./components/common/Main";
@@ -24,6 +25,7 @@ import Signup from "./components/member/Signup.js";
 import PlcaeView from "./components/place/PlaceView.js";
 import BoardWrite from "./components/board/BoardWrite.js";
 import Mypage from "./components/member/Mypage.js";
+
 function App() {
   return (
     <div className="App" id="App">
