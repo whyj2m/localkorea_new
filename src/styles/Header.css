@@ -111,6 +111,11 @@
   #pageline {
     display: none;
   }
+  /* 로고 이미지 조절 */
+  .header-logo img {
+    /* 모바일 화면일 때 logonew.png 사용 */
+    content: url("../../public/assets/etc/logo.png");
+  }
   .header-logo {
     padding-left: 10px;
   }
@@ -167,7 +172,11 @@
   #pageline {
     display: none;
   }
-
+  /* 로고 이미지 조절 */
+  .header-logo img {
+    /* 모바일 화면일 때 logonew.png 사용 */
+    content: url("../../public/assets/etc/logo.png");
+  }
   .header-main,
   .header-main-all {
     position: relative;
