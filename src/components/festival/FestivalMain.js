@@ -93,8 +93,8 @@ function FestivalMain() {
                   </div>
                   <div className="festival-text-desc">
                     <strong>{festival.name}</strong>
-                    <span className="date">{festival.schedule}</span>
                     <span className="addr">{festival.location}</span>
+                    <span className="date">{festival.schedule}</span>
                   </div>
                 </Link>
               </li>

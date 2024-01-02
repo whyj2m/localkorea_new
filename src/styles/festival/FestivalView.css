@@ -179,13 +179,3 @@
   font-size: 18px;
   font-weight: bold;
 }
-
-/* Style pagination if needed */
-.swiper-pagination {
-  position: absolute;
-  bottom: 10px;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  gap: 8px;
-}

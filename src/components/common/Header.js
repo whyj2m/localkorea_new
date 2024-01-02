@@ -21,18 +21,9 @@ function Header() {
   const [showAreaDropdown, setShowAreaDropdown] = useState(false);
   const [showBoardDropdown, setShowBoardDropdown] = useState(false);
 
-  const handleMouseOver = () => {
-    setIsHovering(true);
-  };
-  const handleMouseOut = () => {
-    setIsHovering(false);
-  };
-  const handleMouseOverAreaDropdown = () => {
-    setShowAreaDropdown(true);
-  };
-  const handleMouseOutAreaDropdown = () => {
-    setShowAreaDropdown(false);
-  };
+  // 스크롤링 이벤트 처리
+  const [logoImage, setLogoImage] = useState("logonew.png");
+
   const handleMouseOverBoardDropdown = () => {
     setShowBoardDropdown(true);
   };
@@ -64,7 +55,24 @@ function Header() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  // 현재 경로에 따라 스크롤링을 하면 색상이 변하는 함수 (메인페이지사용)
+
+  // 스크롤에 따라 로고 이미지 변경
+  useEffect(() => {
+    setLogoImage(scrolling ? "logo.png" : "logonew.png");
+  }, [scrolling]);
+
+  // 마우스 호버 상태에 따라 로고 이미지 변경
+  const handleMouseOver = () => {
+    setLogoImage("logo.png");
+    setIsHovering(true);
+  };
+
+  const handleMouseOut = () => {
+    setLogoImage("logonew.png");
+    setIsHovering(false);
+  };
+
+  // 현재 경로에 따라 스크롤링을 하면 색상이 변하는 함수 (메인페이지사용) 스크롤 이벤트도
   const getHeaderColor = () => {
     if (location.pathname === "/") {
       return scrolling ? "header-dark" : "";
@@ -118,7 +126,7 @@ function Header() {
       >
         <Navbar.Brand as={Link} to="/" className="header-logo">
           <img
-            src="/assets/etc/logo.png"
+            src={`/assets/etc/${logoImage}`}
             style={{ width: "120px", height: "100%" }}
           />
         </Navbar.Brand>

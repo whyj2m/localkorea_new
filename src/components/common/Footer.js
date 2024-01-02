@@ -21,10 +21,13 @@ function Footer() {
           <h2 className="screen-out">하단 메뉴</h2>
           <ul className="inner-service">
             <li className="wrap-service">
-              <strong className="tit_service_name"> Local Korea </strong>
+              <strong className="tit_service_name"> <img
+                src="/assets/etc/logo.png"
+                style={{ width: "120px", height: "100%" }}
+              /></strong>
               <ul className="list_service">
                 <li className="list_service_item">
-                  <a href="#"> 대표자 : 윤주민 백혜윤 백승현 김종윤 </a>
+                  <a href="#"> 대표자 : 백혜윤 백승현 윤주민</a>
                 </li>
                 <li className="list_service_item">
                   <a href="#">
@@ -33,7 +36,7 @@ function Footer() {
                 </li>
                 <li className="list_service_item">
                   <a href="#">
-                    운영시간 : 09:30 ~ 18:20 (점심시간: 13:30 ~ 14:30)
+                    운영시간 : 09:30 ~ 18:20 (점심시간: 13:20 ~ 14:30)
                   </a>
                 </li>
               </ul>
@@ -94,8 +97,7 @@ function Footer() {
           </ul>
         </div>
         <div className="info">
-          <h2 className="screen-out">서비스 이용정보</h2>
-          <div className="info-relation-container clearfix">
+          {/* <div className="info-relation-container clearfix">
             <div className="inner-info">
               <ul className="clearfix">
                 <li className="wrap-info">
@@ -222,8 +224,14 @@ function Footer() {
                 </li>
               </ul>
             </div>
+          </div> */}
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <a href="#">
+              {/* <FaArrowUp style={{ fontSize: "25px" }} /> */}
+              <img src="/assets/etc/ico_arrow_top.png" className="arrow_icon" />
+            </a>
           </div>
-          <small class="txt_copyright">
+          <small className="txt_copyright">
             © <a href="/">localkorea Corp.</a> All rights reserved.
           </small>
         </div>
