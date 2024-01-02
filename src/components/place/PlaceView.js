@@ -7,11 +7,15 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getLocalPlaceView } from "../../api/LocalPlaceApi";
 import Kakaomap from "../../api/Kakaomap";
+import PlaceModal from "./PlcaeModal";
 
 function PlaceView() {
   const { localNo, placeNo } = useParams();
   const [placeData, setPlaceData] = useState(null);
+
   const [imageIndex, setImageIndex] = useState(1);
+
+  const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
     const fetchPlaceData = async () => {
@@ -42,9 +46,12 @@ function PlaceView() {
             <span>
               <FaHeart /> <p>{placeData.heartCnt || 0}</p>
             </span>
+
             <span>
-              <FaExternalLinkAlt />
+              <FaExternalLinkAlt onClick={() => setModalOpen(true)} />
             </span>
+
+            <PlaceModal show={modalOpen} onHide={() => setModalOpen(false)} />
           </div>
           <div className="placeview-image">
             <img

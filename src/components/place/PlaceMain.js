@@ -88,27 +88,30 @@ function PlaceMain() {
         <ul className="place-content-list">
           {localData.slice(0, visibleItems).map((place, index) => (
             <li key={index} className="place-content-item">
-              <div className="photo">
-                <Link to={`/place/${localNo}/${place.placeNo}`}>
+              <Link
+                to={`/place/${localNo}/${place.placeNo}`}
+                className="place-link"
+              >
+                <div className="photo">
                   <img
                     src={`/assets/place/${localNo}/${index + 1}.jpg`}
                     alt={place.name}
                   />
-                </Link>
-              </div>
-              <div className="place-content-info">
-                <strong>{place.name}</strong>
-                <p className="info-location"> {place.location} </p>
-                <p className="text">{place.content}</p>
-              </div>
-              <div className="place-heartview">
-                <span>
-                  <IoEyeSharp /> <p>{place.viewCnt || 0}</p>
-                </span>
-                <span>
-                  <FaHeart /> <p>{place.heartCnt || 0}</p>
-                </span>
-              </div>
+                </div>
+                <div className="place-content-info">
+                  <p className="info-location"> {place.location} </p>
+                  <strong>{place.name}</strong>
+                  <p className="text">{place.content}</p>
+                </div>
+                <div className="place-heartview">
+                  <span>
+                    <IoEyeSharp /> <p>{place.viewCnt || 0}</p>
+                  </span>
+                  <span>
+                    <FaHeart /> <p>{place.heartCnt || 0}</p>
+                  </span>
+                </div>
+              </Link>
             </li>
           ))}
         </ul>

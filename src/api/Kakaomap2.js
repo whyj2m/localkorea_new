@@ -1,9 +1,14 @@
 import "../styles/Kakaomap.css";
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const { kakao } = window;
 
-function Kakaomap2({ location, name }) {
+function Kakaomap2({ location }) {
+  const mapContainer = useRef(null);
+  const findRoadButtonRef = useRef(null);
+  const [latitude, setLatitude] = useState("");
+  const [longlatitude, setLongLatitude] = useState("");
+
   useEffect(() => {
     const getLocationFromAddress = async (address) => {
       try {
@@ -36,7 +41,9 @@ function Kakaomap2({ location, name }) {
       try {
         const { latitude, longitude } = await getLocationFromAddress(location);
 
-        const container = document.getElementById("map");
+        setLatitude(latitude);
+        setLongLatitude(longitude);
+        const container = mapContainer.current;
         if (!container) {
           console.error("지도 컨테이너를 찾을 수 없습니다.");
           return;
@@ -53,19 +60,17 @@ function Kakaomap2({ location, name }) {
         const marker = new kakao.maps.Marker({ position: markerPosition });
         marker.setMap(map);
 
-        const findRoadButton = document.getElementById("findRoadButton2");
-        findRoadButton.addEventListener("click", () => {
-          const roadURL = `https://map.kakao.com/link/to/${location},${latitude},${longitude}`;
-          window.open(roadURL);
-        });
+        const findRoadButton = findRoadButtonRef.current;
       } catch (error) {
         console.error("지도 초기화 중 오류 발생:", error);
       }
     };
 
-    // useEffect 내부에서 직접 initializeMap 함수 호출
+    // 컴포넌트 마운트 시 한 번만 호출
     initializeMap();
-  }, [location, name]);
+
+    // 클릭 이벤트 리스너에서 사용할 때 location을 의존성 배열에 추가
+  }, [location]);
 
   return (
     <>
@@ -73,11 +78,20 @@ function Kakaomap2({ location, name }) {
         <h3> 길찾기 </h3>
       </div>
       <div
+        ref={mapContainer}
         id="map"
         style={{ width: "100%", height: "400px", position: "relative" }}
       >
-        <button id="findRoadButton2">길찾기</button>
+        <button ref={findRoadButtonRef} id="findRoadButton2">
+          길찾기
+        </button>
       </div>
+      <a
+        href={`https://map.kakao.com/link/to/${location},${latitude},${longlatitude}`}
+        style={{ width: "200px", height: "200px" }}
+      >
+        버튼친구
+      </a>
     </>
   );
 }

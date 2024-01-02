@@ -14,17 +14,38 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { getLocalFestivalView } from "../../api/LocalFestivalApi";
-import { useParams } from "react-router-dom";
+import {
+  getLocalFestival,
+  getLocalFestivalView,
+} from "../../api/LocalFestivalApi";
+import { Link, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Kakaomap from "../../api/Kakaomap";
 import Kakaomap2 from "../../api/Kakaomap2";
 
 function FestivalViewSwiper() {
+  const { localNo } = useParams();
+  const [festivals, setFestivals] = useState([]);
+
+  useEffect(() => {
+    const fetchFestivals = async () => {
+      try {
+        // localNo에 해당하는 축제 목록을 가져오는 API 함수를 호출
+        const festivalsResponse = await getLocalFestival(parseInt(localNo));
+        console.log(festivalsResponse);
+        setFestivals(festivalsResponse.data);
+      } catch (error) {
+        console.error("축제 목록을 가져오는 중 오류 발생:", error);
+      }
+    };
+
+    fetchFestivals();
+  }, [localNo]);
+
   return (
     <Swiper
       style={{
-        height: "100%",
+        height: "300px",
         width: "100%",
         position: "relative",
         backgroundColor: "white",
@@ -36,49 +57,25 @@ function FestivalViewSwiper() {
       autoplay={{ delay: "2000" }}
       loop={true}
     >
-      <SwiperSlide>
-        <div className="festivalViewswiper">
-          <img src="/assets/local/slide1.jpg" alt="" />
-          <div className="festivalViewswiper-text">
-            <strong>부산 꽃축제</strong>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="festivalViewswiper">
-          <img src="/assets/local/slide2.jpg" alt="" />
-          <div className="festivalViewswiper-text">
-            <strong>광주 바다축제</strong>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="festivalViewswiper">
-          <img src="/assets/local/slide3.jpg" alt="" />
-          <div className="festivalViewswiper-text">
-            <strong>DDP SOCCER 축제</strong>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="festivalViewswiper">
-          <img src="/assets/local/slide4.jpg" alt="" />
-          <div className="festivalViewswiper-text">
-            <strong>하늘공원 축제</strong>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="festivalViewswiper">
-          <img src="/assets/local/slide4.jpg" alt="" />
-          <div className="festivalViewswiper-text">
-            <strong>여의도 불꽃놀이</strong>
-          </div>
-        </div>
-      </SwiperSlide>
+      {festivals.map((festival, index) => (
+        <SwiperSlide key={festival.id}>
+          <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
+            <div className="festivalViewswiper">
+              <img
+                src={`/assets/festival/${localNo}/${index + 1}.jpg`}
+                className="festivalViewswiper-image"
+              />
+              <div className="festivalViewswiper-text">
+                <strong>{festival.name}</strong>
+              </div>
+            </div>
+          </Link>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }
+
 function FestivalView() {
   const { localNo, festivalNo } = useParams();
   const [festivalData, setFestivalData] = useState(null);
@@ -142,8 +139,8 @@ function FestivalView() {
         <div className="festivalView-detail-img">
           {/* 이미지 경로를 festivalNo에 따라서 설정해야할거 같아서 이렇게 했습니다. 음.. */}
           <img
-            // src={`/assets/festival/${localNo}/${festivalNo}.jpg`}
-            src={`/assets/festival/${localNo}/${localNo}.jpg`} // 임시로 넣ㅇ어둔거
+            src={`/assets/festival/${localNo}/${festivalNo}.jpg`}
+            // src={`/assets/festival/${localNo}/${localNo}.jpg`} // 임시로 넣ㅇ어둔거
             alt={festivalData?.name}
           />
         </div>

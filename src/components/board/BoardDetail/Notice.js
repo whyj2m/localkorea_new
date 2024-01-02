@@ -1,6 +1,8 @@
 import '../../../styles/board/notice.scss'
+
 import React, { useState } from 'react';
 import { Accordion, Card } from 'react-bootstrap';
+
 import BoardNav from '../BoardNav';
 
 
@@ -19,8 +21,8 @@ function Notice() {
                 <Accordion activeKey={activeKey} onSelect={handleAccordionClick}>
                     <Card>
                         <Accordion.Item eventKey="1">
-                            <Accordion.Header className="headerName">
-                                서비스 |      새하마노 방방곡곡은 어떤 사이트인가요?
+                            <Accordion.Header >
+                                <div className='headerName'>서비스 |      새하마노 방방곡곡은 어떤 사이트인가요?</div>
                             </Accordion.Header>
                             <Accordion.Body>
                                 "새하마노 방방곡곡"은 대한민국의 동, 서, 남, 북을 아우르는 우리말로,{"\n"}

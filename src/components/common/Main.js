@@ -316,8 +316,12 @@ function Main() {
               handlePlaceUpdate={handlePlaceUpdate}
             />
           </div>
-          <hr />
+          <Link to={`/localfoods/${localNo}`}>
+            <button className="section-localfood-more">더보기</button>
+          </Link>
+          <hr style={{ marginTop: "0" }} />
         </div>
+
         <div className="section4 section">
           <h3> 방방곡곡 온누리 말 </h3>
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
