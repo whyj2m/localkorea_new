@@ -10,6 +10,8 @@
   line-height: 1.4;
   letter-spacing: inherit;
 }
+
+/* 여기 부터 상단 3개 이미지 css */
 .festival-content {
   position: relative;
   margin: 0 auto;
@@ -25,16 +27,16 @@
 }
 
 .festival-content-wrap li {
-  float: left;
-  height: 100%;
+  flex: 1;
   margin-left: 2%;
   border-radius: 8px;
   overflow: hidden;
-  transition: 0.3s ease; /* 부드러운 크기 변경을 위한 transition 추가 */
+  transition: 0.6s ease; /* 부드러운 크기 변경을 위한 transition 추가 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
 }
 
 .festival-content-wrap li:hover {
-  flex: 3 0 auto;
+  flex: 1.1 0 auto;
 }
 
 .festival-content-wrap .content a {
@@ -49,7 +51,7 @@
   height: 100%;
   object-fit: cover;
   border-radius: 8px;
-  transition: transform 0.3s ease; /* 부드러운 크기 변경을 위한 transition 추가 */
+  transition: transform 0.3s ease;
 }
 
 .festival-text-area {
@@ -60,10 +62,12 @@
   margin-left: 0;
   transform: unset;
   color: #fff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
 .festival-text-area strong {
   font-size: 28px;
   line-height: 36px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
 .festival-text-area .festival-text-desc {
   display: block;
@@ -74,7 +78,7 @@
   font-size: 18px;
   font-weight: 600;
   line-height: 20px;
-  text-shadow: 1px 1px 0px rgba(0, 0, 0, 0);
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
 }
 
 /* 이미지 경로
