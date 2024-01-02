@@ -7,10 +7,105 @@ import { useNavigate } from "react-router-dom";
 function Signup() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id:'', password:'', name:'', phoneNum:'', email:''
-  })
+    id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:''
+  });
+  const [errorMsg, setErrorMsg] = useState({
+    id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:''
+  });
+
+  const handleBlur = (fieldName) => {
+    // 각 필드에 대한 유효성 검사 로직을 수행
+    switch (fieldName) {
+      // ID 글자수 및 영문, 숫자 포함 여부
+      case "id":
+        const idRegex = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
+        if (formData.id.length < 5 || !idRegex.test(formData.id)) {
+          setErrorMsg({
+            ...errorMsg,
+            id: "ID는 5글자 이상이어야 하며, 영문과 숫자를 모두 포함해야 합니다.",
+          });
+        } else {
+          setErrorMsg({ ...errorMsg, id: "" });
+        }
+        break;
+      // 비밀번호 글자수
+      case "password":
+        if (formData.password.length < 8) {
+          setErrorMsg({
+            ...errorMsg,
+            password: "비밀번호는 최소 8자 이상이어야 합니다.",
+          });
+        } else {
+          setErrorMsg({ ...errorMsg, password: "" });
+        }
+        break;
+      // 비밀번호 일치확인
+      case "confirmPassword":
+        if (formData.password !== formData.confirmPassword) {
+          setErrorMsg({
+            ...errorMsg,
+            confirmPassword: "비밀번호가 일치하지 않습니다.",
+          });
+        } else {
+          setErrorMsg({ ...errorMsg, confirmPassword: "" });
+        }
+        break;
+
+      default:
+        break;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    let hasError = false;
+
+    // id 중복확인
+    // 나머지 필드에 대한 유효성 검사
+    Object.keys(formData).forEach((fieldName) => {
+      switch (fieldName) {
+        case "id":
+          const idRegex = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
+          if (formData.id.length < 5 || !idRegex.test(formData.id)) {
+            setErrorMsg({
+              ...errorMsg,
+              id: "ID는 5글자 이상이어야 하며, 영문과 숫자를 모두 포함해야 합니다.",
+            });
+            hasError = true;
+          }
+          break;
+
+        case "password":
+          if (formData[fieldName].length < 8) {
+            setErrorMsg({
+              ...errorMsg,
+              password: "비밀번호는 최소 8자 이상이어야 합니다.",
+            });
+            hasError = true;
+          }
+          break;
+
+        case "confirmPassword":
+          if (formData.password !== formData.confirmPassword) {
+            setErrorMsg({
+              ...errorMsg,
+              confirmPassword: "비밀번호가 일치하지 않습니다.",
+            });
+            hasError = true;
+          }
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    if (hasError) {
+      // 유효성 검사에서 에러가 발생한 경우에는 회원가입 요청을 보내지 않음
+      return;
+    }
+
     try {
       const response = await axios.post("http://localhost:8081/signup", formData)
       if(response.status === 200) {
@@ -26,7 +121,13 @@ function Signup() {
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]:e.target.value})
+    setErrorMsg({ ...errorMsg, [e.target.name]: "" });
   }
+
+  const formatPhoneNumber = (inputNumber) => {
+    // 숫자만 추출하여 "-" 추가
+    return inputNumber.replace(/\D/g, "").replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
+  };
 
   return (
     <div className="signup">
@@ -42,14 +143,15 @@ function Signup() {
                   placeholder="Enter your ID"
                   aria-label="Recipient's username"
                   aria-describedby="basic-addon2"
-                  name="id"
+                  name="id" onBlur={() => handleBlur("id")}
                   onChange={handleChange} value={formData.id}
+                  isInvalid={!!errorMsg.id}
                 />
-                <Form.Control.Feedback type="invalid">
-                  Please provide a valid id.
-                </Form.Control.Feedback>
                 <Button>중복확인</Button>
               </InputGroup>
+              <Form.Control.Feedback type="invalid" className="d-block">
+                {errorMsg.id}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="grp">
               <Form.Label htmlFor="inputPW">Password</Form.Label>
@@ -58,10 +160,13 @@ function Signup() {
                 id="inputPW" required 
                 aria-describedby="passwordHelpBlock"
                 placeholder="Enter your Password"
-                name="password"
+                name="password" onBlur={() => handleBlur("password")}
                 onChange={handleChange} value={formData.password}
+                isInvalid={!!errorMsg.password}
               />
-              
+              <Form.Control.Feedback type="invalid">
+                {errorMsg.password}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="grp">
               <Form.Label htmlFor="inputPW2">Password Confirm</Form.Label>
@@ -70,7 +175,13 @@ function Signup() {
                 id="inputPW2" required 
                 aria-describedby="passwordHelpBlock"
                 placeholder="Enter your Password"
+                name="confirmPassword" onBlur={() => handleBlur("confirmPassword")}
+                onChange={handleChange} value={formData.confirmPassword}
+                isInvalid={!!errorMsg.confirmPassword}
               />
+              <Form.Control.Feedback type="invalid">
+                {errorMsg.confirmPassword}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="grp">
               <Form.Label htmlFor="inputName">Name</Form.Label>
@@ -78,9 +189,13 @@ function Signup() {
                 type="text"
                 id="inputName" required 
                 placeholder="Enter your Name"
-                name="name"
+                name="name" onBlur={() => handleBlur("name")}
                 onChange={handleChange} value={formData.name}
+                isInvalid={!!errorMsg.name}
               />
+              <Form.Control.Feedback type="invalid">
+                {errorMsg.name}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="grp">
               <Form.Label htmlFor="inputPH">Phone Number</Form.Label>
@@ -88,9 +203,18 @@ function Signup() {
                 type="text"
                 id="inputPH" required 
                 placeholder="Enter your Phone Number"
-                name="phoneNum"
-                onChange={handleChange} value={formData.phoneNum}
+                name="phoneNum" onBlur={() => handleBlur("phoneNum")}
+                onChange={(e) => {
+                  const formattedNumber = formatPhoneNumber(e.target.value);
+                  setFormData({ ...formData, phoneNum: formattedNumber });
+                  setErrorMsg({ ...errorMsg, phoneNum: "" });
+                }}
+                value={formData.phoneNum}
+                isInvalid={!!errorMsg.phoneNum}
               />
+              <Form.Control.Feedback type="invalid">
+                {errorMsg.phoneNum}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="grp">
               <Form.Label htmlFor="inputEmail">Email Address</Form.Label>
@@ -100,9 +224,13 @@ function Signup() {
                   placeholder="Enter your Email"
                   aria-label="Recipient's username"
                   aria-describedby="basic-addon2"
-                  name="email"
+                  name="email" onBlur={() => handleBlur("email")}
                   onChange={handleChange} value={formData.email}
+                  isInvalid={!!errorMsg.email}
                 />
+                <Form.Control.Feedback type="invalid">
+                {errorMsg.email}
+              </Form.Control.Feedback>
                 <Button>인증번호 발송</Button>
               </InputGroup>
             </Form.Group>
