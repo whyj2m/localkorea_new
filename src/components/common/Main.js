@@ -1,20 +1,19 @@
-import "../../styles/Main.css";
-import SouthKoreaMap from "../common/SouthKoreaMap.js";
-import Video from "./Video.js";
-import axios from "axios";
-import { Link } from "react-router-dom";
-
-import { FaRegEye } from "react-icons/fa";
-
-//  스와이퍼 부분
-import { Navigation, Autoplay } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { useEffect, useState } from "react";
+
+import "../../styles/Main.css";
+import SouthKoreaMap from "../common/SouthKoreaMap.js";
+import Video from "./Video.js";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { FaRegEye } from "react-icons/fa";
+
+//  스와이퍼 부분
+import { Navigation, Autoplay, Pagination } from "swiper/modules";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 function Section2Swiper({ festivalData, localNo, handlePlaceUpdate }) {
   return (
@@ -26,14 +25,14 @@ function Section2Swiper({ festivalData, localNo, handlePlaceUpdate }) {
         backgroundColor: "white",
         paddingTop: "50px",
       }}
-      modules={[Autoplay]}
+      modules={[Autoplay, Pagination]}
       spaceBetween={50}
       slidesPerView={3}
-      slidesPerGroup={1}
-      autoplay={{ delay: 2000 }}
+      autoplay={{ delay: 3000 }}
       loop={true}
+      pagination={{ type: "bullets", clickable: true }}
     >
-      {festivalData.map((festival, index) => (
+      {festivalData.slice(0, 5).map((festival, index) => (
         <SwiperSlide key={index}>
           <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
             {/* Link를 사용하여 클릭 시 라우팅 경로 설정 */}
@@ -49,6 +48,7 @@ function Section2Swiper({ festivalData, localNo, handlePlaceUpdate }) {
                 <strong>{festival.name}</strong>
                 <p>{`날짜: ${festival.schedule}`}</p>
                 <p>{`위치: ${festival.location}`}</p>
+                <span>{`정보: ${festival.content}`}</span>
               </div>
             </div>
           </Link>
@@ -58,7 +58,7 @@ function Section2Swiper({ festivalData, localNo, handlePlaceUpdate }) {
   );
 }
 
-function Section3Swiper({ foods, localNo, handlePlaceUpdate }) {
+function Section3Swiper({ foods, localNo }) {
   return (
     <Swiper
       style={{
@@ -214,8 +214,7 @@ function Main() {
 
   return (
     <div>
-      <Video />{" "}
-      {/* 비디오 처리 위해서 Import 각자 지역별로 Video 넣을수 있습니다! */}
+      <Video />
       <div className="mainpage container">
         <img
           src="/assets/etc/line.png"
@@ -236,6 +235,7 @@ function Main() {
           <div className="section1-item1">
             <div className="section1-place">
               <h3>
+                {/* 지역 나타내는 곳 */}
                 <strong>
                   {locationData.length > 0 && locationData[0].location}
                 </strong>
@@ -266,6 +266,9 @@ function Main() {
                 return null; // index가 3 이상이면 렌더링하지 않음
               })}
             </ul>
+            <Link to={`/place/${localNo}`}>
+              <button className="section-place-more">더보기</button>
+            </Link>
           </div>
           <div className="section1-item2">
             <strong className="section1-item2-title">
@@ -285,7 +288,7 @@ function Main() {
         <hr />
         <div className="section2 section">
           {/* 로케이션데이터에 지역정보가 있어서 [0]번 베열 이용해서 지역이름 설정 */}
-          <h3>{locationData.length > 0 && locationData[0].location}</h3>
+          <strong>{locationData.length > 0 && locationData[0].location}</strong>
           <h3> 방방곡곡 축제정보</h3>
 
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
@@ -303,7 +306,7 @@ function Main() {
         </div>
         <hr />
         <div className="section3 section">
-          <h3>{locationData.length > 0 && locationData[0].location}</h3>
+          <strong>{locationData.length > 0 && locationData[0].location}</strong>
           <h3> 방방곡곡 특산물'S </h3>
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
           <div>

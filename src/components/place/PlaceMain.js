@@ -10,17 +10,18 @@ import { getLocalPlace } from "../../api/LocalPlaceApi";
 
 function PlaceMain() {
   // FestivalMain에서 필요한 페이지 이동 로직을 추가
-  const handleCategoryClick = (localNo) => {};
+  const handleCategoryClick = () => {};
 
   // localNo 이름으로 params 값 가져옴 로그확인 완료
   const { localNo } = useParams();
   const [localName, setLocalName] = useState("");
   const [localData, setLocalData] = useState([]);
+  const [visibleItems, setVisibleItems] = useState(4);
 
   useEffect(() => {
     const fetchLocalData = async () => {
       try {
-        //  여기서 관광지랑 지역이름 설정
+        // 여기서 관광지랑 지역이름 설정
         const [placesResponse, locationNameResponse] = await Promise.all([
           getLocalPlace(localNo),
           getLocation(localNo),
@@ -39,6 +40,29 @@ function PlaceMain() {
     fetchLocalData();
   }, [localNo]);
 
+  //  스크롤 이벤트 구현
+  const handleScroll = () => {
+    //  여기가 컨테이너 닿는 위치 지정 근데 footer쪽에서 로드해야하니 footer 안에 클래스지정
+    const footer = document.querySelector(".footer .info");
+
+    if (footer) {
+      const scrolledToFooter =
+        window.innerHeight + window.scrollY >= footer.offsetTop;
+
+      if (scrolledToFooter) {
+        // 스크롤이 footer에 닿았을 때 추가 데이터 로드 VisibleItems에 4개더 추가해서 넣는다.
+        setVisibleItems((prevItems) => prevItems + 4);
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
   return (
     <div>
       <div className="place-title" style={{ paddingTop: "150px" }}>
@@ -62,25 +86,22 @@ function PlaceMain() {
           </div>
         </div>
         <ul className="place-content-list">
-          {localData.map((place, index) => (
-            <li key={index} className="plcae-content-item">
+          {localData.slice(0, visibleItems).map((place, index) => (
+            <li key={index} className="place-content-item">
               <div className="photo">
-                <a>
-                  {/* Link의 to 속성을 알맞게 수정 */}
-                  <Link to={`/place/${localNo}/${place.placeNo}`}>
-                    <img
-                      src={`/assets/place/${localNo}/${index + 1}.jpg`}
-                      alt={place.name}
-                    />
-                  </Link>
-                </a>
+                <Link to={`/place/${localNo}/${place.placeNo}`}>
+                  <img
+                    src={`/assets/place/${localNo}/${index + 1}.jpg`}
+                    alt={place.name}
+                  />
+                </Link>
               </div>
               <div className="place-content-info">
                 <strong>{place.name}</strong>
                 <p className="info-location"> {place.location} </p>
                 <p className="text">{place.content}</p>
               </div>
-              <div className="plcae-heartview">
+              <div className="place-heartview">
                 <span>
                   <IoEyeSharp /> <p>{place.viewCnt || 0}</p>
                 </span>

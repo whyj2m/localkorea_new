@@ -123,19 +123,19 @@
 }
 
 /*  아이콘 부분 */
-.plcae-heartview {
+.place-heartview {
   float: inline-end;
   font-size: 20px;
   padding-left: 70px;
 }
 
-.plcae-heartview span {
+.place-heartview span {
   display: flex;
   margin-right: 10px;
   align-items: center;
 }
 
-.plcae-heartview p {
+.place-heartview span > p {
   margin-bottom: 0;
   margin-left: 5px;
 }

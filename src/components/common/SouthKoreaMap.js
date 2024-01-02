@@ -177,7 +177,7 @@ function SouthKoreaMap({ onLocationClick }) {
           대전
         </text>
         <text
-          x="350"
+          x="330"
           y="570"
           className="labelText"
           onClick={async () => await handleLocationClick(4)}
