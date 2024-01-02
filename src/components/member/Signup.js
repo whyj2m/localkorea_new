@@ -4,7 +4,24 @@ import { Form, Button, InputGroup } from "react-bootstrap";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+// 중복 코드 제거: ID 유효성 검사 함수
+const validateId = (id) => {
+  const idRegex = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
+  return id.length >= 5 && idRegex.test(id);
+};
+
 function Signup() {
+  axios.interceptors.response.use(
+    (response) => response,
+    (error) => {
+      if (error.response && error.response.status === 409) {
+        // 중복 확인 에러 처리
+        setErrorMsg({ ...errorMsg, id: "이미 존재하는 ID입니다." });
+      }
+      return Promise.reject(error);
+    }
+  );
+  
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:''
@@ -13,42 +30,62 @@ function Signup() {
     id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:''
   });
 
-  const handleBlur = (fieldName) => {
-    // 각 필드에 대한 유효성 검사 로직을 수행
+  // id 중복확인
+  const [duplicateError, setDuplicateError] = useState("");
+  const handleCheckDuplicate = async () => {
+    try {
+      const response = await axios.post("http://localhost:8081/signup/checkId", { id: formData.id });
+  
+      if (response.data) {
+        // 이미 존재하는 ID
+        setDuplicateError("이미 존재하는 ID입니다.");
+        setErrorMsg({ ...errorMsg, id: "" });
+      } else {
+        // 사용 가능한 ID
+        setDuplicateError("");
+        setErrorMsg({ ...errorMsg, id: "사용 가능한 ID입니다." });
+      }
+    } catch (error) {
+      console.error("중복 확인 에러:", error);
+      if (error.response && error.response.status === 409) {
+        // 이미 존재하는 ID
+        setDuplicateError("이미 존재하는 ID입니다.");
+      } else {
+        setDuplicateError("중복 확인 중 오류가 발생했습니다.");
+      }
+    }
+  };
+
+  // 각 필드에 대한 유효성 검사 로직을 수행
+  const validateField = (fieldName) => {
     switch (fieldName) {
-      // ID 글자수 및 영문, 숫자 포함 여부
       case "id":
-        const idRegex = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
-        if (formData.id.length < 5 || !idRegex.test(formData.id)) {
-          setErrorMsg({
-            ...errorMsg,
-            id: "ID는 5글자 이상이어야 하며, 영문과 숫자를 모두 포함해야 합니다.",
-          });
-        } else {
-          setErrorMsg({ ...errorMsg, id: "" });
-        }
+        setErrorMsg({
+          ...errorMsg,
+          id: validateId(formData.id)
+            ? ""
+            : "ID는 5글자 이상이어야 하며, 영문과 숫자를 모두 포함해야 합니다."
+        });
         break;
-      // 비밀번호 글자수
+
       case "password":
-        if (formData.password.length < 8) {
-          setErrorMsg({
-            ...errorMsg,
-            password: "비밀번호는 최소 8자 이상이어야 합니다.",
-          });
-        } else {
-          setErrorMsg({ ...errorMsg, password: "" });
-        }
+        setErrorMsg({
+          ...errorMsg,
+          password:
+            formData.password.length >= 8
+              ? ""
+              : "비밀번호는 최소 8자 이상이어야 합니다."
+        });
         break;
-      // 비밀번호 일치확인
+
       case "confirmPassword":
-        if (formData.password !== formData.confirmPassword) {
-          setErrorMsg({
-            ...errorMsg,
-            confirmPassword: "비밀번호가 일치하지 않습니다.",
-          });
-        } else {
-          setErrorMsg({ ...errorMsg, confirmPassword: "" });
-        }
+        setErrorMsg({
+          ...errorMsg,
+          confirmPassword:
+            formData.password === formData.confirmPassword
+              ? ""
+              : "비밀번호가 일치하지 않습니다."
+        });
         break;
 
       default:
@@ -56,68 +93,9 @@ function Signup() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    let hasError = false;
-
-    // id 중복확인
-    // 나머지 필드에 대한 유효성 검사
-    Object.keys(formData).forEach((fieldName) => {
-      switch (fieldName) {
-        case "id":
-          const idRegex = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
-          if (formData.id.length < 5 || !idRegex.test(formData.id)) {
-            setErrorMsg({
-              ...errorMsg,
-              id: "ID는 5글자 이상이어야 하며, 영문과 숫자를 모두 포함해야 합니다.",
-            });
-            hasError = true;
-          }
-          break;
-
-        case "password":
-          if (formData[fieldName].length < 8) {
-            setErrorMsg({
-              ...errorMsg,
-              password: "비밀번호는 최소 8자 이상이어야 합니다.",
-            });
-            hasError = true;
-          }
-          break;
-
-        case "confirmPassword":
-          if (formData.password !== formData.confirmPassword) {
-            setErrorMsg({
-              ...errorMsg,
-              confirmPassword: "비밀번호가 일치하지 않습니다.",
-            });
-            hasError = true;
-          }
-          break;
-
-        default:
-          break;
-      }
-    });
-
-    if (hasError) {
-      // 유효성 검사에서 에러가 발생한 경우에는 회원가입 요청을 보내지 않음
-      return;
-    }
-
-    try {
-      const response = await axios.post("http://localhost:8081/signup", formData)
-      if(response.status === 200) {
-        alert("회원 가입 완료");
-        navigate("/login")
-      } else {
-        alert("회원가입 실패")
-      }
-    } catch (error) {
-      alert("회원가입 실패")
-    }
-  }
+  const handleBlur = (fieldName) => {
+    validateField(fieldName);
+  };
 
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]:e.target.value})
@@ -127,6 +105,51 @@ function Signup() {
   const formatPhoneNumber = (inputNumber) => {
     // 숫자만 추출하여 "-" 추가
     return inputNumber.replace(/\D/g, "").replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // 중복 확인
+    try {
+      await handleCheckDuplicate();
+  
+      if (duplicateError) {
+        setErrorMsg({ ...errorMsg, id: duplicateError });
+        return;
+      }
+    } catch (error) {
+      console.error("중복 확인 에러:", error);
+    }
+
+    // 나머지 유효성 검사
+    let hasError = false;
+    Object.keys(formData).forEach((fieldName) => {
+      validateField(fieldName);
+      if (errorMsg[fieldName] !== "") {
+        hasError = true;
+      }
+    });
+
+    if (hasError) {
+      // 유효성 검사에서 에러가 발생한 경우에는 회원가입 요청을 보내지 않음
+      return;
+    }
+
+    // 회원가입 요청
+    try {
+      const signupResponse = await axios.post("http://localhost:8081/signup", formData);
+
+      if (signupResponse.status === 200) {
+        alert("회원 가입 완료");
+        navigate("/login");
+      } else {
+        alert("회원가입 실패");
+      }
+    } catch (error) {
+      // 회원가입 에러 처리
+      alert("회원가입 실패");
+    }
   };
 
   return (
@@ -147,10 +170,11 @@ function Signup() {
                   onChange={handleChange} value={formData.id}
                   isInvalid={!!errorMsg.id}
                 />
-                <Button>중복확인</Button>
+                <Button type="button" onClick={handleCheckDuplicate}>중복확인</Button>
               </InputGroup>
               <Form.Control.Feedback type="invalid" className="d-block">
                 {errorMsg.id}
+                {duplicateError}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="grp">
