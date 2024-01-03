@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { getListLocation } from "../../api/locationApi";
 import "../../styles/Location.css";
 
@@ -14,16 +14,16 @@ function Location() {
 
         setLocations(locationsData);
       } catch (error) {
-        console.error("Error fetching location data:", error);
+        console.error("지역 데이터를 가져오는 중 오류 발생:", error);
       }
     };
 
     fetchLocations();
   }, []);
 
-  //  카테고리 이동 할 때에 클릭이벤트 확인이요
+  //  카테고리 이동할 때의 클릭 이벤트
   const handleLocationClick = (location) => {
-    console.log(`해당 지역은 ${location.name}`);
+    console.log(`선택한 지역은 ${location.name}`);
   };
 
   return (
@@ -33,14 +33,15 @@ function Location() {
           <ul className="local-area">
             {locations.map((location) => (
               <li key={location.localNo}>
-                <Link
+                <NavLink
                   to={`/local/${location.localNo}`}
                   className={`localcategory ${location.name.toLowerCase()}`}
+                  activeClassName="active" // 현재 링크에 "active" 클래스 적용
                   // 여기서 확인
                   onClick={() => handleLocationClick(location)}
                 >
                   <span className="local-area-text">{location.name}</span>
-                </Link>
+                </NavLink>
               </li>
             ))}
           </ul>

@@ -38,6 +38,16 @@
   justify-content: center;
   align-items: center;
 }
+.local-area .active {
+  scale: 1.3;
+}
+
+.local-area .active span {
+  font-size: 24px;
+  text-shadow: 2px 2px 4px rgba(2, 2, 2, 0.8); /* 글자 그림자 추가 */
+  font-weight: bold; /* 선택된 카테고리의 텍스트를 굵게 표시 */
+}
+
 .local-area .localcategory {
   display: inline-block;
   overflow: hidden;

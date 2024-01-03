@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom"; // Link 대신 NavLink를 import
 import { getListLocation } from "../../api/locationApi";
 import "../../styles/Location2.css";
 
@@ -9,11 +9,9 @@ function Location2({ onCategoryClick, basePath }) {
   useEffect(() => {
     const fetchLocations = async () => {
       try {
-        // 전체 지역 정보 가져오기
         const response = await getListLocation();
-        const locations = response.data || []; // null 또는 undefined 방지
+        const locations = response.data || [];
 
-        // "전체" 옵션 제거
         const filteredCategories = locations.filter(
           (category) => category.localNo !== "all"
         );
@@ -30,13 +28,14 @@ function Location2({ onCategoryClick, basePath }) {
   return (
     <div className="location2">
       {categories.map((category) => (
-        <Link
+        <NavLink
           key={category.localNo}
           to={`${basePath}/${category.localNo}`}
           onClick={() => onCategoryClick(category.localNo)}
+          activeClassName="location" // 활성 링크에 대한 클래스 이름 지정
         >
           {category.name}
-        </Link>
+        </NavLink>
       ))}
     </div>
   );

@@ -1,10 +1,10 @@
 import axios from "axios";
 import "../../styles/Member.scss";
-import { Form, Button, InputGroup } from "react-bootstrap";
+import { Form, Button, InputGroup, ProgressBar } from "react-bootstrap";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-// 중복 코드 제거: ID 유효성 검사 함수
+// ID 유효성 검사 함수 (전역 선언)
 const validateId = (id) => {
   const idRegex = /^(?=.*[a-zA-Z])(?=.*\d).{5,}$/;
   return id.length >= 5 && idRegex.test(id);
@@ -29,6 +29,10 @@ function Signup() {
   const [errorMsg, setErrorMsg] = useState({
     id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:''
   });
+  // 인증코드 상태
+  const [vc, setVc] = useState("");
+  // 이메일로 발송된 코드
+  const [codeFromEmail, setCodeFromEmail] = useState("");
 
   // id 중복확인
   const [duplicateError, setDuplicateError] = useState("");
@@ -110,6 +114,12 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // 인증번호 검증
+    if(vc !== codeFromEmail) {
+      alert("인증번호가 일치하지 않습니다.")
+      return;
+    }
+
     // 중복 확인
     try {
       await handleCheckDuplicate();
@@ -151,6 +161,39 @@ function Signup() {
       alert("회원가입 실패");
     }
   };
+
+
+  const [progress, setProgress] = useState("");
+
+  // 이메일 발송 함수
+  const sendEmail = async () => {
+    try {
+      const response = await axios.post("http://localhost:8081/signup/sendMail", {
+        email: formData.email,
+      });
+  
+      // 이메일로부터 받은 코드를 상태에 저장
+      setCodeFromEmail(response.data);
+  
+      // progress bar 100%
+      setProgress(100);
+    } catch (error) {
+      // 오류 처리
+      console.error("이메일 전송 에러 : ", error);
+      setProgress(0);
+    }
+  }
+
+  // 인증번호 발송 버튼 
+  const handleSendVC = async () => {
+    try {
+      await sendEmail();
+      alert("인증번호가 발송되었습니다.");
+      setProgress(0);
+    } catch (error) {
+      console.error("인증번호 발송 에러:", error);
+    }
+  }
 
   return (
     <div className="signup">
@@ -255,8 +298,9 @@ function Signup() {
                 <Form.Control.Feedback type="invalid">
                 {errorMsg.email}
               </Form.Control.Feedback>
-                <Button>인증번호 발송</Button>
+                <Button onClick={handleSendVC}>인증번호 발송</Button>
               </InputGroup>
+              <ProgressBar className="send_progress" now={progress} />
             </Form.Group>
             <Form.Group className="grp">
               <Form.Label htmlFor="inputVC">인증번호</Form.Label>
