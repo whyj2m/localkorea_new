@@ -12,6 +12,8 @@ import BoardUploadFile from './BoardFileUpload/BoardFileUpload';
 // import { postBoardWrite } from '../../api/BoardApi';
 
 function BoardWrite() {
+
+    // 파일 업로드
     const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true);
 
     useEffect(() => {
@@ -88,9 +90,6 @@ function BoardWrite() {
             alert("게시글 작성 실패")
         }
     }
-
-
-
 
     return (
         <>
