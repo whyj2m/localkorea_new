@@ -99,6 +99,11 @@
 
       .grp {
         margin-bottom: 5px;
+        .send_progress {height: 7px; margin: 10px 0; 
+          .progress-bar {
+            background: $test1;
+          }
+        }
       }
       .form-label {
         margin-bottom: 0.2rem;
