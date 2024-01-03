@@ -8,6 +8,7 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer.js";
 import Main from "./components/common/Main";
 import { TourisSpot } from "./components/board/BoardDetail/TourisSpot.js";
+import BoardEdit from "./components/board/BoardEdit.js";
 import Company from "./components/board/BoardDetail/Company.js";
 import RegionfoodMain from "./components/regionfood/RegionfoodMain.js";
 import SearchLocal from "./components/search/SearchLocal.js";
@@ -16,6 +17,7 @@ import SearchRegionalItem from "./components/search/SearchRegionalItem.js";
 import SearchDetail from "./components/search/SearchDetail.js";
 import Notice from "./components/board/BoardDetail/Notice.js";
 import BoardView from "./components/board/BoardView.js";
+
 import FestivalMain from "./components/festival/FestivalMain.js";
 import FestivalView from "./components/festival/FestivalView.js";
 import PlaceMain from "./components/place/PlaceMain.js";
@@ -56,6 +58,7 @@ function App() {
         <Route path="/board/notice" element={<Notice />} />
         <Route path="/board/boardWrite" element={<BoardWrite />} />
         <Route path="/boardView/:bno" element={<BoardView />} />
+        <Route path="/board/edit/:bno" element={<BoardEdit />} />
 
         <Route path="/search/whole" element={<SearchDetail />} />
         <Route path="/search/local" element={<SearchLocal />} />

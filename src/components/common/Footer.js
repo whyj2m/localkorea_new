@@ -21,12 +21,12 @@ function Footer() {
           <h2 className="screen-out">하단 메뉴</h2>
           <ul className="inner-service">
             <li className="wrap-service">
-              <strong className="tit_service_name"> 
-              {/* <img
+              <strong className="tit_service_name">
+                {/* <img
                 src="/assets/etc/logo.png"
                 style={{ width: "120px", height: "100%" }}
               /> */}
-              새하마노 방방곡곡
+                새하마노 방방곡곡
               </strong>
               <ul className="list_service">
                 <li className="list_service_item">
