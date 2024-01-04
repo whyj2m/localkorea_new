@@ -139,7 +139,12 @@ function RegionfoodMain() {
         <h3>{localName && localName.name} </h3>
       </div>
       {/* 카테고라 */}
-      <Location2 onCategoryClick={handleCategoryClick} basePath="/localFoods" />
+      <div className="container">
+        <Location2
+          onCategoryClick={handleCategoryClick}
+          basePath="/localFoods"
+        />
+      </div>
       {/* 과일 카드들 */}
       <div className="container regionfood-list">
         {currentItems.map((food, i) => (

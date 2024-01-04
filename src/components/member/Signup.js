@@ -1,8 +1,9 @@
 import axios from "axios";
 import "../../styles/Member.scss";
-import { Form, Button, InputGroup, ProgressBar } from "react-bootstrap";
+import { Form, Button, InputGroup } from "react-bootstrap";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 // ID 유효성 검사 함수 (전역 선언)
 const validateId = (id) => {
@@ -24,10 +25,10 @@ function Signup() {
   
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:''
+    id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:'', vc:''
   });
   const [errorMsg, setErrorMsg] = useState({
-    id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:''
+    id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:'', vc:''
   });
   // 인증코드 상태
   const [vc, setVc] = useState("");
@@ -92,6 +93,16 @@ function Signup() {
         });
         break;
 
+      case "vc":
+        setErrorMsg({
+          ...errorMsg,
+          vc:
+            formData.vc === codeFromEmail
+              ? ""
+              : "인증번호가 일치하지 않습니다."
+        });
+        break;
+
       default:
         break;
     }
@@ -115,8 +126,14 @@ function Signup() {
     e.preventDefault();
 
     // 인증번호 검증
-    if(vc !== codeFromEmail) {
-      alert("인증번호가 일치하지 않습니다.")
+    try {
+      await sendEmail(); // sendEmail 함수를 호출하여 codeFromEmail 값을 업데이트
+      if (vc !== codeFromEmail) {
+        alert("인증번호가 일치하지 않습니다.");
+        return;
+      }
+    } catch (error) {
+      console.error("이메일 전송 에러:", error);
       return;
     }
 
@@ -162,9 +179,6 @@ function Signup() {
     }
   };
 
-
-  const [progress, setProgress] = useState("");
-
   // 이메일 발송 함수
   const sendEmail = async () => {
     try {
@@ -172,28 +186,29 @@ function Signup() {
         email: formData.email,
       });
   
+      // 확인: 서버 응답 로그
+      console.log(response);
       // 이메일로부터 받은 코드를 상태에 저장
       setCodeFromEmail(response.data);
-  
-      // progress bar 100%
-      setProgress(100);
     } catch (error) {
       // 오류 처리
       console.error("이메일 전송 에러 : ", error);
-      setProgress(0);
+      throw error;
     }
   }
-
+  
   // 인증번호 발송 버튼 
   const handleSendVC = async () => {
     try {
       await sendEmail();
       alert("인증번호가 발송되었습니다.");
-      setProgress(0);
     } catch (error) {
       console.error("인증번호 발송 에러:", error);
     }
   }
+  useEffect(() => {
+    console.log("Code from Email:", codeFromEmail);
+  }, [codeFromEmail]);
 
   return (
     <div className="signup">
@@ -300,7 +315,6 @@ function Signup() {
               </Form.Control.Feedback>
                 <Button onClick={handleSendVC}>인증번호 발송</Button>
               </InputGroup>
-              <ProgressBar className="send_progress" now={progress} />
             </Form.Group>
             <Form.Group className="grp">
               <Form.Label htmlFor="inputVC">인증번호</Form.Label>
@@ -308,7 +322,13 @@ function Signup() {
                 type="text"
                 id="inputVC" required 
                 placeholder="Enter verification code"
+                name="vc" onBlur={() => handleBlur("vc")}
+                onChange={handleChange} value={formData.vc}
+                isInvalid={!!errorMsg.vc}
               />
+              <Form.Control.Feedback type="invalid">
+                {errorMsg.vc}
+              </Form.Control.Feedback>
             </Form.Group>
             <Form.Check // prettier-ignore
               type="checkbox"

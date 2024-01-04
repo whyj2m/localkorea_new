@@ -7,8 +7,8 @@
   position: fixed;
   font-size: 20px;
   color: white;
-  width: 1920px;
-  /* 최대를 1920px로 맞췄다.. 기존 2320으로 되어있어서 */
+  max-width: 1920px; /* 수정된 부분 */
+  width: 100%; /* 추가된 부분 */
   z-index: 9998;
 }
 
@@ -123,9 +123,13 @@
 }
 
 /* 모바일 화면일 때의 스타일 */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 720px) {
   #pageline {
     display: none;
+  }
+
+  #mobile-toggle {
+    margin: 0;
   }
   /* 로고 이미지 조절 */
   .header-logo img {
@@ -138,18 +142,30 @@
 
   .header-main,
   .header-main-all {
-    position: relative;
-    width: 100%;
-    top: 0;
+    position: fixed;
+    font-size: 20px;
     color: black;
-    padding-top: 0;
+    background-color: white;
+    width: 100%; /* 추가된 부분 */
+    z-index: 9998;
   }
 
   .header-main-all {
-    height: auto;
-    /* 변경된 부분 */
+    height: 112px;
+    /* 추가된 부분 */
   }
 
+  .header-top {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: right;
+    padding-right: 50px;
+    color: white;
+    position: relative;
+    transition: background-color 0.3s ease;
+    z-index: 9999;
+  }
   .header-main-icon {
     position: absolute;
     display: flex;
@@ -164,13 +180,6 @@
   }
 
   .weather-info p {
-    color: black;
-  }
-
-  #mobile-toggle {
-    position: absolute;
-    right: 10px;
-    top: 20px;
     color: black;
   }
 
@@ -188,6 +197,9 @@
   #pageline {
     display: none;
   }
+  #mobile-toggle {
+    margin-right: 15px;
+  }
   /* 로고 이미지 조절 */
   .header-logo img {
     /* 모바일 화면일 때 logonew.png 사용 */
@@ -195,16 +207,29 @@
   }
   .header-main,
   .header-main-all {
-    position: relative;
-    width: 100%;
-    top: 0;
+    position: fixed;
+    font-size: 20px;
     color: black;
-    padding-top: 0;
+    background-color: white;
+    width: 100%; /* 추가된 부분 */
+    z-index: 9998;
   }
 
   .header-main-all {
-    height: auto;
-    /* 변경된 부분 */
+    height: 112px;
+    /* 추가된 부분 */
+  }
+
+  .header-top {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: right;
+    padding-right: 50px;
+    color: white;
+    position: relative;
+    transition: background-color 0.3s ease;
+    z-index: 9999;
   }
 
   .header-main-icon {
@@ -221,13 +246,6 @@
   }
 
   .weather-info p {
-    color: black;
-  }
-
-  #mobile-toggle {
-    position: absolute;
-    right: 10px;
-    top: 20px;
     color: black;
   }
 

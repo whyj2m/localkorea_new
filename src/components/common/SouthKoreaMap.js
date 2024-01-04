@@ -13,21 +13,23 @@ function SouthKoreaMap({ onLocationClick }) {
 
       // 기존에 선택된 지역이 있다면 클래스 제거
       if (selectedLocation) {
-        const prevSelectedElement = document.getElementById(
-          `KR-${selectedLocation}`
+        const prevSelectedElement = document.querySelectorAll(
+          `#KR-${selectedLocation}`
         );
         if (prevSelectedElement) {
-          prevSelectedElement.classList.remove("selected");
+          prevSelectedElement.forEach((element) => {
+            element.classList.remove("selected");
+          });
         }
       }
       // 여기 까지가 클래스 제거 코드
 
       // 클릭한 엘리먼트에 'selected' 클래스 추가
-      const landElement = document.getElementById(`KR-${localNo}`);
-      if (landElement) {
-        landElement.classList.add("selected");
+      const landElements = document.querySelectorAll(`#KR-${localNo}`);
+      landElements.forEach((element) => {
+        element.classList.add("selected");
         setSelectedLocation(localNo);
-      }
+      });
 
       // 데이터 처리
       onLocationClick(response.data, localNo);
@@ -157,6 +159,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="300"
           className="labelText"
           onClick={async () => await handleLocationClick(1)}
+          style={{ cursor: "pointer" }}
         >
           서울
         </text>
@@ -165,6 +168,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="300"
           className="labelText"
           onClick={async () => await handleLocationClick(2)}
+          style={{ cursor: "pointer" }}
         >
           인천
         </text>
@@ -173,6 +177,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="445"
           className="labelText"
           onClick={async () => await handleLocationClick(3)}
+          style={{ cursor: "pointer" }}
         >
           대전
         </text>
@@ -181,6 +186,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="570"
           className="labelText"
           onClick={async () => await handleLocationClick(4)}
+          style={{ cursor: "pointer" }}
         >
           부산
         </text>
@@ -190,6 +196,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="330"
           className="labelText"
           onClick={async () => await handleLocationClick(5)}
+          style={{ cursor: "pointer" }}
         >
           경기
         </text>
@@ -198,6 +205,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="375"
           className="labelText"
           onClick={async () => await handleLocationClick(6)}
+          style={{ cursor: "pointer" }}
         >
           충청
         </text>
@@ -206,6 +214,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="420"
           className="labelText"
           onClick={async () => await handleLocationClick(6)}
+          style={{ cursor: "pointer" }}
         >
           충청
         </text>
@@ -214,6 +223,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="280"
           className="labelText"
           onClick={async () => await handleLocationClick(7)}
+          style={{ cursor: "pointer" }}
         >
           강원
         </text>
@@ -222,6 +232,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="510"
           className="labelText"
           onClick={async () => await handleLocationClick(8)}
+          style={{ cursor: "pointer" }}
         >
           전라
         </text>
@@ -230,6 +241,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="610"
           className="labelText"
           onClick={async () => await handleLocationClick(8)}
+          style={{ cursor: "pointer" }}
         >
           전라
         </text>
@@ -238,6 +250,7 @@ function SouthKoreaMap({ onLocationClick }) {
           y="460"
           className="labelText"
           onClick={async () => await handleLocationClick(9)}
+          style={{ cursor: "pointer" }}
         >
           경상
         </text>

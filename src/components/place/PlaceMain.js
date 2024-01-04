@@ -70,8 +70,9 @@ function PlaceMain() {
         <p>Trendings Places</p>
         <hr className="container" />
       </div>
-      <Location2 onCategoryClick={handleCategoryClick} basePath="/place" />
-
+      <div className="container">
+        <Location2 onCategoryClick={handleCategoryClick} basePath="/place" />
+      </div>
       <div className="place-content container">
         <div className="plcae-content-title">
           <h2>{localName.name}</h2>

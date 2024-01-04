@@ -15,7 +15,12 @@ import { FaRegEye } from "react-icons/fa";
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-function Section2Swiper({ festivalData, localNo, handlePlaceUpdate }) {
+function Section2Swiper({
+  festivalData,
+  localNo,
+  handlePlaceUpdate,
+  slidesPerView,
+}) {
   return (
     <Swiper
       style={{
@@ -27,8 +32,8 @@ function Section2Swiper({ festivalData, localNo, handlePlaceUpdate }) {
       }}
       modules={[Autoplay, Pagination]}
       spaceBetween={50}
-      slidesPerView={3}
-      autoplay={{ delay: 3000 }}
+      slidesPerView={slidesPerView}
+      autoplay={{ delay: 3003330 }}
       loop={true}
       pagination={{ type: "bullets", clickable: true }}
     >
@@ -58,7 +63,7 @@ function Section2Swiper({ festivalData, localNo, handlePlaceUpdate }) {
   );
 }
 
-function Section3Swiper({ foods, localNo }) {
+function Section3Swiper({ foods, localNo, slidesPerView }) {
   return (
     <Swiper
       style={{
@@ -70,7 +75,8 @@ function Section3Swiper({ foods, localNo }) {
       }}
       modules={[Autoplay]}
       spaceBetween={30}
-      slidesPerView={5}
+      // 조절가능! 슬라이더 갯수
+      slidesPerView={slidesPerView + 1}
       autoplay={{ delay: "3000" }}
       loop={true}
     >
@@ -165,6 +171,8 @@ function Main() {
   const [festivalData, setFestivalData] = useState([]);
   const [foodData, setFoodData] = useState([]);
   const [localNo, setLocalNo] = useState(1);
+  // width값에 따라 슬라이더 몇개 보여줄지 정하는 코드
+  const [slidesPerView, setSlidesPerView] = useState(calculateSlidesPerView);
 
   const handlePlaceUpdate = (location, festivals, foods, localNo) => {
     setLocationData(location);
@@ -211,6 +219,30 @@ function Main() {
 
     fetchSeoulData(); // 초기 호출
   }, [localNo]);
+
+  useEffect(() => {
+    function handleResize() {
+      setSlidesPerView(calculateSlidesPerView());
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // 빈 의존성 배열은 이 효과가 초기 렌더링 이후 한 번 실행됨을 의미합니다.
+
+  function calculateSlidesPerView() {
+    const windowWidth = window.innerWidth;
+
+    if (windowWidth >= 1200) {
+      return 3; // 창 폭이 1200 이상이면 3개의 슬라이드를 표시
+    } else if (windowWidth >= 768) {
+      return 2; // 창 폭이 768 이상이면서 1200 이하이면 2개의 슬라이드를 표시
+    } else {
+      return 1; // 더 작은 창 폭에는 1개의 슬라이드만 표시
+    }
+  }
 
   return (
     <div>
@@ -297,6 +329,7 @@ function Main() {
               festivalData={festivalData}
               localNo={localNo}
               handlePlaceUpdate={handlePlaceUpdate}
+              slidesPerView={slidesPerView}
             />
             {/* 일단 주석 */}
             {/* <button className="w-btn-neon2 section2-item-button" type="button">
@@ -314,6 +347,7 @@ function Main() {
               foods={foodData}
               localNo={localNo}
               handlePlaceUpdate={handlePlaceUpdate}
+              slidesPerView={slidesPerView}
             />
           </div>
           <Link to={`/localfoods/${localNo}`}>
