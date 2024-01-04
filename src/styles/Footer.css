@@ -131,7 +131,45 @@
   display: none;
 }
 
-.arrow_icon{
+.arrow_icon {
   width: 35px;
   height: 35px;
+}
+
+@media (min-width: 761px) and (max-width: 1200px) {
+  /* 761px부터 1200px까지의 화면 크기에 대한 스타일 */
+  .wrap-service2 {
+    width: 100%;
+  }
+  .wrap-footer .service {
+    padding: 50px;
+  }
+}
+
+@media (max-width: 760px) {
+  /* 760px 이하의 화면 크기에 대한 스타일 */
+  .wrap-service,
+  .wrap-service2,
+  .wrap-service3 {
+    width: 100%;
+  }
+
+  .wrap-service2,
+  .wrap-service3 {
+    display: none;
+  }
+
+  .wrap-footer .service {
+    text-align: center;
+  }
+  .txt_copyright {
+    text-align: center;
+  }
+  .list_service {
+    margin-bottom: 0;
+  }
+  .topup-button {
+    margin: 0 auto;
+    margin-bottom: 20px;
+  }
 }

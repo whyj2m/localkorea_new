@@ -122,7 +122,7 @@ function Header() {
 
       <Navbar
         collapseOnSelect
-        expand="lg"
+        expand="xl"
         className={`header-main ${getHeaderColor()} ${
           isHovering ? "hovered" : ""
         }`}
@@ -139,21 +139,13 @@ function Header() {
         />
         <Navbar.Collapse
           id="responsive-navbar-nav"
-          style={{ justifyContent: "space-around" }}
+          className="navbar-expand-xl"
         >
           <Nav className="header-category">
-            <NavLink to="/local/1" activeClassName="active">
-              지역
-            </NavLink>
-            <NavLink to="/place/1" activeClassName="active">
-              관광지
-            </NavLink>
-            <NavLink to="/festival/1" activeClassName="active">
-              축제
-            </NavLink>
-            <NavLink to="/localFoods/1" activeClassName="active">
-              특산물
-            </NavLink>
+            <NavLink to="/local/1">지역</NavLink>
+            <NavLink to="/place/1">관광지</NavLink>
+            <NavLink to="/festival/1">축제</NavLink>
+            <NavLink to="/localFoods/1">특산물</NavLink>
             <NavDropdown
               title="게시판"
               id="board-dropdown"

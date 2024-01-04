@@ -45,7 +45,9 @@ function FestivalMain() {
         <hr className="container" />
       </div>
       {/*  여기서 베이스가 되는 url 지정 */}
-      <Location2 onCategoryClick={handleCategoryClick} basePath="/festival" />
+      <div className="container">
+        <Location2 onCategoryClick={handleCategoryClick} basePath="/festival" />
+      </div>
       <div className="festival-content container">
         <div className="festival-content-wrap">
           <ul>

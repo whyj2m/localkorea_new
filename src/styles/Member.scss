@@ -99,10 +99,11 @@
 
       .grp {
         margin-bottom: 5px;
+        .success p {color: #75b798;}
         .send_progress {height: 7px; margin: 10px 0; 
-          .progress-bar {
-            background: $test1;
-          }
+          // .progress-bar {
+          //   background-color: $test1;
+          // }
         }
       }
       .form-label {

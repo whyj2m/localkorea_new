@@ -36,7 +36,7 @@ function Location() {
                 <NavLink
                   to={`/local/${location.localNo}`}
                   className={`localcategory ${location.name.toLowerCase()}`}
-                  activeClassName="active" // 현재 링크에 "active" 클래스 적용
+                  // 현재 링크에 "active" 클래스 적용
                   // 여기서 확인
                   onClick={() => handleLocationClick(location)}
                 >
