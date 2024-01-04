@@ -33,6 +33,21 @@
   justify-content: space-between;
   width: 80%;
   padding: 0 100px;
+  align-items: center;
+}
+.header-category .active {
+  border-radius: 10px;
+  border: 1px dotted transparent; /* 초기에 투명한 점선으로 설정 */
+  box-shadow: 3px 3px 3px #3498db;
+  padding-bottom: 4px;
+  display: inline-block;
+  transition: border-color 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55),
+    box-shadow 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.header-category .active:hover {
+  border-color: #3498db; /* 마우스 오버 시 색상 변경 */
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3); /* 그림자 강화 */
 }
 
 .header-main-icon {
@@ -64,6 +79,7 @@
   color: black;
   background-color: white;
 }
+
 /* (헤더 hidden 처리를 위한 CSS  */
 .hidden {
   display: none;

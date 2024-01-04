@@ -170,11 +170,7 @@ function LocalMain() {
       </div>
 
       <div className="localmain-image">
-        <img
-          // src={`/assets/local/${localData.name}/${localData.name}1.jpg`} -- 한글경로
-          img
-          src={`/assets/local/${localNo}/1.jpg`}
-        />
+        <img src={`/assets/local/${localNo}/1.jpg`} />
       </div>
 
       <div className="localmain-info">

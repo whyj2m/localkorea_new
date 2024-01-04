@@ -13,8 +13,7 @@ function PlaceView() {
   const { localNo, placeNo } = useParams();
   const [placeData, setPlaceData] = useState(null);
 
-  const [imageIndex, setImageIndex] = useState(1);
-
+  const [shareUrl, setShareUrl] = useState(""); // URL 상태 추가
   const [modalOpen, setModalOpen] = useState(false);
 
   useEffect(() => {
@@ -22,8 +21,11 @@ function PlaceView() {
       try {
         const placeResponse = await getLocalPlaceView(placeNo);
         console.log("장소 상세 정보:", placeResponse);
-
         setPlaceData(placeResponse.data);
+
+        // URL 정보 설정
+        const currentUrl = window.location.href;
+        setShareUrl(currentUrl);
       } catch (error) {
         console.error("데이터 못가져옴 :", error);
       }
@@ -46,12 +48,12 @@ function PlaceView() {
             <span>
               <FaHeart /> <p>{placeData.heartCnt || 0}</p>
             </span>
-
-            <span>
-              <FaExternalLinkAlt onClick={() => setModalOpen(true)} />
-            </span>
-
-            <PlaceModal show={modalOpen} onHide={() => setModalOpen(false)} />
+            {/*  모달에 Url값 전달 */}
+            <PlaceModal
+              show={modalOpen}
+              onHide={() => setModalOpen(false)}
+              shareUrl={shareUrl}
+            />
           </div>
           <div className="placeview-image">
             <img
