@@ -34,6 +34,9 @@
   transition: 0.6s ease; /* 부드러운 크기 변경을 위한 transition 추가 */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
 }
+.festival-content-wrap li:first-child {
+  margin: 0;
+}
 
 .festival-content-wrap li:hover {
   flex: 1.1 0 auto;
@@ -127,7 +130,6 @@
 }
 
 .festival-list-item ul li {
-  float: left;
   position: relative;
   height: 350px;
   margin-right: 2%;
@@ -135,6 +137,7 @@
   isolation: isolate;
   flex-basis: 23%;
 }
+
 .festival-list-item ul li a {
   display: block;
 }
@@ -181,4 +184,10 @@
   color: #666670;
   display: block;
   font-size: 16px;
+}
+
+@media (min-width: 769px) and (max-width: 1200px) {
+}
+
+@media (max-width: 768px) {
 }

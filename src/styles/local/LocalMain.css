@@ -63,6 +63,12 @@
   border-radius: 10px 10px 0 0;
 }
 
+.localmain-slider-main2 img {
+  /* 이미지 크기고정! */
+  width: 100%;
+  height: 280px;
+  border-radius: 10px 10px 0 0;
+}
 .localmain-slider-text {
   padding: 15px;
   text-align: center;
@@ -91,4 +97,20 @@
 .localmain-swiper-title h2 {
   font-size: 25px;
   font-weight: bold;
+}
+
+@media (max-width: 760px) {
+  .localmain-info {
+    gap: 0;
+  }
+  .localmain-info span {
+    flex: 1;
+  }
+  .localmain-content h2 {
+    text-align: center;
+    font-size: 25px;
+  }
+  .localmain-slider-main2 img {
+    height: 280px;
+  }
 }

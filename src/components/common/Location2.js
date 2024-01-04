@@ -32,7 +32,6 @@ function Location2({ onCategoryClick, basePath }) {
           key={category.localNo}
           to={`${basePath}/${category.localNo}`}
           onClick={() => onCategoryClick(category.localNo)}
-          activeClassName="location" // 활성 링크에 대한 클래스 이름 지정
         >
           {category.name}
         </NavLink>

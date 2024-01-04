@@ -20,7 +20,7 @@ import { getLocation } from "../../api/locationApi";
 import { getLocalFestivals, getLocalPlace } from "../../api/LocalPlaceApi";
 import { getLocalFestival } from "../../api/LocalFestivalApi";
 
-function LocalmainSwiper({ places, localNo }) {
+function LocalmainSwiper({ places, localNo, slidesPerView }) {
   return (
     <Swiper
       style={{
@@ -32,7 +32,7 @@ function LocalmainSwiper({ places, localNo }) {
       }}
       modules={[Autoplay]}
       spaceBetween={30}
-      slidesPerView={4}
+      slidesPerView={slidesPerView + 1}
       autoplay={{ delay: "3000" }}
       loop={true}
     >
@@ -54,7 +54,7 @@ function LocalmainSwiper({ places, localNo }) {
   );
 }
 
-function LocalmainSwiper2({ festivals, localNo }) {
+function LocalmainSwiper2({ festivals, localNo, slidesPerView }) {
   return (
     <Swiper
       style={{
@@ -66,7 +66,7 @@ function LocalmainSwiper2({ festivals, localNo }) {
       }}
       modules={[Autoplay]}
       spaceBetween={30}
-      slidesPerView={4}
+      slidesPerView={slidesPerView}
       autoplay={{ delay: "2500" }}
       loop={true}
     >
@@ -74,7 +74,7 @@ function LocalmainSwiper2({ festivals, localNo }) {
         <SwiperSlide key={index}>
           {/* Link 추가 */}
           <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
-            <div className="localmain-slider-main">
+            <div className="localmain-slider-main localmain-slider-main2">
               <img
                 src={`/assets/festival/${localNo}/${index + 1}.jpg`}
                 alt=""
@@ -101,6 +101,8 @@ function LocalMain() {
   const [localPlaces, setLocalPlaces] = useState([]); // 관광지 정보
   const [localFestivals, setLocalFestivals] = useState([]); // 축제 정보
 
+  // width값에 따라 슬라이더 몇개 보여줄지 정하는 코드
+  const [slidesPerView, setSlidesPerView] = useState(calculateSlidesPerView);
   useEffect(() => {
     // localNo에 해당하는 지역 정보를 가져오는 함수
     const fetchLocalData = async () => {
@@ -153,6 +155,31 @@ function LocalMain() {
     fetchLocalFestivals();
   }, [localNo]); // localNo가 변경될 때마다 실행되도록 설정합니다.
 
+  //  슬라이더 갯수 지정하는 함수
+  useEffect(() => {
+    function handleResize() {
+      setSlidesPerView(calculateSlidesPerView());
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []); // 빈 의존성 배열은 이 효과가 초기 렌더링 이후 한 번 실행됨을 의미합니다.
+
+  function calculateSlidesPerView() {
+    const windowWidth = window.innerWidth;
+
+    if (windowWidth >= 1200) {
+      return 3; // 창 폭이 1200 이상이면 3개의 슬라이드를 표시
+    } else if (windowWidth >= 768) {
+      return 2; // 창 폭이 768 이상이면서 1200 이하이면 2개의 슬라이드를 표시
+    } else {
+      return 1; // 더 작은 창 폭에는 1개의 슬라이드만 표시
+    }
+  }
+
   return (
     <div className="container">
       {/*지역 이미지 클릭  여기는 Local 하나라서 Location컴포넌트에 아무것도 추가 안해도 ok */}
@@ -200,14 +227,22 @@ function LocalMain() {
       <div className="localmain-swiper-title">
         <h2> 추천 관광지 </h2>
       </div>
-      <LocalmainSwiper places={localPlaces} localNo={localNo} />
+      <LocalmainSwiper
+        places={localPlaces}
+        localNo={localNo}
+        slidesPerView={slidesPerView}
+      />
 
       <hr style={{ marginBottom: "0" }} />
       {/* 스와이퍼 */}
       <div className="localmain-swiper-title">
         <h2> 추천 축제 </h2>
       </div>
-      <LocalmainSwiper2 festivals={localFestivals} localNo={localNo} />
+      <LocalmainSwiper2
+        festivals={localFestivals}
+        localNo={localNo}
+        slidesPerView={slidesPerView}
+      />
     </div>
   );
 }
