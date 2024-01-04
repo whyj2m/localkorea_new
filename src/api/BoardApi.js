@@ -29,7 +29,7 @@ export const getTourBaordDetail = async (bno) => {
     }
 }
 
-// get tourisSpot 게시글 목록조회 
+// get company 게시글 목록조회 
 export const getCompanyBaordList = async () => {
     try {
         const response = await axiosInstance.get("/board/company")
@@ -50,9 +50,9 @@ export const postBoardWrite = async (formData) => {
 }
 
 // put 게시글 수정
-export const putBoard = async (bno) => {
+export const putBoard = async (bno, updateDate, location) => {
     try {
-        const response = await axiosInstance.put(`/board/edit/${bno}`)
+        const response = await axiosInstance.put(`/board/edit/${bno}`, {...updateDate, location})
         return response;
     } catch (error) {
         throw error;

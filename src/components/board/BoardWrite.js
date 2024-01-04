@@ -87,7 +87,7 @@ function BoardWrite() {
                 alert("게시글 작성 실패")
             }
         } catch (error) {
-            alert("게시글 작성 실패")
+            alert("게시글 작성 오류")
         }
     }
 

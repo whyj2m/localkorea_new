@@ -10,7 +10,6 @@ import 'moment/locale/ko'; // 시간 한글로
 
 import { useNavigate } from 'react-router-dom';
 
-
 import { getTourBaordDetail } from '../../api/BoardApi';
 import { deleteBoard } from '../../api/BoardApi';
 import BoardNav from './BoardNav';
@@ -128,6 +127,7 @@ function BoardView() {
                                     <Link to={`/board/edit/${item.bno}`}>
                                         <Button variant="link">수정</Button>
                                     </Link>
+
                                 </Col>
                                 <Col xs={1} md={1} className='boardView-btn'>
                                     <Button variant="link" disabled={loading} onClick={handleDelete}>
@@ -142,7 +142,7 @@ function BoardView() {
                             </Row>
 
                         </Row>
-                    ))}  
+                    ))}
                 </div>
             </div>
         </div>
