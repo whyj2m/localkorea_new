@@ -114,6 +114,8 @@
   width: 100%;
   display: flex;
   flex-wrap: wrap; /* 요소들을 여러 행에 걸쳐 나열하도록 설정 */
+  padding: 0;
+  justify-content: space-between;
 }
 .festival-list-item li {
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -153,7 +155,7 @@
   border-radius: 8px;
 }
 .festival-text-desc {
-  padding: 0 8px;
+  padding: 0;
   box-sizing: border-box;
 }
 .festival-text-desc strong {
@@ -186,8 +188,53 @@
   font-size: 16px;
 }
 
-@media (min-width: 769px) and (max-width: 1200px) {
+@media (min-width: 1000px) and (max-width: 1200px) {
+  .festival-list-image {
+    width: 250px;
+  }
+  .festival-text-desc .date {
+    font-size: 12px;
+  }
+
+  /* 리스트 텍스트크기 */
+  .festival-text-desc strong {
+    font-size: 16px;
+  }
+  .festival-text-desc .addr {
+    font-size: 14px;
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 999px) {
+  .festival-list-image {
+    width: 180px;
+  }
+  .festival-text-desc .date {
+    font-size: 10px;
+  }
+  /* 세 번째  항목 숨기기 */
+  .content-list li:nth-child(3) {
+    display: none;
+  }
+  .festival-text-desc strong {
+    font-size: 14px;
+  }
+  .festival-text-desc .addr {
+    font-size: 12px;
+  }
+}
+@media (max-width: 760px) {
+  .content-list li:nth-child(n + 2) {
+    display: none;
+  }
+  .festival-text-title strong {
+    font-size: 23px;
+  }
+  /* 리스트 텍스트크기 */
+  .festival-text-desc strong {
+    font-size: 14px;
+  }
+  .festival-text-desc .addr {
+    font-size: 12px;
+  }
 }

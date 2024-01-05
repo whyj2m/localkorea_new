@@ -6,6 +6,7 @@ import "../../styles/Header.css";
 import { FaSearch } from "react-icons/fa";
 import { IoPeople } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
+import { GrLogin } from "react-icons/gr";
 
 import { getWeatherData } from "../../api/Weather";
 import { useEffect, useState } from "react";
@@ -130,7 +131,7 @@ function Header() {
         <Navbar.Brand as={Link} to="/" className="header-logo">
           <img
             src={`/assets/etc/${getLogoImage()}`}
-            style={{ width: "120px", height: "100%" }}
+            style={{ width: "150px", height: "100%" }}
           />
         </Navbar.Brand>
         <Navbar.Toggle
@@ -140,6 +141,7 @@ function Header() {
         <Navbar.Collapse
           id="responsive-navbar-nav"
           className="navbar-expand-xl"
+          style={{ justifyContent: "center" }}
         >
           <Nav className="header-category">
             <NavLink to="/local/1">지역</NavLink>
@@ -167,12 +169,15 @@ function Header() {
           </Nav>
         </Navbar.Collapse>
         <div className="header-main-icon">
+          <Nav as={Link} to="/login">
+            <GrLogin />
+          </Nav>
           <Nav as={Link} to="/mypage">
             <IoPeople />
           </Nav>
-          <FaHeart style={{ margin: "0 20px" }} />
+          <FaHeart style={{ fontSize: "26px" }} />
           <Nav as={Link} to="/search/whole">
-            <FaSearch />
+            <FaSearch style={{ fontSize: "26px" }} />
           </Nav>
         </div>
       </Navbar>
