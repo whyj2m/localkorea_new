@@ -12,17 +12,6 @@ const validateId = (id) => {
 };
 
 function Signup() {
-  axios.interceptors.response.use(
-    (response) => response,
-    (error) => {
-      if (error.response && error.response.status === 409) {
-        // 중복 확인 에러 처리
-        setErrorMsg({ ...errorMsg, id: "이미 존재하는 ID입니다." });
-      }
-      return Promise.reject(error);
-    }
-  );
-  
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:'', vc:''
@@ -30,34 +19,36 @@ function Signup() {
   const [errorMsg, setErrorMsg] = useState({
     id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:'', vc:''
   });
-  // 인증코드 상태
-  const [vc, setVc] = useState("");
+
   // 이메일로 발송된 코드
   const [codeFromEmail, setCodeFromEmail] = useState("");
+  const [vcSuccess, setVcSuccess] = useState(null);
+
+  // 휴대폰번호 입력 형식
+  const formatPhoneNumber = (inputNumber) => {
+    // 숫자만 추출하여 "-" 추가
+    return inputNumber.replace(/\D/g, "").replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
+  };
 
   // id 중복확인
-  const [duplicateError, setDuplicateError] = useState("");
   const handleCheckDuplicate = async () => {
     try {
       const response = await axios.post("http://localhost:8081/signup/checkId", { id: formData.id });
   
       if (response.data) {
-        // 이미 존재하는 ID
-        setDuplicateError("이미 존재하는 ID입니다.");
-        setErrorMsg({ ...errorMsg, id: "" });
+        setErrorMsg({ ...errorMsg, id: "이미 존재하는 ID입니다." });
       } else {
-        // 사용 가능한 ID
-        setDuplicateError("");
-        setErrorMsg({ ...errorMsg, id: "사용 가능한 ID입니다." });
+        // setErrorMsg({ ...errorMsg, id: "사용 가능한 ID입니다." });
+        setErrorMsg({ ...errorMsg, id: "" });
       }
     } catch (error) {
       console.error("중복 확인 에러:", error);
       if (error.response && error.response.status === 409) {
-        // 이미 존재하는 ID
-        setDuplicateError("이미 존재하는 ID입니다.");
+        setErrorMsg({ ...errorMsg, id: "이미 존재하는 ID입니다." });
       } else {
-        setDuplicateError("중복 확인 중 오류가 발생했습니다.");
+        setErrorMsg({ ...errorMsg, id: "중복 확인 중 오류가 발생했습니다." });
       }
+      throw error; // 에러 발생 시 함수 종료
     }
   };
 
@@ -97,7 +88,7 @@ function Signup() {
         setErrorMsg({
           ...errorMsg,
           vc:
-            formData.vc === codeFromEmail
+            formData.vc === String(codeFromEmail)
               ? ""
               : "인증번호가 일치하지 않습니다."
         });
@@ -115,56 +106,64 @@ function Signup() {
   const handleChange = (e) => {
     setFormData({...formData, [e.target.name]:e.target.value})
     setErrorMsg({ ...errorMsg, [e.target.name]: "" });
+
+    // 추가된 부분
+    if (e.target.name === "vc") {
+      console.log("현재 입력된 인증번호:", e.target.value);
+    }
   }
 
-  const formatPhoneNumber = (inputNumber) => {
-    // 숫자만 추출하여 "-" 추가
-    return inputNumber.replace(/\D/g, "").replace(/(\d{3})(\d{3,4})(\d{4})/, "$1-$2-$3");
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    // 인증번호 검증
+  const verifyCode = async () => {
     try {
-      await sendEmail(); // sendEmail 함수를 호출하여 codeFromEmail 값을 업데이트
-      if (vc !== codeFromEmail) {
-        alert("인증번호가 일치하지 않습니다.");
+      if (!formData.vc) {
+        // vc가 비어 있다면 클라이언트에서 validation을 실패한 경우로 간주할 수 있습니다.
+        setErrorMsg({ ...errorMsg, vc: "인증번호를 입력해주세요." });
         return;
       }
+
+      const response = await axios.post("http://localhost:8081/signup/verifyCode", {
+        verificationCode: formData.vc,
+      });
+
+      console.log("서버 응답 확인:", response.data);
+  
+      if (response.data.status === 200 && formData.vc === codeFromEmail) {
+        setVcSuccess(true); 
+      } else {
+        // 서버 응답이 실패한 경우
+        setErrorMsg({ ...errorMsg, vc: "인증 실패" });
+      }
     } catch (error) {
-      console.error("이메일 전송 에러:", error);
-      return;
+      // 예외 처리
+      console.error("인증번호 확인 에러:", error);
+      setErrorMsg({ ...errorMsg, vc: "인증 실패" });
     }
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
     // 중복 확인
     try {
       await handleCheckDuplicate();
   
-      if (duplicateError) {
-        setErrorMsg({ ...errorMsg, id: duplicateError });
+      if (errorMsg.id) {
         return;
       }
-    } catch (error) {
-      console.error("중복 확인 에러:", error);
-    }
 
-    // 나머지 유효성 검사
-    let hasError = false;
-    Object.keys(formData).forEach((fieldName) => {
-      validateField(fieldName);
-      if (errorMsg[fieldName] !== "") {
-        hasError = true;
-      }
-    });
+      // 인증번호 검증
+      await verifyCode();
 
-    if (hasError) {
-      // 유효성 검사에서 에러가 발생한 경우에는 회원가입 요청을 보내지 않음
-      return;
-    }
+      // 나머지 유효성 검사
+      Object.keys(formData).forEach((fieldName) => {
+        validateField(fieldName);
+        if (errorMsg[fieldName] !== "") {
+          // 유효성 검사에서 에러 발생 시 함수 종료
+          return;
+        }
+      });
 
-    // 회원가입 요청
-    try {
+      // 회원가입 요청
       const signupResponse = await axios.post("http://localhost:8081/signup", formData);
 
       if (signupResponse.status === 200) {
@@ -173,10 +172,14 @@ function Signup() {
       } else {
         alert("회원가입 실패");
       }
+      console.log("사용자 입력값:", formData.vc);
+      console.log("서버에서 받은 인증번호:", codeFromEmail);
+
     } catch (error) {
-      // 회원가입 에러 처리
+      console.error("회원가입 에러:", error);
       alert("회원가입 실패");
     }
+   
   };
 
   // 이메일 발송 함수
@@ -201,11 +204,14 @@ function Signup() {
   const handleSendVC = async () => {
     try {
       await sendEmail();
+      setVcSuccess(null); // 인증번호 재발송 시 초기화
       alert("인증번호가 발송되었습니다.");
     } catch (error) {
       console.error("인증번호 발송 에러:", error);
+      return;
     }
   }
+
   useEffect(() => {
     console.log("Code from Email:", codeFromEmail);
   }, [codeFromEmail]);
@@ -232,7 +238,7 @@ function Signup() {
               </InputGroup>
               <Form.Control.Feedback type="invalid" className="d-block">
                 {errorMsg.id}
-                {duplicateError}
+                {/* {duplicateError} */}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Group className="grp">
@@ -328,6 +334,13 @@ function Signup() {
               />
               <Form.Control.Feedback type="invalid">
                 {errorMsg.vc}
+              </Form.Control.Feedback>
+              <Form.Control.Feedback type="valid">
+                {vcSuccess && (
+                  <div className="verification-success-message">
+                    인증에 성공했습니다.
+                  </div>
+                )}
               </Form.Control.Feedback>
             </Form.Group>
             <Form.Check // prettier-ignore
