@@ -60,8 +60,6 @@ function TourisSpot() {
         fetchTourBoardListData();
     }, []);
 
-
-
     return (
         <>
             <BoardNav />
@@ -98,7 +96,7 @@ function TourisSpot() {
                                         </Row>
                                         <Col className="content-title" xs={7} md={4}>{item.title}</Col>
                                         <Row className="justify-content-end nickAndDate">
-                                            <Col xs={2} md={1}><p>닉네임{item.authorNickname}</p> </Col>
+                                            <Col xs={2} md={1}><p>닉네임{item.id}</p> </Col>
                                             <Col xs={2} md={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
                                         </Row>
                                     </Col>
