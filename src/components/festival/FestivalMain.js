@@ -50,13 +50,14 @@ function FestivalMain() {
       </div>
       <div className="festival-content container">
         <div className="festival-content-wrap">
-          <ul>
+          <ul className="content-list">
             {localData.slice(0, 3).map((festival, index) => (
               <li key={index} className={`content`}>
                 <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
                   <img
                     src={`/assets/festival/${localNo}/${index + 1}.jpg`}
                     alt={festival.name}
+                    className="festival-list-image"
                   />
                   <div className="festival-text-area">
                     <div className="festival-text-title">

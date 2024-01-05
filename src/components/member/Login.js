@@ -1,18 +1,28 @@
+import { postLogin } from "../../api/MemberApi";
 import "../../styles/Member.scss";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 function Login() {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = new FormData(e.target);
+    const userId = data.get("id");
+    const password = data.get("password");
+
+    postLogin({id:userId, password:password})
+  }
+
   return (
     <div className="login">
       <div className="loginform">
         <div className="inside">
           <h3 className="title">Login</h3>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group className="grp">
               <Form.Label htmlFor="inputID">ID</Form.Label>
               <Form.Control
                 type="id"
-                id="inputID"
+                id="inputID" name="id"
                 aria-describedby="passwordHelpBlock"
                 placeholder="Enter your ID"
               />
@@ -21,7 +31,7 @@ function Login() {
               <Form.Label htmlFor="inputPW">Password</Form.Label>
               <Form.Control
                 type="password"
-                id="inputPW"
+                id="inputPW" name="password"
                 aria-describedby="passwordHelpBlock"
                 placeholder="Enter your Password"
               />
@@ -33,7 +43,7 @@ function Login() {
               className="grp chk"
             />
             <div className="d-grid">
-              <Button variant="secondary">Login</Button>
+              <Button variant="secondary" type="submit">Login</Button>
             </div>
           </Form>
           <hr />

@@ -17,7 +17,7 @@ import Location2 from "../common/Location2";
 import { useParams } from "react-router-dom";
 import { getLocation } from "../../api/locationApi";
 
-function RegionfoodRandom({ localFoods, localNo }) {
+function RegionfoodRandom({ localFoods, localNo, slidesPerView }) {
   return (
     <Swiper
       style={{
@@ -29,7 +29,7 @@ function RegionfoodRandom({ localFoods, localNo }) {
       }}
       modules={[Autoplay]} // Autoplay와 Navigation 모듈 추가
       spaceBetween={30}
-      slidesPerView={5}
+      slidesPerView={slidesPerView}
       autoplay={{ delay: 3000 }}
       loop={true}
     >
@@ -59,6 +59,8 @@ function RegionfoodMain() {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6; // 한 페이지당 보여질 아이템 수
 
+  // width값에 따라 슬라이더 몇개 보여줄지 정하는 코드
+  const [slidesPerView, setSlidesPerView] = useState(calculateSlidesPerView);
   // 로컬넘버 체크
   console.log("localNo:", localNo);
 
@@ -121,6 +123,36 @@ function RegionfoodMain() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentItems = localFoods.slice(startIndex, endIndex);
+
+  // 각 카드에 대한 확장 상태를 저장하는 배열
+  const [expandedStates, setExpandedStates] = useState(
+    Array(localFoods.length).fill(false)
+  );
+
+  //  해당페이지 width 값에 따른 스와이퍼 갯수 조절
+  useEffect(() => {
+    function handleResize() {
+      setSlidesPerView(calculateSlidesPerView());
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  function calculateSlidesPerView() {
+    const windowWidth = document.documentElement.clientWidth;
+
+    if (windowWidth >= 1200) {
+      return 4;
+    } else if (windowWidth >= 768) {
+      return 3;
+    } else {
+      return 1;
+    }
+  }
   return (
     <>
       <div
@@ -148,7 +180,31 @@ function RegionfoodMain() {
       {/* 과일 카드들 */}
       <div className="container regionfood-list">
         {currentItems.map((food, i) => (
-          <div key={food.foodNo} className="regionfood-item">
+          // 이게 클릭이벤트! 혹시 몰라서 모바일환경에서 호버가 이상할수있으니
+          <div
+            key={food.foodNo}
+            className={`regionfood-item ${expandedStates[i] ? "expanded" : ""}`}
+            onClick={() => {
+              const newExpandedStates = [...expandedStates];
+              newExpandedStates[i] = !newExpandedStates[i];
+              setExpandedStates(newExpandedStates);
+            }}
+          >
+            {/* 여기가 호버 이벤트 일단 주석 */}
+            {/* <div
+            key={food.foodNo}
+            className={`regionfood-item ${expandedStates[i] ? "expanded" : ""}`}
+            onMouseEnter={() => {
+              const newExpandedStates = [...expandedStates];
+              newExpandedStates[i] = true;
+              setExpandedStates(newExpandedStates);
+            }}
+            onMouseLeave={() => {
+              const newExpandedStates = [...expandedStates];
+              newExpandedStates[i] = false;
+              setExpandedStates(newExpandedStates);
+            }}
+          > */}
             <img
               src={`/assets/regionfood/${localNo}/${startIndex + i + 1}.jpg`}
               alt={food.name}
@@ -179,7 +235,11 @@ function RegionfoodMain() {
         <h3>대한민국 특산물들</h3>
         <img src="/assets/etc/line.png" alt="line" className="pageline" />
         <div>
-          <RegionfoodRandom localFoods={localFoods} localNo={localNo} />
+          <RegionfoodRandom
+            localFoods={localFoods}
+            localNo={localNo}
+            slidesPerView={slidesPerView}
+          />
         </div>
       </div>
     </>
