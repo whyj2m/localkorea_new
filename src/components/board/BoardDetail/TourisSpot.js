@@ -9,7 +9,7 @@ import BoardNav from '../BoardNav';
 import '../../../styles/board/board.scss';
 import '../../../styles/board/tourisSpot.scss';
 
-
+// 검색창
 function SearchForm() {
     return (
         <>
@@ -69,66 +69,46 @@ function TourisSpot() {
             {/* 검색창 */}
             <SearchForm />
 
-
-
             {/* 관광지 카드 */}
             <div className="container">
                 <div className="touriSpot-cotent">
                     <Row className='align-items-center'>
-                        <Col md={11} className="place-total d-flex align-items-center">
-                            <strong>
-                                {/* 총건수 확인 */}
-                                총<span> {TourBoardListData.length} </span>건
-                            </strong>
+                        {/* 총건수 확인 */}
+                        <Col md={10} className="place-total d-flex align-items-center">
+                            <div className="total">
+                                총<span>{TourBoardListData.length}</span>건
+                            </div>
                         </Col>
-                        <Col md={1} className="d-flex justify-content-end">
-                            <Button className='write-btn' as="input" type="submit" value="글작성" onClick={handleButtonClick} />
+                        <Col md={2} className="d-flex justify-content-end">
+                            <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
                         </Col>
                     </Row>
 
                     {TourBoardListData.map(item => (
-                        <Link to={`/boardView/${item.bno}`}>
-                            <Card key={item.bno} className='TourisSpot-Card'>
-                                <Row className="g-0 align-items-center">
-                                    <Col md={3}>
-                                        <div className="d-flex justify-content-center align-items-center" style={{ height: '100%' }}>
-                                            <Card.Img className='TourisSpot-Img' variant="top" src={item.imageSrc} />
-                                        </div>
+                        <Link to={`/boardView/${item.bno}`} key={item.bno} className="tour-board-link">
+                            <Card className='TourisSpot-Card'>
+                                <Row>
+                                    <Col xs={9} md={3}>
+                                        <img className='TourisSpot-Img' variant="top" src={item.imageSrc} />
                                     </Col>
-                                    <Col md={9}>
-                                        <Card.Body className="body">
-                                            <Card.Title className="title">[{item.location}] {item.title}</Card.Title>
-                                            {/* <Card.Text className="content">
-                                                {item.content}
-                                            </Card.Text> */}
-                                            <Card.Text className="time">{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
-                                        </Card.Body>
+                                    <Col xs={9} md={9}>
+                                        <Row className="justify-content-between align-items-center">
+                                            <Col xs={7} md={10} className="content-location">[{item.location}]</Col>
+                                            <Col xs={2} md={2}><p>조회 {item.viewCnt || 0}</p></Col>
+                                        </Row>
+                                        <Col className="content-title" xs={7} md={4}>{item.title}</Col>
+                                        <Row className="justify-content-end nickAndDate">
+                                            <Col xs={2} md={1}><p>닉네임{item.authorNickname}</p> </Col>
+                                            <Col xs={2} md={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
+                                        </Row>
                                     </Col>
                                 </Row>
-
                                 <div className="underline" />
                             </Card>
                         </Link>
                     ))}
-                    {/* 페이징 */}
-                    {/* <Row className='justify-content-center align-items-center bottom'>
-                            <Col md={11}>
-                                <Pagination className='pagination justify-content-center'>
-                                    <Pagination.First />
-                                    <Pagination.Prev />
-                                    <Pagination.Item active>{1}</Pagination.Item>
-                                    <Pagination.Item>{2}</Pagination.Item>
-                                    <Pagination.Item>{3}</Pagination.Item>
-                                    <Pagination.Item>{4}</Pagination.Item>
-                                    <Pagination.Item>{5}</Pagination.Item>
-                                    <Pagination.Next />
-                                    <Pagination.Last />
-                                </Pagination>
-                            </Col>
-                        </Row> */}
                 </div>
             </div>
-
         </>
     );
 }

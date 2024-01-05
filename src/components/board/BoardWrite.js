@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -9,13 +10,20 @@ import '../../styles/board/boardWrite.scss';
 import BoardNav from './BoardNav';
 import BoardUploadFile from './BoardFileUpload/BoardFileUpload';
 
-// import { postBoardWrite } from '../../api/BoardApi';
+import { postBoardWrite } from '../../api/BoardApi';
 
 function BoardWrite() {
+    const navigate = useNavigate();
+    const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true); // 파일 업로드
+    const [formData, setFormData] = useState({
+        title: '',
+        content: '',
+        boardCno: '1', // 기본값 1로 설정
+        locationCno: '1',
+        location:'서울'
+    })
 
-    // 파일 업로드
-    const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true);
-
+    // 파일업로드
     useEffect(() => {
         setIsFileUploadDisabled(false); // 처음 로드할 때 파일 업로드 활성화
     }, []);
@@ -66,20 +74,12 @@ function BoardWrite() {
         }
     };
 
-
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        title: '',
-        content: '',
-        boardCno: '1', // 기본값 1로 설정
-        locationCno: '1'
-    })
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(formData);
-            const response = await axios.post("http://localhost:8081/board/boardWrite", formData)
+            // console.log(formData);
+            const response = await postBoardWrite(formData);
+            // const response = await axios.post("http://localhost:8081/board/boardWrite", formData)
             if (response.status === 200) {
                 alert("게시글 작성 완료");
                 navigate("/board/tourisSpot")
