@@ -1,47 +1,19 @@
 import "../../styles/festival/FestivalView.css";
-
-// 아이콘들
 import { FaRegEye } from "react-icons/fa";
 import { MdDateRange } from "react-icons/md";
 import { FaLocationArrow } from "react-icons/fa";
 import { SiNamebase } from "react-icons/si";
-
-//  스와이퍼 부분
-import { Navigation, Autoplay } from "swiper/modules";
-import { Swiper, SwiperSlide } from "swiper/react";
-
-// Import Swiper styles
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+import { Link, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import {
   getLocalFestival,
   getLocalFestivalView,
 } from "../../api/LocalFestivalApi";
-import { Link, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import Kakaomap from "../../api/Kakaomap";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
 import Kakaomap2 from "../../api/Kakaomap2";
 
-function FestivalViewSwiper() {
-  const { localNo } = useParams();
-  const [festivals, setFestivals] = useState([]);
-
-  useEffect(() => {
-    const fetchFestivals = async () => {
-      try {
-        // localNo에 해당하는 축제 목록을 가져오는 API 함수를 호출
-        const festivalsResponse = await getLocalFestival(parseInt(localNo));
-        console.log(festivalsResponse);
-        setFestivals(festivalsResponse.data);
-      } catch (error) {
-        console.error("축제 목록을 가져오는 중 오류 발생:", error);
-      }
-    };
-
-    fetchFestivals();
-  }, [localNo]);
-
+function FestivalViewSwiper({ festivals, localNo, slidesPerView }) {
   return (
     <Swiper
       style={{
@@ -53,17 +25,18 @@ function FestivalViewSwiper() {
       }}
       modules={[Autoplay]}
       spaceBetween={50}
-      slidesPerView={4}
-      autoplay={{ delay: "2000" }}
+      slidesPerView={slidesPerView}
+      autoplay={{ delay: 4000 }}
       loop={true}
     >
       {festivals.map((festival, index) => (
-        <SwiperSlide key={festival.id}>
+        <SwiperSlide key={festival.festivalNo}>
           <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
             <div className="festivalViewswiper">
               <img
                 src={`/assets/festival/${localNo}/${index + 1}.jpg`}
                 className="festivalViewswiper-image"
+                alt=""
               />
               <div className="festivalViewswiper-text">
                 <strong>{festival.name}</strong>
@@ -79,23 +52,64 @@ function FestivalViewSwiper() {
 function FestivalView() {
   const { localNo, festivalNo } = useParams();
   const [festivalData, setFestivalData] = useState(null);
+  const [localFestivals, setLocalFestivals] = useState([]); // 축제 정보
+
+  // width값에 따라 슬라이더 몇개 보여줄지 정하는 코드
+  const [slidesPerView, setSlidesPerView] = useState(calculateSlidesPerView);
 
   useEffect(() => {
     const fetchFestivalData = async () => {
       try {
-        // 축제 상세 정보를 가져오는 API 함수를 사용하여 데이터를 가져옴
         const festivalResponse = await getLocalFestivalView(festivalNo);
         console.log("축제 상세 정보:", festivalResponse);
-
-        // 가져온 데이터를 상태에 저장
         setFestivalData(festivalResponse.data);
       } catch (error) {
-        console.error("데이터 못가져옴 :", error);
+        console.error("데이터 못가져옴:", error);
       }
     };
 
+    // localNo에 해당하는 축제 정보를 가져오는 함수
+    const fetchLocalFestivals = async () => {
+      try {
+        // API를 통해 데이터를 가져옵니다.
+        const response = await getLocalFestival(localNo);
+        const data = response.data;
+
+        // 콘솔에 축제 정보를 출력하고 상태를 업데이트합니다.
+        console.log("localFestivals: ", data);
+        setLocalFestivals(data);
+      } catch (error) {
+        console.error("Error fetching local festivals:", error);
+      }
+    };
+
+    fetchLocalFestivals();
     fetchFestivalData();
-  }, [festivalNo]);
+  }, [festivalNo, localNo]);
+
+  useEffect(() => {
+    function handleResize() {
+      setSlidesPerView(calculateSlidesPerView());
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  function calculateSlidesPerView() {
+    const windowWidth = document.documentElement.clientWidth;
+
+    if (windowWidth >= 1200) {
+      return 3;
+    } else if (windowWidth >= 768) {
+      return 2;
+    } else {
+      return 1;
+    }
+  }
   return (
     <div
       className="festivalView-main container"
@@ -195,7 +209,11 @@ function FestivalView() {
         <h3> 이런 축제는 어때? </h3>
         <img src="/assets/etc/line.png" alt="line" id="pageline" />
         <div>
-          <FestivalViewSwiper />
+          <FestivalViewSwiper
+            festivals={localFestivals}
+            localNo={localNo}
+            slidesPerView={slidesPerView}
+          />
         </div>
       </div>
     </div>

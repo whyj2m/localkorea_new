@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
+import axios from "axios";
+import { useNavigate } from "react-router-dom"; 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/board/boardEdit.scss';
 
-import { putBoard } from '../../api/BoardApi';
 import { getTourBaordDetail } from '../../api/BoardApi';
 import BoardUploadFile from './BoardFileUpload/BoardFileUpload';
 
@@ -13,13 +14,32 @@ import BoardNav from './BoardNav';
 
 const BoardEdit = () => {
    const { bno } = useParams(); // URL에서 bno 가져오기
+   const navigate = useNavigate(); // 페이지이동
    const [TourBaordDetailData, setTourBaordDetailData] = useState([]);
+   const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true); // 파일업로드
    const [updateDate, setUpdateDate] = useState({
       title: '',
       content: '',
-      boardCno: '',
-      locationCno: ''
+      boardCno: '1',
+      locationCno: '1',
+      location:'서울'
    });
+   
+   const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+         //  const response = await putBoard(bno, updateDate); // 왜그런지 모르겠지만 put은 안됨
+          const response = await axios.put(`http://localhost:8081/board/edit/${bno}`, updateDate);
+          if (response.status === 200) {
+              alert("게시글 수정 완료");
+              navigate("/board/tourisSpot")
+          } else {
+              alert("게시글 수정 실패");
+          }
+      } catch (error) {
+          alert("게시글 수정 오류");
+      }
+  };
 
    useEffect(() => {
       const fetchTourBaordDetailData = async () => {
@@ -42,7 +62,8 @@ const BoardEdit = () => {
             title: initialData.title || '',
             content: initialData.content || '',
             boardCno: initialData.boardCno || '1',
-            locationCno: initialData.locationCno || '1'
+            locationCno: initialData.locationCno || '1',
+            location: initialData.location || '서울'
          });
       }
    }, [TourBaordDetailData]);
@@ -53,7 +74,8 @@ const BoardEdit = () => {
       setUpdateDate((prevData) => ({
          ...prevData,
          [name]: value,
-         location: (name === 'locationCno') ? getLocationName(value) : prevData.location
+         // location: (name === 'locationCno') ? getLocationName(value) : prevData.location
+         location: getLocationName(value)
       }));
    };
    
@@ -82,31 +104,7 @@ const BoardEdit = () => {
       }
    };
    
-
-
-
-
-
-   const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-          const response = await putBoard(bno, updateDate);
-          if (response.status === 200) {
-              alert("게시글 수정 완료");
-          } else {
-              alert("게시글 수정 실패");
-          }
-      } catch (error) {
-          alert("게시글 수정 오류");
-      }
-  };
-
-
-
-
    // 파일업로드
-   const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true);
-
    useEffect(() => {
       setIsFileUploadDisabled(false); // 처음 로드할 때 파일 업로드 활성화
    }, []);

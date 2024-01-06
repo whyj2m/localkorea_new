@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -9,17 +10,36 @@ import '../../styles/board/boardWrite.scss';
 import BoardNav from './BoardNav';
 import BoardUploadFile from './BoardFileUpload/BoardFileUpload';
 
-// import { postBoardWrite } from '../../api/BoardApi';
+import { postBoardWrite } from '../../api/BoardApi';
 
 function BoardWrite() {
-
-    // 파일 업로드
-    const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true);
-
+    const navigate = useNavigate();
+    const [uploadedFiles, setUploadedFiles] = useState([]); // 이미지파일데이터
+    const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true); // 파일 업로드
+    const [formData, setFormData] = useState({
+        title: '',
+        content: '',
+        boardCno: '1', // 기본값 1로 설정
+        locationCno: '1',
+        location: '서울',
+        files: []
+    })
+    // 파일업로드
     useEffect(() => {
         setIsFileUploadDisabled(false); // 처음 로드할 때 파일 업로드 활성화
     }, []);
 
+    const handleFileChange = (files) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            files: files // 선택한 파일들을 files 상태에 업데이트
+        }));
+        // 업로드된 파일 상태 업데이트
+        setUploadedFiles(files); // 업로드된 파일 상태 업데이트
+        // 파일 업로드 비활성화 설정
+        setIsFileUploadDisabled(true);
+        console.log('Selected Files:', files); // 파일 선택 시 로그 출력
+    };
     const handleChange = (e) => {
         const { name, value } = e.target;
 
@@ -66,20 +86,12 @@ function BoardWrite() {
         }
     };
 
-
-    const navigate = useNavigate();
-    const [formData, setFormData] = useState({
-        title: '',
-        content: '',
-        boardCno: '1', // 기본값 1로 설정
-        locationCno: '1'
-    })
-
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(formData);
-            const response = await axios.post("http://localhost:8081/board/boardWrite", formData)
+            console.log('Form Data:', formData); // 폼 데이터 확인을 위한 콘솔 로그
+            const response = await postBoardWrite(formData);
+            console.log('Response:', response); // 응답 확인을 위한 콘솔 로그
             if (response.status === 200) {
                 alert("게시글 작성 완료");
                 navigate("/board/tourisSpot")
@@ -90,6 +102,50 @@ function BoardWrite() {
             alert("게시글 작성 오류")
         }
     }
+
+    // BoardFileUpload.js 
+    // const BoardFileUpload = ({ isDisabled }) => {
+    //     const [uploadedFiles, setUploadedFiles] = useState([]);
+    
+    //     const onUpload = (e) => {
+    //         if (!isDisabled) {
+    //             const files = e.target.files;
+    //             if (files) {
+    //                 const newFiles = [];
+    
+    //                 for (let i = 0; i < files.length; i++) {
+    //                     const file = files[i];
+    //                     const reader = new FileReader();
+    
+    //                     reader.onload = () => {
+    //                         // 원하는 속성을 가진 새로운 파일 객체를 생성
+    //                         const fileObject = {
+    //                             name: file.name, // 파일 이름
+    //                             uuid: file.name, // UUID 함수를 사용하여 고유한 값 생성
+    //                             origin: file.type, // 원본 파일 타입
+    //                             src: reader.result,
+    //                             file_path: '/images/' + file.name // 파일 경로 (서버에 저장될 경로)
+    //                             // ... 다른 필요한 정보들을 여기에 추가할 수 있음
+    //                         };
+    //                         newFiles.push(fileObject);
+    
+    //                         if (newFiles.length === files.length) {
+    //                             setUploadedFiles((prevUploadedFiles) => {
+    //                                 return [...prevUploadedFiles, ...newFiles];
+    //                             });
+    //                             console.log('Uploaded Files:', [...uploadedFiles, ...newFiles]); // 새로 업로드된 파일들을 콘솔에 출력
+    //                         }
+    //                     };
+    
+    //                     reader.readAsDataURL(file);
+    //                 }
+    //             }
+    //         }
+    //     };
+
+
+
+
 
     return (
         <>
@@ -173,7 +229,15 @@ function BoardWrite() {
                         <div className='underline' />
 
                         <Col md={6} className='d-flex justify-content-end'>
-                            <BoardUploadFile isDisabled={isFileUploadDisabled} />
+                            <BoardUploadFile isDisabled={isFileUploadDisabled}
+                                uploadedFiles={uploadedFiles} // 업로드된 파일 상태 전달
+                                setUploadedFiles={setUploadedFiles}>
+                                <input
+                                    type="file"
+                                    multiple // 여러 파일을 선택할 수 있도록 multiple 속성 추가
+                                    onChange={(e) => handleFileChange(e.target.files)} // 파일 변경 시 handleFileChange 함수 호출
+                                />
+                            </BoardUploadFile>
                         </Col>
 
 
@@ -200,5 +264,5 @@ function BoardWrite() {
         </>
     );
 }
-
+// }
 export default BoardWrite;

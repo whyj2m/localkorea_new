@@ -3,8 +3,36 @@ import axios from "axios";
 const REACT_APP_API_KEY = "299f3d2e3d190a494322efb9e8995a16";
 const weatherDescKo = {};
 
+// 캐시 관련 설정
+const CACHE_KEY = "weatherDataCache";
+const CACHE_TTL = 30 * 60 * 1000; // 30분
+const cache = {
+  getData: () => {
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    if (cachedData) {
+      const { data, timestamp } = JSON.parse(cachedData);
+      if (Date.now() - timestamp < CACHE_TTL) {
+        return data;
+      }
+    }
+    return null;
+  },
+  setData: (data) => {
+    const cacheData = { data, timestamp: Date.now() };
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+  },
+};
+
 export const getWeatherData = async () => {
   try {
+    // 캐시된 데이터가 있는지 확인
+    const cachedData = cache.getData();
+    if (cachedData) {
+      console.log("Returning cached data:", cachedData);
+      return cachedData;
+    }
+
+    // 캐시된 데이터가 없으면 새로운 데이터 요청
     const position = await new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject);
     });
@@ -34,8 +62,11 @@ export const getWeatherData = async () => {
       icon: weatherIconAdrs,
       currentDate: currentDate,
     };
-    // 날씨 로그 찍는거
-    // console.log(weatherData);
+
+    // 날씨 데이터를 캐시에 저장
+    cache.setData(weatherData);
+
+    console.log("Fetching new data:", weatherData);
 
     return weatherData;
   } catch (err) {

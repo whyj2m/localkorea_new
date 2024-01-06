@@ -43,6 +43,7 @@ export const getCompanyBaordList = async () => {
 export const postBoardWrite = async (formData) => {
     try {
         const response = await axiosInstance.post("/board/boardWrite", formData)
+        console.log(response);
         return response;
     } catch (error) {
         throw error;
