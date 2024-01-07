@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-
 import { Button, Form, Row, Col } from 'react-bootstrap';
-
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/board/boardWrite.scss';
@@ -73,32 +72,54 @@ function BoardWrite() {
         }
     };
 
-    // 작성(입력)
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-
-        // 실행하려는 로직
-        // if (name === 'boardCno') {
-        //     if (value === '2') {
-        //         setIsFileUploadDisabled(true); // 비활성화
-        //     } else {
-        //         setIsFileUploadDisabled(false);
-        //     }
-        // }
-
-        if (name === 'title') {
-            setFormData((prevData) => ({
-                ...prevData,
-                title: value
-            }));
-        }
-        // 폼 데이터 업데이트
+    const handleTitleChange = (value) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            title: value
+        }));
+    };
+    
+    const handleOtherFieldsChange = (name, value) => {
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
             location: (name === 'locationCno') ? getLocationName(value) : prevData.location
         }));
     };
+    
+    // 이벤트 핸들러에서는 변경 사항에 따라 적절한 함수를 호출합니다.
+    // const handleChange = (e) => {
+    //     const { name, value } = e.target;
+    
+    //     if (name === 'title') {
+    //         setFormData((prevData) => ({
+    //             ...prevData,
+    //             title: value
+    //         }));
+    //     } else {
+    //         handleOtherFieldsChange(name, value);
+    //     }
+    // };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+    
+        if (name === 'title') {
+            console.log('Title field changed:', value); // 'title' 필드 변경 시 콘솔에 출력
+            setFormData((prevData) => ({
+                ...prevData,
+                title: value
+            }));
+        } else if (name === 'locationCno') {
+            console.log('Location field changed:', value); // 'locationCno' 필드 변경 시 콘솔에 출력
+            handleOtherFieldsChange(name, value);
+        } else {
+            handleOtherFieldsChange(name, value);
+        }
+    };
+    
+    
+
 
     // 선택한 값을 토대로 location 값을 반환하는 함수
     const getLocationName = (value) => {
@@ -129,20 +150,37 @@ function BoardWrite() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log('Form Data:', formData); // 폼 데이터 확인을 위한 콘솔 로그
+            const formData = new FormData();
+            formData.append('title', formData.title);
+            formData.append('content', formData.content);
+            formData.append('boardCno', formData.boardCno);
+            formData.append('locationCno', formData.locationCno);
+            formData.append('location', formData.location);
+    
+            // 파일들 추가
+            uploadedFiles.forEach((file, index) => {
+                formData.append(`files[${index}]`, file);
+            });
+    
             const response = await postBoardWrite(formData);
-            console.log('Response:', response); // 응답 확인을 위한 콘솔 로그
+            console.log('Response:', response);
+    
             if (response.status === 200) {
                 alert("게시글 작성 완료");
-                navigate("/board/tourisSpot")
+                navigate("/board/tourisSpot");
             } else {
-                alert("게시글 작성 실패")
+                alert("게시글 작성 실패");
             }
         } catch (error) {
-            alert("게시글 작성 오류")
+            console.error('Error:', error);
+            alert("게시글 작성 오류");
         }
-    }
+    };
+    
+    
+    
 
+    
 
     return (
         <>
@@ -175,8 +213,6 @@ function BoardWrite() {
                                     onChange={handleChange}
                                 />
                             </Col>
-
-
                         </Row>
                         <div className='underline' />
                         <Row>
