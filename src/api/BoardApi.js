@@ -29,6 +29,16 @@ export const getTourBaordDetail = async (bno) => {
     }
 }
 
+// 이미지 조회
+export const getImg = async (bno) => {
+    try {
+        const response = await axiosInstance.get(`/api/images/${bno}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
 // get company 게시글 목록조회 
 export const getCompanyBaordList = async () => {
     try {
@@ -39,16 +49,33 @@ export const getCompanyBaordList = async () => {
     }
 }
 
-// post 게시글 작성 
+// // post 게시글 작성 
+// export const postBoardWrite = async (formData) => {
+//     try {
+//         const response = await axiosInstance.post("/board/boardWrite", formData)
+//         console.log(response);
+//         return response;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
+
 export const postBoardWrite = async (formData) => {
     try {
-        const response = await axiosInstance.post("/board/boardWrite", formData)
+        const response = await axiosInstance.post("/board/boardWrite", formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data' 
+            }
+        });
+        // console.log(formData);
         console.log(response);
         return response;
     } catch (error) {
         throw error;
     }
-}
+};
+
+
 
 // put 게시글 수정
 export const putBoard = async (bno, updateDate, location) => {

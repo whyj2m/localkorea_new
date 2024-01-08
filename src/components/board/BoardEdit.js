@@ -186,9 +186,9 @@ const BoardEdit = () => {
                      </Row>
                      <div className='underline' />
 
-                     <Col md={6} className='d-flex justify-content-end'>
+                     {/* <Col md={6} className='d-flex justify-content-end'>
                         <BoardUploadFile isDisabled={isFileUploadDisabled} />
-                     </Col>
+                     </Col> */}
 
 
                      <div className='underline' />
