@@ -49,14 +49,15 @@ export const getCompanyBaordList = async () => {
 //         throw error;
 //     }
 // }
+
 export const postBoardWrite = async (formData) => {
     try {
         const response = await axiosInstance.post("/board/boardWrite", formData, {
             headers: {
-                'Content-Type': 'multipart/form-data' // 이 부분이 중요합니다.
+                'Content-Type': 'multipart/form-data' 
             }
         });
-
+        // console.log(formData);
         console.log(response);
         return response;
     } catch (error) {

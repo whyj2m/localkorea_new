@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import { Form, Button, Card, Col, Row } from 'react-bootstrap';
+import { Form, Button, Card, Col, Row, Pagination } from 'react-bootstrap';
 import moment from 'moment'; // 시간
 
 import { getTourBaordList } from '../../../api/BoardApi';
@@ -36,6 +36,8 @@ import '../../../styles/board/tourisSpot.scss';
 function TourisSpot() {
 
     const navigate = useNavigate();
+    const [currentPage, setCurrentPage] = useState(1);
+    const itemsPerPage = 5; // 한 페이지당 보여질 아이템 수
 
     // 글작성 버튼 입력시 boardWrite 페이지로 이동
     const handleButtonClick = () => {
@@ -79,14 +81,37 @@ function TourisSpot() {
 
     // 선택된 지역에 따라 필터링된 아이템을 계산
     const filteredItems = filterItemsByLocation();
+
+
+    // 페이지 번호를 계산하는 함수
+    const calculatePageNumbers = () => {
+        const pageNumbers = [];
+        for (let i = 1; i <= Math.ceil(filteredItems.length / itemsPerPage); i++) {
+            pageNumbers.push(i);
+        }
+        return pageNumbers;
+    };
+
+    // 페이지 번호를 클릭할 때 호출되는 핸들러
+    const handlePageClick = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    // 렌더링할 페이지 번호 목록
+    const pageNumbers = calculatePageNumbers();
+
+    // 현재 페이지에 해당하는 아이템들을 추출
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentItems = filteredItems.slice(startIndex, endIndex);
+
+
     return (
         <>
             <BoardNav />
 
             {/* 검색창 */}
             {/* <SearchForm /> */}
-
-
 
             {/* 관광지 카드 */}
             <div className="container">
@@ -95,7 +120,7 @@ function TourisSpot() {
                         {/* 총건수 확인 */}
                         <Col md={8} className="place-total d-flex align-items-center">
                             <div className="total">
-                                총<span>{TourBoardListData.length}</span>건
+                                총<span>{filteredItems.length}</span>건
                             </div>
                         </Col>
                         {/* 필터링 */}
@@ -113,12 +138,12 @@ function TourisSpot() {
                                 <option value="경기">경상</option>
                             </Form.Select>
                         </Col>
-                        <Col md={2} className="d-flex justify-content-end">
+                        <Col xs={9} md={2} className="d-flex justify-content-end">
                             <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
                         </Col>
                     </Row>
                     {/* 필터링된 결과를 출력 */}
-                    {filteredItems.map((item, index) => (
+                    {currentItems.map((item, index) => (
                         <Link to={`/boardView/${item.bno}`} key={item.bno}
                             className="tour-board-link"
                         >
@@ -129,13 +154,17 @@ function TourisSpot() {
                                     </Col>
                                     <Col xs={9} md={9}>
                                         <Row className="justify-content-between align-items-center">
-                                            <Col xs={7} md={10} className="content-location">[{item.location}]</Col>
-                                            <Col xs={2} md={2}><p>조회 {item.viewCnt || 0}</p></Col>
+                                            <Col xs={10} md={10} className="content-location">[{item.location}]</Col>
+                                            <Col xs={3} md={2}><p>조회 {item.viewCnt || 0}</p></Col>
                                         </Row>
                                         <Col className="content-title" xs={7} md={4}>{item.title}</Col>
                                         <Row className="justify-content-end nickAndDate">
-                                            <Col xs={2} md={1}><p>닉네임{item.id}</p> </Col>
-                                            <Col xs={2} md={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
+                                        <Col xs={6} md={2}><p>작성자:{item.id?.username}</p></Col>
+
+
+                                            {/* <Col xs={6} md={1}><p>{String(item.id)}</p></Col> */}
+
+                                            <Col xs={6} md={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
                                         </Row>
                                     </Col>
                                 </Row>
@@ -144,6 +173,19 @@ function TourisSpot() {
                         </Link>
                     ))}
                 </div>
+                {/* 페이징 */}
+                <Pagination style={{ justifyContent: "center" }}>
+                    {pageNumbers.map((number) => (
+                        <Pagination.Item
+                            key={number}
+                            active={number === currentPage}
+                            onClick={() => handlePageClick(number)}
+                        >
+                            {number}
+                        </Pagination.Item>
+                    ))}
+                    
+                </Pagination>
             </div>
         </>
     );

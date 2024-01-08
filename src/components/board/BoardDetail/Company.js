@@ -71,7 +71,7 @@ function Company() {
                                                     <p>{item.location}</p>
                                                 </div>
                                                 <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
-                                                <Card.Text className='tag'>#모든 성별 #20대 #산책</Card.Text>
+                                                {/* <Card.Text className='tag'>#모든 성별 #20대 #산책</Card.Text> */}
                                             </Card.Body>
                                         </Col>
                                         <Col xs={3} md={3}>
