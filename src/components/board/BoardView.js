@@ -22,6 +22,7 @@ function BoardView() {
     const [TourBaordDetailData, setTourBaordDetailData] = useState([]);
     const { bno } = useParams();
     const [previews, setPreviews] = useState([]); // 이미지
+    const [imageSrc, setImageSrc] = useState('');
 
     // bno를 사용하여 관광지 게시글 상세정보를 가져오기
     useEffect(() => {
@@ -63,19 +64,25 @@ function BoardView() {
 
     // 이미지 보여주기
     useEffect(() => {
-        const fetchImages = async () => {
+        // 이미지를 가져오는 API 호출
+        const fetchImage = async () => {
             try {
-                const response = await getImg(bno); // bno를 이용하여 이미지 가져오기
-                const imageData = response.data; // 이미지 데이터
-                console.log(imageData);
-                setPreviews(imageData); // 이미지 데이터를 state에 저장
+                const response = await fetch(`http://localhost:8081/api/images/${bno}`);
+                if (response.ok) {
+                    const blob = await response.blob(); // 이미지 데이터를 blob으로 변환
+                    const imageUrl = URL.createObjectURL(blob); // blob URL 생성
+                    setImageSrc(imageUrl); // 이미지 주소를 state에 저장
+                } else {
+                    console.error('Failed to fetch image');
+                }
             } catch (error) {
-                console.error("Error fetching images:", error);
+                console.error('Error fetching image:', error);
             }
         };
 
-        fetchImages();
-    }, [bno]); // bno가 바뀔 때마다 실행
+        fetchImage();
+    }, [bno]);
+
 
     return (
         <div>
@@ -129,39 +136,29 @@ function BoardView() {
 
                             {/* 사진 */}
                             <Row>
-                                <Col xs={4} md={2} className='boardView-img'>
-                                    <p>사진</p>
-                                </Col>
                                 <Col xs={8} md={4} className='BoardContent'>
-                                    {/* 이미지 파일 경로를 가져와서 보여주는 부분 */}
-                                    {previews.length > 0 && previews.map((preview, index) => (
-                                        <div key={index}>
+                                    <div>
+                                        {imageSrc ? (
                                             <img
-                                                src={`http://localhost:8081/images/${bno}/${preview.uuid}`} // 여기 URL을 이미지가 호스팅되는 실제 웹 경로로 수정해야 합니다.
-                                                alt={`Thumbnail ${index}`}
-                                                style={{
-                                                    width: '200px',
-                                                    height: '200px',
-                                                    objectFit: 'cover',
-                                                    marginBottom: '5px'
-                                                }}
+                                                src={imageSrc}
+                                                alt={`Image ${bno}`}
+                                                width={300}
+                                                height={250}
+                                                style={{ objectFit: 'cover' }}
                                             />
-                                        </div>
-                                    ))}
+                                        ) : (
+                                            <div>등록된 이미지가 없습니다!</div>
+                                        )}
+                                    </div>
                                 </Col>
                             </Row>
-
-
                             <div className="line" />
-
-
                             {/* 버튼 */}
                             <Row className='justify-content-end'>
                                 <Col xs={1} md={1} className='boardView-btn'>
                                     <Link to={`/board/edit/${item.bno}`}>
                                         <Button variant="link">수정</Button>
                                     </Link>
-
                                 </Col>
                                 <Col xs={1} md={1} className='boardView-btn'>
                                     <Button variant="link" disabled={loading} onClick={handleDelete}>
@@ -174,7 +171,6 @@ function BoardView() {
                                     </Link>
                                 </Col>
                             </Row>
-
                         </Row>
                     ))}
                 </div>

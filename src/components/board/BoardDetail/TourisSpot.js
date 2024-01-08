@@ -83,28 +83,60 @@ function TourisSpot() {
     const filteredItems = filterItemsByLocation();
 
 
-    // 페이지 번호를 계산하는 함수
-    const calculatePageNumbers = () => {
-        const pageNumbers = [];
-        for (let i = 1; i <= Math.ceil(filteredItems.length / itemsPerPage); i++) {
-            pageNumbers.push(i);
-        }
-        return pageNumbers;
-    };
-
-    // 페이지 번호를 클릭할 때 호출되는 핸들러
-    const handlePageClick = (pageNumber) => {
-        setCurrentPage(pageNumber);
-    };
-
-    // 렌더링할 페이지 번호 목록
-    const pageNumbers = calculatePageNumbers();
-
-    // 현재 페이지에 해당하는 아이템들을 추출
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    const currentItems = filteredItems.slice(startIndex, endIndex);
-
+// 페이지 번호를 계산하는 함수
+const calculatePageNumbers = () => {
+    const pageNumbers = [];
+    const maxPagesToShow = 5; // 표시할 최대 페이지 수
+    
+    const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+    const currentPageIndex = Math.floor((currentPage - 1) / maxPagesToShow); // 현재 페이지가 속한 그룹의 인덱스
+    
+    let startPage = currentPageIndex * maxPagesToShow + 1; // 시작 페이지
+    let endPage = (currentPageIndex + 1) * maxPagesToShow; // 끝 페이지
+    
+    if (startPage < 1) {
+      startPage = 1;
+    }
+    
+    if (endPage > totalPages) {
+      endPage = totalPages;
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+    
+    return pageNumbers;
+  };
+  
+  // 페이지 번호를 클릭할 때 호출되는 핸들러
+  const handlePageClick = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+  
+  // 이전 페이지로 이동하는 핸들러
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+  
+  // 다음 페이지로 이동하는 핸들러
+  const handleNextPage = () => {
+    const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+  
+  // 페이지 이동 버튼 클릭 시 계산된 페이지 목록
+  const pageNumbers = calculatePageNumbers();
+  
+  // 현재 페이지에 해당하는 아이템 추출
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const currentItems = filteredItems.slice(startIndex, endIndex);
+  
 
     return (
         <>
@@ -170,7 +202,8 @@ function TourisSpot() {
                     ))}
                 </div>
                 {/* 페이징 */}
-                <Pagination style={{ justifyContent: "center" }}>
+                <Pagination style={{ justifyContent: "center", display: "flex", alignItems: "center" }}>
+                    <Pagination.Prev onClick={() => handlePageClick(currentPage - 1)} />
                     {pageNumbers.map((number) => (
                         <Pagination.Item
                             key={number}
@@ -180,7 +213,7 @@ function TourisSpot() {
                             {number}
                         </Pagination.Item>
                     ))}
-
+                    <Pagination.Next onClick={() => handlePageClick(currentPage + 1)} />
                 </Pagination>
             </div>
         </>

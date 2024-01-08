@@ -60,6 +60,7 @@ export const getCompanyBaordList = async () => {
 //     }
 // }
 
+// 이미지 조회
 export const postBoardWrite = async (formData) => {
     try {
         const response = await axiosInstance.post("/board/boardWrite", formData, {
