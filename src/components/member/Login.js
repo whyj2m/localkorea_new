@@ -1,15 +1,28 @@
-import { postLogin } from "../../api/MemberApi";
+import { useNavigate } from "react-router-dom";
+import { googleLogin, postLogin } from "../../api/MemberApi";
 import "../../styles/Member.scss";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 
 function Login() {
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
     const userId = data.get("id");
     const password = data.get("password");
 
-    postLogin({id:userId, password:password})
+    try {
+      await postLogin({id:userId, password:password})
+      // 로그인 성공 시 메인 페이지로 이동
+      navigate("/");
+    } catch (error) {
+      if (error.response && error.response.data.message === "Incorrect password.") {
+      
+      } else {
+      
+      }
+    }
   }
 
   return (
@@ -21,24 +34,23 @@ function Login() {
             <Form.Group className="grp">
               <Form.Label htmlFor="inputID">ID</Form.Label>
               <Form.Control
-                type="id"
+                type="text" required
                 id="inputID" name="id"
-                aria-describedby="passwordHelpBlock"
+                aria-describedby="idHelpBlock"
                 placeholder="Enter your ID"
               />
             </Form.Group>
             <Form.Group className="grp">
               <Form.Label htmlFor="inputPW">Password</Form.Label>
               <Form.Control
-                type="password"
+                type="password" required
                 id="inputPW" name="password"
                 aria-describedby="passwordHelpBlock"
                 placeholder="Enter your Password"
               />
             </Form.Group>
-            <Form.Check // prettier-ignore
+            <Form.Check
               type="checkbox"
-              id="keep-status"
               label="Remember for 30 days"
               className="grp chk"
             />
@@ -48,12 +60,14 @@ function Login() {
           </Form>
           <hr />
           <div className="otherlogin">
-            <div className="google">
-              <div className="g-icon">
-                <img src="../../assets/member/google.png" alt="" />
+            <a href="http://localhost:8081/oauth2/authorization/google" onClick={googleLogin}>
+              <div className="google">
+                <div className="g-icon">
+                  <img src="../../assets/member/google.png" alt="" />
+                </div>
+                Sign with Google
               </div>
-              Sign with Google
-            </div>
+            </a>
             <div className="kakao">
               <div className="k-icon">
                 <img src="../../assets/member/kakao.png" alt="" />

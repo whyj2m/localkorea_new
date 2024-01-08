@@ -243,7 +243,6 @@ function Main() {
       return 1; // 더 작은 창 폭에는 1개의 슬라이드만 표시
     }
   }
-
   return (
     <div>
       <Video />

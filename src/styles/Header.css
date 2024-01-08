@@ -125,6 +125,11 @@
   transition: 1s;
 }
 
+/* 로그인상태 css 부분 */
+.header-main-icon span {
+  font-size: 20px;
+}
+
 /* 모바일 화면일 때의 스타일 */
 @media screen and (max-width: 720px) {
   #pageline {
