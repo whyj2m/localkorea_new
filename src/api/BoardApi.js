@@ -29,6 +29,16 @@ export const getTourBaordDetail = async (bno) => {
     }
 }
 
+// 이미지 조회
+export const getImg = async (bno) => {
+    try {
+        const response = await axiosInstance.get(`/api/images/${bno}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
 // get company 게시글 목록조회 
 export const getCompanyBaordList = async () => {
     try {

@@ -113,15 +113,17 @@ function BoardWrite() {
         uploadedFiles.forEach((fileObject, index) => {
             formData.append(`files`, fileObject.file);
         });
+
         formData.append('title', title);
         formData.append('content', content);
         formData.append('boardCno', boardCno);
         formData.append('locationCno', locationCno);
         formData.append('location', getLocationName(locationCno));
+
         try {
             const response = await postBoardWrite(formData);
             console.log(response);
-            console.log(formData);
+            // console.log(formData);
             alert('게시글 작성 성공');
             window.location.href = '/board/tourisSpot';
         } catch (error) {

@@ -159,11 +159,7 @@ function TourisSpot() {
                                         </Row>
                                         <Col className="content-title" xs={7} md={4}>{item.title}</Col>
                                         <Row className="justify-content-end nickAndDate">
-                                        <Col xs={6} md={2}><p>작성자:{item.id?.username}</p></Col>
-
-
-                                            {/* <Col xs={6} md={1}><p>{String(item.id)}</p></Col> */}
-
+                                            <Col xs={6} md={2}><p>작성자:{item.id?.username}</p></Col>
                                             <Col xs={6} md={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
                                         </Row>
                                     </Col>
@@ -184,7 +180,7 @@ function TourisSpot() {
                             {number}
                         </Pagination.Item>
                     ))}
-                    
+
                 </Pagination>
             </div>
         </>
