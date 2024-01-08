@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Card, Col, Row, Pagination } from 'react-bootstrap';
 import moment from 'moment'; // 시간
 
 import { getTourBaordList } from '../../../api/BoardApi';
+import { getImg } from "../../../api/BoardApi";
 import BoardNav from '../BoardNav';
 
 import '../../../styles/board/board.scss';
@@ -34,8 +36,10 @@ import '../../../styles/board/tourisSpot.scss';
 
 
 function TourisSpot() {
-
     const navigate = useNavigate();
+    const { bno } = useParams();
+    const [imageSrc, setImageSrc] = useState(''); // 이미지
+    const [imageSrcMap, setImageSrcMap] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5; // 한 페이지당 보여질 아이템 수
 
@@ -83,60 +87,100 @@ function TourisSpot() {
     const filteredItems = filterItemsByLocation();
 
 
-// 페이지 번호를 계산하는 함수
-const calculatePageNumbers = () => {
-    const pageNumbers = [];
-    const maxPagesToShow = 5; // 표시할 최대 페이지 수
-    
-    const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
-    const currentPageIndex = Math.floor((currentPage - 1) / maxPagesToShow); // 현재 페이지가 속한 그룹의 인덱스
-    
-    let startPage = currentPageIndex * maxPagesToShow + 1; // 시작 페이지
-    let endPage = (currentPageIndex + 1) * maxPagesToShow; // 끝 페이지
-    
-    if (startPage < 1) {
-      startPage = 1;
+    // 페이지 번호를 계산하는 함수
+    const calculatePageNumbers = () => {
+        const pageNumbers = [];
+        const maxPagesToShow = 5; // 표시할 최대 페이지 수
+
+        const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+        const currentPageIndex = Math.floor((currentPage - 1) / maxPagesToShow); // 현재 페이지가 속한 그룹의 인덱스
+
+        let startPage = currentPageIndex * maxPagesToShow + 1; // 시작 페이지
+        let endPage = (currentPageIndex + 1) * maxPagesToShow; // 끝 페이지
+
+        if (startPage < 1) {
+            startPage = 1;
+        }
+
+        if (endPage > totalPages) {
+            endPage = totalPages;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pageNumbers.push(i);
+        }
+
+        return pageNumbers;
+    };
+
+    // 페이지 번호를 클릭할 때 호출되는 핸들러
+    const handlePageClick = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
+    // 이전 페이지로 이동하는 핸들러
+    const handlePreviousPage = () => {
+        if (currentPage > 1) {
+            setCurrentPage(currentPage - 1);
+        }
+    };
+
+    // 다음 페이지로 이동하는 핸들러
+    const handleNextPage = () => {
+        const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    // 페이지 이동 버튼 클릭 시 계산된 페이지 목록
+    const pageNumbers = calculatePageNumbers();
+
+    // 현재 페이지에 해당하는 아이템 추출
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    const currentItems = filteredItems.slice(startIndex, endIndex);
+
+// 이미지 보여주기
+useEffect(() => {
+    const fetchImages = async () => {
+        try {
+            const promises = currentItems.map(async (item) => {
+                const response = await fetch(`http://localhost:8081/api/images/${item.bno}`);
+                if (response.ok) {
+                    const blob = await response.blob(); // 이미지 데이터를 blob으로 변환
+                    const imageUrl = URL.createObjectURL(blob);
+                    return { bno: item.bno, imageUrl }; // bno와 이미지 주소를 반환
+                } else {
+                    console.error(`Failed to fetch image for item ${item.bno}`);
+                    return null; // 에러 발생 시 null 반환
+                }
+            });
+
+            // 모든 이미지 fetch를 기다린 후 이미지 주소를 가져옴
+            const imageUrls = await Promise.all(promises);
+
+            // 이미지 주소를 state에 설정
+            const imageSrcMap = {};
+            imageUrls.forEach((image) => {
+                if (image) {
+                    imageSrcMap[image.bno] = image.imageUrl;
+                }
+            });
+
+            setImageSrcMap(imageSrcMap); // 각 bno에 해당하는 이미지 주소를 저장하는 객체 설정
+        } catch (error) {
+            console.error('Error fetching images:', error);
+        }
+    };
+
+    if (currentItems.length > 0) {
+        fetchImages();
     }
-    
-    if (endPage > totalPages) {
-      endPage = totalPages;
-    }
-    
-    for (let i = startPage; i <= endPage; i++) {
-      pageNumbers.push(i);
-    }
-    
-    return pageNumbers;
-  };
-  
-  // 페이지 번호를 클릭할 때 호출되는 핸들러
-  const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-  
-  // 이전 페이지로 이동하는 핸들러
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-      setCurrentPage(currentPage - 1);
-    }
-  };
-  
-  // 다음 페이지로 이동하는 핸들러
-  const handleNextPage = () => {
-    const totalPages = Math.ceil(filteredItems.length / itemsPerPage);
-    if (currentPage < totalPages) {
-      setCurrentPage(currentPage + 1);
-    }
-  };
-  
-  // 페이지 이동 버튼 클릭 시 계산된 페이지 목록
-  const pageNumbers = calculatePageNumbers();
-  
-  // 현재 페이지에 해당하는 아이템 추출
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
-  const currentItems = filteredItems.slice(startIndex, endIndex);
-  
+}, [currentItems]);
+
+
+
 
     return (
         <>
@@ -176,13 +220,25 @@ const calculatePageNumbers = () => {
                     </Row>
                     {/* 필터링된 결과를 출력 */}
                     {currentItems.map((item, index) => (
-                        <Link to={`/boardView/${item.bno}`} key={item.bno}
-                            className="tour-board-link"
-                        >
+                        <Link to={`/boardView/${item.bno}`} key={item.bno} className="tour-board-link" >
                             <Card className='TourisSpot-Card'>
                                 <Row>
                                     <Col xs={9} md={3}>
-                                        <img className='TourisSpot-Img' variant="top" src={item.imageSrc} alt="대표이미지" />
+                                        {/* <img className='TourisSpot-Img' variant="top" src={item.imageSrc} alt="대표이미지" /> */}
+                                        <div>
+                                            {imageSrcMap[item.bno] ? (
+                                                <img
+                                                    className='TourisSpot-Img'
+                                                    variant="top"
+                                                    src={imageSrcMap[item.bno]}
+                                                    alt={`Image ${item.bno}`}
+                                                    style={{ objectFit: 'cover' }}
+                                                />
+                                            ) : (
+                                                <div>등록된 이미지가 없습니다!</div>
+                                            )}
+                                        </div>
+
                                     </Col>
                                     <Col xs={9} md={9}>
                                         <Row className="justify-content-between align-items-center">

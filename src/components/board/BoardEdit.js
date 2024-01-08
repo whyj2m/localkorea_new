@@ -71,38 +71,48 @@ const BoardEdit = () => {
    // 업데이트
    const handleChange = (e) => {
       const { name, value } = e.target;
+      let newLocation = '';
+   
+      switch (value) {
+         case '1':
+            newLocation = '서울';
+            break;
+         case '2':
+            newLocation = '인천';
+            break;
+         case '3':
+            newLocation = '대전';
+            break;
+         case '4':
+            newLocation = '부산';
+            break;
+         case '5':
+            newLocation = '경기';
+            break;
+         case '6':
+            newLocation = '충청';
+            break;
+         case '7':
+            newLocation = '강원';
+            break;
+         case '8':
+            newLocation = '전라';
+            break;
+         case '9':
+            newLocation = '경상';
+            break;
+         default:
+            newLocation = '';
+            break;
+      }
+   
       setUpdateDate((prevData) => ({
          ...prevData,
          [name]: value,
-         // location: (name === 'locationCno') ? getLocationName(value) : prevData.location
-         location: getLocationName(value)
+         location: newLocation
       }));
    };
    
-   const getLocationName = (value) => {
-      switch (value) {
-         case '1':
-            return '서울';
-         case '2':
-            return '인천';
-         case '3':
-            return '대전';
-         case '4':
-            return '부산';
-         case '5':
-            return '경기';
-         case '6':
-            return '충청';
-         case '7':
-            return '강원';
-         case '8':
-            return '전라';
-         case '9':
-            return '경상';
-         default:
-            return '';
-      }
-   };
    
    // 파일업로드
    useEffect(() => {
@@ -172,15 +182,22 @@ const BoardEdit = () => {
                               value={updateDate.locationCno || item.locationCno}
                               onChange={handleChange}
                            >
-                              <option value="1">서울</option>
-                              <option value="2">인천</option>
-                              <option value="3">대전</option>
+                              <option value="1" selected={updateDate.locationCno === '1'}>서울</option>
+                              <option value="2" selected={updateDate.locationCno === '2'}>인천</option>
+                              <option value="3" selected={updateDate.locationCno === '3'}>대전</option>
+                              <option value="4" selected={updateDate.locationCno === '4'}>부산</option>
+                              <option value="5" selected={updateDate.locationCno === '5'}>경기</option>
+                              <option value="6" selected={updateDate.locationCno === '6'}>충천</option>
+                              <option value="7" selected={updateDate.locationCno === '7'}>강원</option>
+                              <option value="8" selected={updateDate.locationCno === '8'}>전라</option>
+                              <option value="9" selected={updateDate.locationCno === '9'}>경상</option>
+                              {/* <option value="3">대전</option>
                               <option value="4">부산</option>
                               <option value="5">경기</option>
                               <option value="6">충천</option>
                               <option value="7">강원</option>
                               <option value="8">전라</option>
-                              <option value="9">경상</option>
+                              <option value="9">경상</option> */}
                            </select>
                         </Col>
                      </Row>

@@ -10,7 +10,7 @@ import 'moment/locale/ko'; // 시간 한글로
 
 import { useNavigate } from 'react-router-dom';
 
-import { getTourBaordDetail, getImg } from '../../api/BoardApi';
+import { getTourBaordDetail } from '../../api/BoardApi';
 import { deleteBoard } from '../../api/BoardApi';
 import BoardNav from './BoardNav';
 
@@ -21,8 +21,8 @@ function BoardView() {
     // 관광지 추천 게시판 상세 내용 가져오기
     const [TourBaordDetailData, setTourBaordDetailData] = useState([]);
     const { bno } = useParams();
-    const [previews, setPreviews] = useState([]); // 이미지
-    const [imageSrc, setImageSrc] = useState('');
+    // const [previews, setPreviews] = useState([]); 
+    const [imageSrc, setImageSrc] = useState(''); // 이미지
 
     // bno를 사용하여 관광지 게시글 상세정보를 가져오기
     useEffect(() => {
@@ -59,8 +59,6 @@ function BoardView() {
             setLoading(false);
         }
     };
-
-    // 수정
 
     // 이미지 보여주기
     useEffect(() => {
@@ -128,7 +126,7 @@ function BoardView() {
                                 <Col xs={4} md={2} className='boardView-content'>
                                     <p>내용</p>
                                 </Col>
-                                <Col xs={8} md={4} className='BoardContent'>
+                                <Col xs={8} md={8} className='BoardContent'>
                                     <div>{item.content}</div>
                                 </Col>
                                 <div className="line" />
