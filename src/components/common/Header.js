@@ -124,7 +124,7 @@ function Header() {
       const decodedToken = jwtDecode(accessToken);
 
       // 디코딩된 페이로드에서 사용자 ID에 액세스합니다
-      const userId = decodedToken.name; // "sub"는 사용자 ID에 대한 표준 클레임입니다
+      const userId = decodedToken.id; // "sub"는 사용자 ID에 대한 표준 클레임입니다
 
       // 사용자 ID를 로그에 기록하거나 필요한 대로 사용합니다
       console.log("JWT에서 추출한 사용자 ID:", userId);
