@@ -10,7 +10,7 @@ import 'moment/locale/ko'; // 시간 한글로
 
 import { useNavigate } from 'react-router-dom';
 
-import { getTourBaordDetail } from '../../api/BoardApi';
+import { getTourBaordDetail, getImg } from '../../api/BoardApi';
 import { deleteBoard } from '../../api/BoardApi';
 import BoardNav from './BoardNav';
 
@@ -21,6 +21,7 @@ function BoardView() {
     // 관광지 추천 게시판 상세 내용 가져오기
     const [TourBaordDetailData, setTourBaordDetailData] = useState([]);
     const { bno } = useParams();
+    const [previews, setPreviews] = useState([]); // 이미지
 
     // bno를 사용하여 관광지 게시글 상세정보를 가져오기
     useEffect(() => {
@@ -28,6 +29,7 @@ function BoardView() {
             try {
                 const response = await getTourBaordDetail(bno);
                 const data = response.data;
+                console.log(data);
 
                 setTourBaordDetailData(Array.isArray(data) ? data : [data]);
             } catch (error) {
@@ -58,6 +60,22 @@ function BoardView() {
     };
 
     // 수정
+
+    // 이미지 보여주기
+    useEffect(() => {
+        const fetchImages = async () => {
+            try {
+                const response = await getImg(bno); // bno를 이용하여 이미지 가져오기
+                const imageData = response.data; // 이미지 데이터
+                console.log(imageData);
+                setPreviews(imageData); // 이미지 데이터를 state에 저장
+            } catch (error) {
+                console.error("Error fetching images:", error);
+            }
+        };
+
+        fetchImages();
+    }, [bno]); // bno가 바뀔 때마다 실행
 
     return (
         <div>
@@ -115,9 +133,25 @@ function BoardView() {
                                     <p>사진</p>
                                 </Col>
                                 <Col xs={8} md={4} className='BoardContent'>
-                                    <div>사진사진</div>
+                                    {/* 이미지 파일 경로를 가져와서 보여주는 부분 */}
+                                    {previews.length > 0 && previews.map((preview, index) => (
+                                        <div key={index}>
+                                            <img
+                                                src={`http://localhost:8081/images/${bno}/${preview.uuid}`} // 여기 URL을 이미지가 호스팅되는 실제 웹 경로로 수정해야 합니다.
+                                                alt={`Thumbnail ${index}`}
+                                                style={{
+                                                    width: '200px',
+                                                    height: '200px',
+                                                    objectFit: 'cover',
+                                                    marginBottom: '5px'
+                                                }}
+                                            />
+                                        </div>
+                                    ))}
                                 </Col>
                             </Row>
+
+
                             <div className="line" />
 
 
