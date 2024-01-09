@@ -82,47 +82,53 @@ function CompanyModal() {
       {CompanyBoardListData.map(item => (
         <div key={item.id} className='d-flex justify-content-center modal-'>
           <Modal className='companyModal' show={show} onHide={handleClose}>
-            <Modal.Header className='modal-header' closeButton>
-              {/* <Modal.Title className='modal-title'>??</Modal.Title> */}
-            </Modal.Header>
+            <Modal.Header className='modal-header' closeButton></Modal.Header>
             <Modal.Body>
-              <div className="info">
-                <h2>{item.title}</h2>
-                <div>
-                  <p className='modal-title'><MdOutlineLocationOn className='location-icon' />{item.location}</p>
-                </div>
-                <div className='date-info'>
-                  <MdDateRange className='date-icon' />
-                  <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
+              <div className="container">
+                <div className="row">
+                  <div className="col-md-6">
+                    {/* 왼쪽 구획 */}
+                    <div className="info">
+                      <h2>{item.title}</h2>
+                      <div>
+                        <p className='modal-title'><MdOutlineLocationOn className='location-icon' />{item.location}</p>
+                      </div>
+                      <div className='date-info'>
+                        <MdDateRange className='date-icon' />
+                        <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
+                      </div>
+                      <div>
+                        {item.content}
+                      </div>
+                      <div className='Reply_div'>
+                        <h4> 댓글 </h4>
+                        <div className='Reply_write'>
+                          <textarea
+                            rows='3'
+                            placeholder='100자 이내의 글을 입력해주세요.'
+                            maxLength='100'
+                            name='write_reply'
+                          />
+                          <input type='button' value='등록' id='reply_submit_button' />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-md-6">
+                    {/* 오른쪽 구획 */}
+                    <div>
+                      {/* 댓글 */}
+                    </div>
+                  </div>
                 </div>
               </div>
-              {/* <div className='tag'>
-                #20대 #여행 #제주도 #한달살기 
-              </div> */}
-              <div>
-                {item.content}
-              </div>
-              {/* <Button variant="secondary" onClick={handleClick} >
-                신청하기
-              </Button> */}
             </Modal.Body>
             <Modal.Footer className='modal-footer justify-content-start'>
-              {/* 댓글 */}
-              <div className='Reply_div'>
-                <h4> 댓글 </h4>
-
-                <div className='Reply_write'>
-                  <textarea
-                    rows='3'
-                    placeholder='100자 이내의 글을 입력해주세요.'
-                    maxLength='100'
-                    name='write_reply'
-                  />
-                  <input type='button' value='등록' id='reply_submit_button' />
-                </div>
-              </div>
+              {/* 댓글 등의 영역 */}
+              {/* ... */}
             </Modal.Footer>
           </Modal>
+
         </div>
       ))}
     </>
