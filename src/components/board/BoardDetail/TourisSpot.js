@@ -141,46 +141,36 @@ function TourisSpot() {
     const endIndex = startIndex + itemsPerPage;
     const currentItems = filteredItems.slice(startIndex, endIndex);
 
-// 이미지 보여주기
-useEffect(() => {
-    const fetchImages = async () => {
-        try {
-            const promises = currentItems.map(async (item) => {
-                const response = await fetch(`http://localhost:8081/api/images/${item.bno}`);
-                if (response.ok) {
-                    const blob = await response.blob(); // 이미지 데이터를 blob으로 변환
-                    const imageUrl = URL.createObjectURL(blob);
-                    return { bno: item.bno, imageUrl }; // bno와 이미지 주소를 반환
-                } else {
-                    console.error(`Failed to fetch image for item ${item.bno}`);
-                    return null; // 에러 발생 시 null 반환
-                }
-            });
+    // 이미지 보여주기
+    useEffect(() => {
+        const fetchImages = async () => {
+            try {
+                const promises = currentItems.map(async (item) => {
+                    if (!imageSrcMap[item.bno]) {
+                        const response = await fetch(`http://localhost:8081/api/images/${item.bno}`);
+                        if (response.ok) {
+                            const blob = await response.blob();
+                            const imageUrl = URL.createObjectURL(blob);
+                            setImageSrcMap((prevImageSrcMap) => ({
+                                ...prevImageSrcMap,
+                                [item.bno]: imageUrl,
+                            }));
+                        } else {
+                            console.error(`Failed to fetch image for item ${item.bno}`);
+                        }
+                    }
+                });
 
-            // 모든 이미지 fetch를 기다린 후 이미지 주소를 가져옴
-            const imageUrls = await Promise.all(promises);
+                await Promise.all(promises);
+            } catch (error) {
+                console.error('Error fetching images:', error);
+            }
+        };
 
-            // 이미지 주소를 state에 설정
-            const imageSrcMap = {};
-            imageUrls.forEach((image) => {
-                if (image) {
-                    imageSrcMap[image.bno] = image.imageUrl;
-                }
-            });
-
-            setImageSrcMap(imageSrcMap); // 각 bno에 해당하는 이미지 주소를 저장하는 객체 설정
-        } catch (error) {
-            console.error('Error fetching images:', error);
+        if (currentItems.length > 0) {
+            fetchImages();
         }
-    };
-
-    if (currentItems.length > 0) {
-        fetchImages();
-    }
-}, [currentItems]);
-
-
-
+    }, [currentItems, imageSrcMap]);
 
     return (
         <>
