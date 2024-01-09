@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { getLocalPlaceView, postHeart } from "../../api/LocalPlaceApi";
 import Kakaomap from "../../api/Kakaomap";
 import PlaceModal from "./PlcaeModal";
+import { jwtDecode } from "jwt-decode";
 
 function PlaceView() {
   const { localNo, placeNo } = useParams();
@@ -49,13 +50,29 @@ function PlaceView() {
       // 로그인되어 있지 않다면 로그인 페이지로 이동하도록 처리 (이 부분은 프로젝트에 맞게 수정 필요)
       alert("로그인이 필요합니다.");
       navigate("/login"); // 리다이렉트 처리
+
       return;
     }
-
     try {
+      // 로그인 상태 확인 함수
+      const accessToken = localStorage.getItem("ACCESS_TOKEN");
+
+      // JWT를 디코딩하여 페이로드에 액세스합니다
+      const decodedToken = jwtDecode(accessToken);
+
+      // 디코딩된 페이로드에서 사용자 ID에 액세스합니다
+      const userId = decodedToken.id; // "sub"는 사용자 ID에 대한 표준 클레임입니다
+
+      // 사용자 ID를 로그에 기록하거나 필요한 대로 사용합니다
+      console.log("JWT에서 추출한 사용자 ID:", userId);
+
       // HeartApi에서 postHeart 함수 호출
-      await postHeart({ id: "test1", placeNo }); // id는 현재 하드코딩되어 있음
-      alert("하트가 클릭되었습니다.");
+      await postHeart({ id: userId, placeNo }); // 사용자 ID 동적으로 설정
+      alert("좋아요 클릭 하셨습니다! 마이페이지 확인해주세요~");
+
+      // 클릭 이후에 서버로부터 최신 데이터를 가져와서 화면 업데이트
+      const updatedPlaceResponse = await getLocalPlaceView(placeNo);
+      setPlaceData(updatedPlaceResponse.data);
     } catch (error) {
       console.error("하트 클릭 오류:", error);
     }

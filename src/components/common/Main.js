@@ -2,18 +2,21 @@
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
+
 import { useEffect, useState } from "react";
+import { IoEyeSharp } from "react-icons/io5";
 
 import "../../styles/Main.css";
 import SouthKoreaMap from "../common/SouthKoreaMap.js";
 import Video from "./Video.js";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaRegEye } from "react-icons/fa";
 
 //  스와이퍼 부분
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { getTourBaordList } from "../../api/BoardApi.js";
 
 function Section2Swiper({
   festivalData,
@@ -107,72 +110,135 @@ function Section3Swiper({ foods, localNo, slidesPerView }) {
 }
 
 function Section4Swiper() {
+  const [tourBoardListData, setTourBoardListData] = useState([]);
+
+  useEffect(() => {
+    const fetchTourBoardListData = async () => {
+      try {
+        const response = await getTourBaordList();
+        const data = response.data;
+
+        // 이미지 URL을 가져오기 위해 각 아이템에 대해 fetchImage 호출
+        const newData = await Promise.all(
+          data.map(async (item) => {
+            const imageUrl = await fetchImage(item.bno);
+            return { ...item, imageUrl };
+          })
+        );
+
+        console.log("TourBoardListData: ", newData);
+        setTourBoardListData(newData);
+      } catch (error) {
+        console.error("Error fetching local data:", error);
+      }
+    };
+
+    fetchTourBoardListData();
+  }, []);
+
+  const fetchImage = async (bno) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8081/api/images/${bno}`,
+        { responseType: "arraybuffer" }
+      );
+      const blob = new Blob([response.data], {
+        type: response.headers["content-type"],
+      });
+      const imageUrl = URL.createObjectURL(blob);
+      console.log("Image URL:", imageUrl);
+      return imageUrl;
+    } catch (error) {
+      console.error(`에러 : ${bno}:`, error);
+      return null;
+    }
+  };
+
   return (
     <Swiper
       style={{
-        height: "500px",
-        width: "100%",
+        height: "100%",
+        width: "1200px",
         position: "relative",
         backgroundColor: "white",
-        paddingTop: "50px",
       }}
-      modules={[Autoplay]}
+      modules={[Pagination]}
+      pagination={{ clickable: true }}
       spaceBetween={0}
       slidesPerView={1}
-      autoplay={{ delay: "3333" }}
-      loop={true}
     >
-      <SwiperSlide>
-        <div className="section4-slider-item">
-          <img src="/assets/local/main-board.jpg" alt="" />
-          <div className="section4-slider-text">
-            <strong>
-              {" "}
-              가족여행 첫 유럽여행이었슴다. 인솔자 김병만 가이드님. 저희가족땜에
-              너무너무 애쓰셨습니다. 매일 다양한 사고로 당황하게
-              만들어서...죄송하고 감사합니다. 늘 궁금하고 몰랐던 서유럽 여행을
-              기점으로~ 많은 볼꺼리와 문화의 차이를 느끼고 왔슴다 지금은 바로
-              현실로 복귀하여 열일하고 있슴다. 담의 또다른 여행을 기약하며~~~
-            </strong>
-            <p>콩이</p>
-            <div className="board-view">
-              <FaRegEye className="board-view-icon" />
-              <span> 321 </span>
-            </div>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="section4-slider-item">
-          <img src="/assets/local/main-board2.jpg" alt="" />
-          <div className="section4-slider-text">
-            <strong>
-              {" "}
-              우린 늙어가는것이 아니라 조금씩 익어가는겁니다~
-              보스박성옥가이드님을 만나 즐거운 여행을 마치고 이아침을
-              맞이했습니다 너무나 아름답고 좋은분들 만나 행복했고 즐거웠습니다
-              짐찾고나올때 이모님의 밝은모습보고 안심 했습니다 .27명 사고없이
-              끝까지 무사히 여행을 해서 기쁘고 다시한번 가이드님및라니! 다시한번
-              고개숙여 감사드립니다
-            </strong>
-            <p>순삼이</p>
-            <div className="board-view">
-              <FaRegEye className="board-view-icon" />
-              <span> 99999 </span>
-            </div>
-          </div>
-        </div>
-      </SwiperSlide>
+      {tourBoardListData.map((item, index) => (
+        <SwiperSlide key={index}>
+          {/* 여기에서 이미지 URL을 사용하여 이미지 표시 */}
+          <ul className="tourisspotList">
+            {/* 첫 번째 게시글 */}
+            <li className="swiper-slide">
+              <Link to={`/board/tourisSpot/${item.bno}`}>
+                <div className="thumb-wrap">
+                  {item.imageUrl ? (
+                    <img src={item.imageUrl} alt={`Tourisspot ${index + 1}`} />
+                  ) : (
+                    <div>No Image</div>
+                  )}
+                </div>
+                {/* 기타 필요한 정보 표시 */}
+                <div className="text-wrap">
+                  <span> 서울 </span>
+                  <strong> 작성자 </strong>
+                  <h3>{item.title}</h3>
+                  <p>{item.content}</p>
+                  <span className="viewcnt">
+                    <IoEyeSharp /> <p>{item.views}</p>
+                  </span>
+                </div>
+              </Link>
+            </li>
+
+            {/* 두 번째 게시글 */}
+            {index + 1 < tourBoardListData.length && (
+              <li className="swiper-slide">
+                <Link
+                  to={`/board/tourisSpot/${tourBoardListData[index + 1].bno}`}
+                >
+                  <div className="thumb-wrap">
+                    {tourBoardListData[index + 1].imageUrl ? (
+                      <img
+                        src={tourBoardListData[index + 1].imageUrl}
+                        alt={`Tourisspot ${index + 2}`}
+                      />
+                    ) : (
+                      <div>No Image</div>
+                    )}
+                  </div>
+                  <div className="text-wrap">
+                    <span> 서울 </span>
+                    <strong> 작성자 </strong>
+                    <h3>{tourBoardListData[index + 1].title}</h3>
+                    <p>{tourBoardListData[index + 1].content}</p>
+                    <span className="viewcnt">
+                      <IoEyeSharp /> <p>{tourBoardListData[index + 1].views}</p>
+                    </span>
+                  </div>
+                </Link>
+              </li>
+            )}
+          </ul>
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 }
 function Main() {
+  const location = useLocation();
   const [locationData, setLocationData] = useState([]);
   const [festivalData, setFestivalData] = useState([]);
   const [foodData, setFoodData] = useState([]);
   const [localNo, setLocalNo] = useState(1);
   // width값에 따라 슬라이더 몇개 보여줄지 정하는 코드
   const [slidesPerView, setSlidesPerView] = useState(calculateSlidesPerView);
+
+  // 관광지 추천 게시판 글 가져오기
+  const [TourBoardListData, setTourBoardListData] = useState([]);
 
   const handlePlaceUpdate = (location, festivals, foods, localNo) => {
     setLocationData(location);
@@ -243,6 +309,7 @@ function Main() {
       return 1; // 더 작은 창 폭에는 1개의 슬라이드만 표시
     }
   }
+
   return (
     <div>
       <Video />
@@ -358,8 +425,69 @@ function Main() {
         <div className="section4 section">
           <h3> 방방곡곡 온누리 말 </h3>
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
-          <div>
-            <Section4Swiper />
+          <div className="board-section">
+            <div className="board-Company">
+              <div className="title">
+                <p>여행 메이트</p>
+              </div>
+              <div className="tab-list">
+                <ul className="loactionList">
+                  <li className="loaction">
+                    <a href="#">서울</a>
+                  </li>
+                  <li className="loaction">
+                    <a href="#">대구</a>
+                  </li>
+                  <li className="loaction">
+                    <a href="#">부산</a>
+                  </li>
+                </ul>
+              </div>
+              <div className="CompanyList">
+                <ul>
+                  <li>
+                    <a href="#">
+                      {" "}
+                      <p>게시판 제목이 나옵니다! </p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      {" "}
+                      <p> 여기에 어디 갈사람? </p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      {" "}
+                      <p>게시판 제목이 나옵니다! </p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      {" "}
+                      <p> 여기에 어디 갈사람? </p>
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">
+                      {" "}
+                      <p> 여기에 어디 갈사람? </p>
+                    </a>
+                  </li>
+                </ul>
+                <a href="#" className="btn more">
+                  {" "}
+                  <span>여긴 더보기 (클릭하면 게시판목록으로이동)</span>
+                </a>
+              </div>
+            </div>
+            <div className="board-Tourisspot">
+              <div className="title">
+                <p>관광지 추천</p>
+              </div>
+              <Section4Swiper />
+            </div>
           </div>
         </div>
       </div>
