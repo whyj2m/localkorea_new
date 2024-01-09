@@ -195,13 +195,13 @@ function TourisSpot() {
                                 <option value="all">전체 지역</option>
                                 <option value="서울">서울</option>
                                 <option value="인천">인천</option>
-                                <option value="경기">대전</option>
-                                <option value="경기">부산</option>
+                                <option value="대전">대전</option>
+                                <option value="부산">부산</option>
                                 <option value="경기">경기</option>
-                                <option value="경기">충청</option>
-                                <option value="경기">강원</option>
-                                <option value="경기">전라</option>
-                                <option value="경기">경상</option>
+                                <option value="충청">충청</option>
+                                <option value="강원">강원</option>
+                                <option value="전라">전라</option>
+                                <option value="경상">경상</option>
                             </Form.Select>
                         </Col>
                         <Col xs={9} md={2} className="d-flex justify-content-end">
