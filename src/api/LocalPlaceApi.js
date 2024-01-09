@@ -37,7 +37,7 @@ export const getLocalPlaceView = async (placeNo) => {
 // 하트 클릭을 서버로 전송하는 함수
 export const postHeart = async (data) => {
   try {
-    const response = await axios.post("/heart", data);
+    const response = await axiosInstance.post("/heart", data);
     return response.data;
   } catch (error) {
     throw error;
