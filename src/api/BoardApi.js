@@ -49,33 +49,6 @@ export const getCompanyBaordList = async () => {
     }
 }
 
-// // post 게시글 작성 
-// export const postBoardWrite = async (formData) => {
-//     try {
-//         const response = await axiosInstance.post("/board/boardWrite", formData)
-//         console.log(response);
-//         return response;
-//     } catch (error) {
-//         throw error;
-//     }
-// }
-
-// 이미지 조회
-// export const postBoardWrite = async (formData) => {
-//     try {
-//         const response = await axiosInstance.post("/board/boardWrite", formData, {
-//             headers: {
-//                 'Content-Type': 'multipart/form-data' 
-//             }
-//         });
-//         // console.log(formData);
-//         console.log(response);
-//         return response;
-//     } catch (error) {
-//         throw error;
-//     }
-// };
-// 게시글 작성
 // 게시글 작성
 export const postBoardWrite = async (formData) => {
     try {
@@ -92,9 +65,6 @@ export const postBoardWrite = async (formData) => {
     }
 };
 
-
-
-
 // put 게시글 수정
 export const putBoard = async (bno, updateDate, location) => {
     try {
@@ -109,6 +79,16 @@ export const putBoard = async (bno, updateDate, location) => {
 export const deleteBoard = async (bno) => {
     try {
         const response = await axiosInstance.delete(`/board/delete/${bno}`)
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// 댓글 작성
+export const postReply = async (replyData) => {
+    try {
+        const response = await axiosInstance.post(`/board/reply`, replyData)
         return response;
     } catch (error) {
         throw error;
