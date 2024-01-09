@@ -12,7 +12,13 @@ import { getWeatherData } from "../../api/Weather";
 import { useEffect, useState } from "react";
 
 // 라우터  uselocation으로  경로에 따른 색상변경, usenavigate로 경로를 설정 Navdropdown< 원래 페이지이동 불가
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import {
+  Link,
+  NavLink,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import axios from "axios";
 
 import { Modal, Button } from "react-bootstrap";
