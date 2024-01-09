@@ -5,6 +5,7 @@ import { Button, Modal, Card } from 'react-bootstrap';
 // 아이콘
 import { FaPlane } from "react-icons/fa6";
 import { MdOutlineLocationOn, MdDateRange } from "react-icons/md";
+import { IoPersonCircleOutline } from "react-icons/io5";
 
 // toast
 import { ToastContainer, toast } from 'react-toastify';
@@ -86,22 +87,27 @@ function CompanyModal() {
             <Modal.Body>
               <div className="container">
                 <div className="row">
-                  <div className="col-md-6">
-                    {/* 왼쪽 구획 */}
+                  <div className="area-left col-md-6">
+                    {/* 왼쪽 구역 */}
                     <div className="info">
                       <h2>{item.title}</h2>
-                      <div>
-                        <p className='modal-title'><MdOutlineLocationOn className='location-icon' />{item.location}</p>
+                      <div className="detail">
+                        <div>
+                          <p className='modal-title'><MdOutlineLocationOn className='location-icon' />{item.location}</p>
+                        </div>
+                        <div className='date-info'>
+                          <MdDateRange className='date-icon' />
+                          <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
+                        </div>
+                        <div >
+                          <Card.Text><IoPersonCircleOutline className="person-icno" />{item.id.id}</Card.Text>
+                        </div>
                       </div>
-                      <div className='date-info'>
-                        <MdDateRange className='date-icon' />
-                        <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
-                      </div>
-                      <div>
-                        {item.content}
-                      </div>
+                        <div>
+                          {item.content}
+                        </div>
                       <div className='Reply_div'>
-                        <h4> 댓글 </h4>
+                        <h4>댓글</h4>
                         <div className='Reply_write'>
                           <textarea
                             rows='3'
@@ -114,19 +120,23 @@ function CompanyModal() {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-6">
-                    {/* 오른쪽 구획 */}
-                    <div>
+                  {/* 오른쪽 구역 */}
+                  <div className="area-right col-md-6">
+                    <div className="Reply-list">
+                      <div className="Reply-nav">
+                        <div className="nick-name">nick-name</div>
+                        <div className="time">2018-3-2</div>
+                        <Button className="delete" variant="link">삭제</Button>
+                      </div>
                       {/* 댓글 */}
+                      <div >
+                        <div className="Reply-content">댓글입니다샬라샬라샬라샬라샬라</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
             </Modal.Body>
-            <Modal.Footer className='modal-footer justify-content-start'>
-              {/* 댓글 등의 영역 */}
-              {/* ... */}
-            </Modal.Footer>
           </Modal>
 
         </div>

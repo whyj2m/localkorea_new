@@ -45,9 +45,7 @@ function Company() {
 
     return (
         <>
-
             <BoardNav />
-
 
             <Container>
                 <Row className='justify-content-end'>
@@ -61,7 +59,7 @@ function Company() {
 
                     <div key={item.id} className='d-flex justify-content-center'>
                         <Row className="align-items-center">
-                            <Col xs={12} md={6} >
+                            <Col xs={12} md={3} >
                                 <Card className='Company-card'>
                                     <Row className="g-0 align-items-center">
                                         <Col xs={9} md={9}>
