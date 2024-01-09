@@ -8,7 +8,7 @@ import "../../styles/Main.css";
 import SouthKoreaMap from "../common/SouthKoreaMap.js";
 import Video from "./Video.js";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { FaRegEye } from "react-icons/fa";
 
 //  스와이퍼 부분
@@ -174,6 +174,8 @@ function Main() {
   // width값에 따라 슬라이더 몇개 보여줄지 정하는 코드
   const [slidesPerView, setSlidesPerView] = useState(calculateSlidesPerView);
 
+  const location = useLocation();
+
   const handlePlaceUpdate = (location, festivals, foods, localNo) => {
     setLocationData(location);
     setFestivalData(festivals);
@@ -243,6 +245,7 @@ function Main() {
       return 1; // 더 작은 창 폭에는 1개의 슬라이드만 표시
     }
   }
+
   return (
     <div>
       <Video />

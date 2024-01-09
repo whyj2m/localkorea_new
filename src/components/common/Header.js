@@ -119,7 +119,7 @@ function Header() {
     const accessToken = localStorage.getItem("ACCESS_TOKEN");
     setIsLoggedIn(!!accessToken);
 
-    if (accessToken) {
+    if (accessToken && !userData) {
       // JWT를 디코딩하여 페이로드에 액세스합니다
       const decodedToken = jwtDecode(accessToken);
 
@@ -147,19 +147,22 @@ function Header() {
         .catch((error) => {
           console.error("API 호출 중 오류 발생:", error);
         });
-
-      // 나머지 코드...
-    } else {
-      console.log("로그인되지 않았습니다.");
     }
-  }, []);
+
+    // 메인 페이지로 이동할 때 헤더를 업데이트
+    if (location.pathname === "/") {
+      console.log("메인 페이지로 이동했습니다.");
+    }
+  }, [location.pathname, userData]);
 
   const handleLogout = () => {
     // 로그아웃 로직 추가 (토큰 삭제 등)
     localStorage.removeItem("ACCESS_TOKEN");
 
-    handleCloseLogoutModal();
+    // 상태를 변경하여 리렌더링을 트리거
     setIsLoggedIn(false);
+
+    handleCloseLogoutModal();
     // 기타 로그아웃에 필요한 로직 수행
   };
 
