@@ -2,6 +2,49 @@
 
 /* 모달 위치 및 CSS */
 .companyModal {
+  .container{
+    padding: 0;
+
+    .area-left{
+      padding: 0;
+      // margin: 5px;
+    }
+
+    .area-right{
+      padding: 0;
+      // 스크롤
+      max-height: calc(100vh - 200px); 
+      overflow: auto; 
+
+      /* 댓글 목록 */
+      // .Reply-list {
+      //   // background-color: skyblue;
+      //   // width: 500px;
+      //   // height: 200px;
+      //   }
+        
+      .Reply-nav{
+        display: flex;
+        // flex-direction: row; 
+
+        .nick-name{
+          font-size: 16px;
+          margin: 0 5px;
+        }
+
+        .time{
+          color: #8d8c8c;
+          margin: 0 5px;
+        }
+
+        .delete{
+          margin-left: auto;
+          text-decoration: none;
+          color: #d17070;
+        }
+      }
+    }
+  }
   position: fixed;
   left: 35%;
   top: 60%;
@@ -47,24 +90,36 @@
 }
 /* 모달 헤더 끝 */
 
-/* 아이콘 */
-.location-icon {
-  width: 25px;
-  height: 25px;
-}
-
-.info {
-  width: 491px; 
-  // height: 200px; 
-  background-color: rgb(221, 216, 217); // 핑크
-
-  .date-icon {
+/* 왼쪽 구역 */
+.info-left{
+  .detail{
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+  /* 아이콘 */
+  .location-icon {
     width: 25px;
     height: 25px;
-    margin-top: 10px;
-    margin-right: 5px;
-    vertical-align: middle;
   }
+  
+  .person-icno{
+    width: 25px;
+    height: 25px;
+  }
+  .info {
+    width: 491px; 
+    // height: 200px; 
+    background-color: rgb(221, 216, 217); // 핑크
+  
+    .date-icon {
+      width: 25px;
+      height: 25px;
+      margin-top: 10px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+}
 
   /* 아이콘 끝 */
 
@@ -124,10 +179,3 @@
   border-top: none;
 }
 
-/* 댓글 목록 */
-.Reply-list {
-  background-color: skyblue;
-  width: 500px;
-  height: 200px;
-}
-/* 댓글 목록 끝 */

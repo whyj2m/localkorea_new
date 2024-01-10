@@ -1,7 +1,10 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 
 const baseURL = process.env.REACT_APP_BASE_URL;
 const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+const decodedToken = jwtDecode(ACCESS_TOKEN);
+const userId = decodedToken.id;
 
 const axiosInstance = axios.create({
     baseURL,
@@ -48,6 +51,52 @@ export const googleLogin = async () => {
         console.error("Google login error: ", error);
     }
 };
+
+// 회원정보
+export const getMember = async ()=> {
+    try {
+        
+        const response = await axiosInstance.get(`/mypage/${userId}`)
+        return response
+    } catch (error) {
+        throw error
+    }
+}
+
+// 회원정보 수정
+export const chgInfo = async ()=> {
+    try {
+        const changedName = document.getElementById("chgName").value;
+        const changedPhone = document.getElementById("chgPH").value;
+        const changedEmail = document.getElementById("chgEmail").value;
+
+        const response = await axiosInstance.put(`/mypage/${userId}/editInfo`, {
+            name: changedName,
+            phoneNum: changedPhone,
+            email: changedEmail,
+          })
+        return response
+    } catch (error) {
+        throw error
+    }
+}
+
+// 비밀번호 변경
+export const chgPw = async ()=> {
+    try {
+        const currentPassword = document.getElementById("prevPW").value;
+        const password = document.getElementById("chgPW").value;
+        const confirmPassword = document.getElementById("chkPW").value;
+        const response = await axiosInstance.put(`/mypage/${userId}/editPw`, {
+            currentPassword,
+            password,
+          })
+        return response
+    } catch (error) {
+        throw error
+    }
+}
+
 
 export const getMemberList = async ()=> {
     try {
