@@ -69,7 +69,7 @@ function CompanyModal() {
     try {
       const commentData = {
         content: commentContent,
-        bno : bno
+        bno: bno
       };
 
       const response = await postReply(commentData);
@@ -115,7 +115,7 @@ function CompanyModal() {
                 <div className="row">
                   <div className="area-left col-md-6">
                     {/* 왼쪽 구역 */}
-                    <div className="info">
+                    <div className="info-left">
                       <h2>{item.title}</h2>
                       <div className="detail">
                         <div>
@@ -147,8 +147,8 @@ function CompanyModal() {
                             value={commentContent} // 상태와 연결
                             onChange={handleChange} // 값이 변경될 때마다 상태 업데이트
                           />
-                          <input type='submit' value='등록' id='reply_submit_button' 
-                          onClick={(e) => handleSubmit(e, item.bno)} />
+                          <input type='submit' value='등록' id='reply_submit_button'
+                            onClick={(e) => handleSubmit(e, item.bno)} />
                         </div>
 
                         {/* <Form.Control

@@ -90,32 +90,36 @@
 }
 /* 모달 헤더 끝 */
 
-.detail{
-  margin-bottom: 5px;
-  font-size: 15px;
-}
-/* 아이콘 */
-.location-icon {
-  width: 25px;
-  height: 25px;
-}
-
-.person-icno{
-  width: 25px;
-  height: 25px;
-}
-.info {
-  width: 491px; 
-  // height: 200px; 
-  background-color: rgb(221, 216, 217); // 핑크
-
-  .date-icon {
+/* 왼쪽 구역 */
+.info-left{
+  .detail{
+    margin-bottom: 5px;
+    font-size: 15px;
+  }
+  /* 아이콘 */
+  .location-icon {
     width: 25px;
     height: 25px;
-    margin-top: 10px;
-    margin-right: 5px;
-    vertical-align: middle;
   }
+  
+  .person-icno{
+    width: 25px;
+    height: 25px;
+  }
+  .info {
+    width: 491px; 
+    // height: 200px; 
+    background-color: rgb(221, 216, 217); // 핑크
+  
+    .date-icon {
+      width: 25px;
+      height: 25px;
+      margin-top: 10px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+}
 
   /* 아이콘 끝 */
 
