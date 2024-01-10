@@ -9,7 +9,6 @@ import '../../styles/board/boardWrite.scss';
 import BoardNav from './BoardNav';
 
 import { postBoardWrite } from '../../api/BoardApi';
-// import BoardFileUpload from './BoardFileUpload/BoardFileUpload';
 
 function BoardWrite() {
     const navigate = useNavigate();
@@ -21,19 +20,16 @@ function BoardWrite() {
     const [boardCno, setBoardCno] = useState('1');
     const [locationCno, setLocationCno] = useState('1');
 
-    // 파일업로드
-    // const handleUploadedFiles = (files) => {
-    //     setUploadedFiles(files);
-    // };
-
-    useEffect(() => {
-        setIsFileUploadDisabled(false); // 처음 로드할 때 파일 업로드 활성화
-    }, []);
+        useEffect(() => {
+            if (boardCno === '2') { // 여행 메이트 카테고리 선택 시
+                setIsFileUploadDisabled(true); // 파일 업로드 비활성화
+            } else {
+                setIsFileUploadDisabled(false); // 다른 카테고리 선택 시 파일 업로드 활성화
+            }
+        }, [boardCno]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        // console.log('Name:', name);
-        // console.log('Value:', value);
 
         if (name === 'title') {
             setTitle(value);
@@ -71,59 +67,73 @@ function BoardWrite() {
                 return '';
         }
     };
-
-    // 파일 업로드 처리하는 함수 수정
     const handleFileChange = (files) => {
-        const newFiles = [];
-
-        const readFile = (file, index) => {
-            const reader = new FileReader();
-
-            reader.onload = () => {
-                const fileObject = {
-                    name: file.name,
-                    uuid: file.name,
-                    origin: file.type,
-                    src: reader.result,
-                    file_path: '/images/' + file.name,
-                    file: file // 파일 객체 정보를 추가
+        if (files && files.length > 0) {
+            const newFiles = [];
+    
+            const readFile = (file, index) => {
+                const reader = new FileReader();
+    
+                reader.onload = () => {
+                    const fileObject = {
+                        name: file.name,
+                        uuid: file.name,
+                        origin: file.type,
+                        src: reader.result,
+                        file_path: '/images/' + file.name,
+                        file: file // 파일 객체 정보를 추가
+                    };
+    
+                    newFiles.push(fileObject);
+    
+                    if (newFiles.length === files.length) {
+                        setUploadedFiles(newFiles); // 파일 로드가 완료되면 업로드된 파일 목록 업데이트
+                    }
                 };
-
-                newFiles.push(fileObject);
-
-                if (newFiles.length === files.length) {
-                    setUploadedFiles(newFiles); // 파일 로드가 완료되면 업로드된 파일 목록 업데이트
-                }
+    
+                reader.readAsDataURL(file);
             };
-
-            reader.readAsDataURL(file);
-        };
-
-        for (let i = 0; i < files.length; i++) {
-            const file = files[i];
-            readFile(file, i);
+    
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                readFile(file, i);
+            }
+        } else {
+            setUploadedFiles([]);
         }
     };
+    
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+    
         const formData = new FormData();
+    
+        // 빈 배열을 전송하여 파일이 없는 경우에도 files를 전송
+        formData.append('files', []);
+    
+        // 파일이 있는 경우에만 파일을 추가
+        if (uploadedFiles.length > 0) {
+            uploadedFiles.forEach((fileObject, index) => {
+                formData.append(`files`, fileObject.file);
+            });
+        }
 
-        uploadedFiles.forEach((fileObject, index) => {
-            formData.append(`files`, fileObject.file);
-        });
-
+        else{
+            alert('이미지를 첨부해야합니다!'); 
+            return;
+        }
+    
         formData.append('title', title);
         formData.append('content', content);
         formData.append('boardCno', boardCno);
         formData.append('locationCno', locationCno);
         formData.append('location', getLocationName(locationCno));
-
+    
         try {
             const response = await postBoardWrite(formData);
             console.log(response);
-            // console.log(formData);
             alert('게시글 작성 성공');
             window.location.href = '/board/tourisSpot';
         } catch (error) {
@@ -131,6 +141,9 @@ function BoardWrite() {
             alert('게시글 작성 실패');
         }
     };
+    
+
+
 
     return (
         <>

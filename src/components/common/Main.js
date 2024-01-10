@@ -149,7 +149,7 @@ function Section4Swiper() {
       console.log("Image URL:", imageUrl);
       return imageUrl;
     } catch (error) {
-      console.error(`에러 : ${bno}:`, error);
+      // console.error(`에러 : ${bno}:`, error);
       return null;
     }
   };
@@ -167,64 +167,52 @@ function Section4Swiper() {
       spaceBetween={0}
       slidesPerView={1}
     >
-      {tourBoardListData.map((item, index) => (
-        <SwiperSlide key={index}>
-          {/* 여기에서 이미지 URL을 사용하여 이미지 표시 */}
-          <ul className="tourisspotList">
-            {/* 첫 번째 게시글 */}
-            <li className="swiper-slide">
-              <Link to={`/board/tourisSpot/${item.bno}`}>
-                <div className="thumb-wrap">
-                  {item.imageUrl ? (
-                    <img src={item.imageUrl} alt={`Tourisspot ${index + 1}`} />
+      {tourBoardListData
+        .reduce((acc, item, index) => {
+          if (index % 2 === 0) {
+            const pair = [item, tourBoardListData[index + 1]];
+            acc.push(pair);
+          }
+          return acc;
+        }, [])
+        .map((pair, index) => (
+          <SwiperSlide key={index}>
+            {/* 여기에서 이미지 URL을 사용하여 이미지 표시 */}
+            <ul className="tourisspotList">
+              {pair.map((item, subIndex) => (
+                <li className="swiper-slide" key={subIndex}>
+                  {item.bno !== undefined ? (
+                    <Link to={`/boardView/${item.bno}`}>
+                      <div className="thumb-wrap">
+                        {item.imageUrl ? (
+                          <img
+                            src={item.imageUrl}
+                            alt={`Tourisspot ${index + subIndex + 1}`}
+                          />
+                        ) : (
+                          <img
+                            src={`${process.env.PUBLIC_URL}/assets/etc/clone.jpg`}
+                          />
+                        )}
+                      </div>
+                      <div className="text-wrap">
+                        <span> 서울 </span>
+                        <strong> 작성자 </strong>
+                        <h3>{item.title}</h3>
+                        <p>{item.content}</p>
+                        <span className="viewcnt">
+                          <IoEyeSharp /> <p>{item.viewCnt || 0}</p>
+                        </span>
+                      </div>
+                    </Link>
                   ) : (
-                    <div>No Image</div>
+                    <p>BNO is undefined</p>
                   )}
-                </div>
-                {/* 기타 필요한 정보 표시 */}
-                <div className="text-wrap">
-                  <span> 서울 </span>
-                  <strong> 작성자 </strong>
-                  <h3>{item.title}</h3>
-                  <p>{item.content}</p>
-                  <span className="viewcnt">
-                    <IoEyeSharp /> <p>{item.views}</p>
-                  </span>
-                </div>
-              </Link>
-            </li>
-
-            {/* 두 번째 게시글 */}
-            {index + 1 < tourBoardListData.length && (
-              <li className="swiper-slide">
-                <Link
-                  to={`/board/tourisSpot/${tourBoardListData[index + 1].bno}`}
-                >
-                  <div className="thumb-wrap">
-                    {tourBoardListData[index + 1].imageUrl ? (
-                      <img
-                        src={tourBoardListData[index + 1].imageUrl}
-                        alt={`Tourisspot ${index + 2}`}
-                      />
-                    ) : (
-                      <div>No Image</div>
-                    )}
-                  </div>
-                  <div className="text-wrap">
-                    <span> 서울 </span>
-                    <strong> 작성자 </strong>
-                    <h3>{tourBoardListData[index + 1].title}</h3>
-                    <p>{tourBoardListData[index + 1].content}</p>
-                    <span className="viewcnt">
-                      <IoEyeSharp /> <p>{tourBoardListData[index + 1].views}</p>
-                    </span>
-                  </div>
-                </Link>
-              </li>
-            )}
-          </ul>
-        </SwiperSlide>
-      ))}
+                </li>
+              ))}
+            </ul>
+          </SwiperSlide>
+        ))}
     </Swiper>
   );
 }
