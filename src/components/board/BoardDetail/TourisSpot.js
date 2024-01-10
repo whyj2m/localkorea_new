@@ -56,10 +56,12 @@ function TourisSpot() {
             try {
                 const response = await getTourBaordList();
                 const data = response.data
-                console.log("TourBoardListData: ", response.data);
+                setImageSrc('../../assets/test/noImg.png');
+                // console.log("TourBoardListData: ", response.data);
                 setTourBoardListData(data);
             } catch (error) {
-                console.error("Error fetching local data:", error);
+                setImageSrc('../../assets/test/noImg.png');
+                // console.error("Error fetching local data:", error);
             }
         };
 
@@ -156,14 +158,14 @@ function TourisSpot() {
                                 [item.bno]: imageUrl,
                             }));
                         } else {
-                            console.error(`Failed to fetch image for item ${item.bno}`);
+                            console.error(`이미지가 없습니다 : ${item.bno}`);
                         }
                     }
                 });
 
                 await Promise.all(promises);
             } catch (error) {
-                console.error('Error fetching images:', error);
+                console.error('TouriaSpot.js images 오류 :', error);
             }
         };
 
@@ -225,7 +227,10 @@ function TourisSpot() {
                                                     style={{ objectFit: 'cover' }}
                                                 />
                                             ) : (
-                                                <div>등록된 이미지가 없습니다!</div>
+                                                // <div>등록된 이미지가 없습니다!</div>
+                                                <img src="../../assets/test/noImg.png" alt="No Image" 
+                                                style={{width:230}}
+                                                />
                                             )}
                                         </div>
 
