@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Form, Button, Modal, InputGroup } from "react-bootstrap";
+import { chgPw } from "../../../api/MemberApi";
 
 const userId = "test3";
 
@@ -13,18 +14,17 @@ function ChangePw(props) {
 
       // 값이 비어있는지 확인하고 빈 값이라면 오류 처리
       if (!currentPassword || !password || !confirmPassword) {
-        throw new Error("비밀번호를 모두 입력하세요.");
+        alert("비밀번호를 모두 입력하세요.");
+        return;
       }
 
       // 새로운 비밀번호와 확인 비밀번호가 일치하는지 확인
       if (password !== confirmPassword) {
-        throw new Error("새로운 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+        alert("새로운 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
+        return;
       }
 
-      const response = await axios.put(`http://localhost:8081/mypage/${userId}/editPw`, {
-        currentPassword,
-        password,
-      })
+      const response = await chgPw();
 
       // 응답 처리
       alert(response.data)
