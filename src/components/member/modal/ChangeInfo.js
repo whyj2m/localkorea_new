@@ -1,8 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Form, Button, Modal, InputGroup } from "react-bootstrap";
-
-const userId = "test3";
+import { chgInfo, getMember } from "../../../api/MemberApi";
 
 function ChangeInfo(props) {
 
@@ -13,7 +12,7 @@ function ChangeInfo(props) {
   useEffect(()=>{
     async function fetchMemberInfo() {
       try {
-        const response = await axios.get(`http://localhost:8081/mypage/${userId}`);
+        const response = await getMember()
         setMemberInfo(response.data)
       } catch (error) {
         console.error("Error fetching member info:", error);
@@ -24,15 +23,9 @@ function ChangeInfo(props) {
 
   const handleInfoChange = async () => {
     try {
-      const changedName = document.getElementById("chgName").value;
-      const changedPhone = document.getElementById("chgPH").value;
-      const changedEmail = document.getElementById("chgEmail").value;
+      
 
-      const response = await axios.put(`http://localhost:8081/mypage/${userId}/editInfo`, {
-        name: changedName,
-        phoneNum: changedPhone,
-        email: changedEmail,
-      })
+      const response = await chgInfo();
       // 응답 처리
       alert(response.data)
       props.onHide();
