@@ -12,8 +12,7 @@ import { FaRegCommentDots } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 
 import axios from "axios";
-
-const userId = "test3";
+import { getMember } from "../../api/MemberApi";
 
 function Mypage() {
   const [comp, setComp] = useState(BoardList);
@@ -26,7 +25,9 @@ function Mypage() {
   useEffect(()=> {
     async function fetchUserInfo() {
       try {
-        const response = await axios.get(`http://localhost:8081/mypage/${userId}`)
+        // const response = await axios.get(`http://localhost:8081/mypage/${userId}`)
+        // setUserInfo(response.data)
+        const response = await getMember()
         setUserInfo(response.data)
       } catch (error) {
         console.error("Error fetching user info:", error);

@@ -480,7 +480,7 @@ hr {
 }
 .tourisspotList li a {
   width: 100%;
-  height: 150px;
+  height: 200px;
   display: flex;
   flex-wrap: wrap;
   position: relative;
@@ -491,6 +491,8 @@ hr {
   overflow: hidden;
   align-items: center;
   width: 50%;
+  height: 100%;
+  object-fit: cover;
 }
 .tourisspotList li a .thumb-wrap img {
   width: 100%;

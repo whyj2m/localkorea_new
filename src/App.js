@@ -43,9 +43,6 @@ function App() {
   return (
     <div className="App" id="App">
       <Header />
-      {/* 스크롤 탑 이동 */}
-      <ScrollToTop />
-
       {/* Suspense 컴포넌트 안에는 하나의 부모 컴포넌트로 감싸주어야 합니다. */}
       <Suspense fallback={<div>Loading...</div>}>
         <Routes>
@@ -75,7 +72,8 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
         </Routes>
       </Suspense>
-
+      {/* 스크롤 탑 이동 */}
+      <ScrollToTop />
       <Footer />
     </div>
   );
