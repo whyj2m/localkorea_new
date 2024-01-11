@@ -15,7 +15,8 @@ function Login() {
     try {
       await postLogin({id:userId, password:password})
       // 로그인 성공 시 메인 페이지로 이동
-      navigate("/");
+      // navigate("/");
+      window.location.href="/"
     } catch (error) {
       if (error.response && error.response.data.message === "Incorrect password.") {
       
@@ -51,11 +52,11 @@ function Login() {
             </Form.Group>
             <Form.Check
               type="checkbox"
-              label="Remember for 30 days"
+              label="30일 동안 로그인 상태 유지"
               className="grp chk"
             />
             <div className="d-grid">
-              <Button variant="secondary" type="submit">Login</Button>
+              <Button type="submit">로그인</Button>
             </div>
           </Form>
           <hr />
