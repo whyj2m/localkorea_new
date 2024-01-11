@@ -388,29 +388,23 @@ hr {
 }
 .board-Company .tab-list {
   margin-bottom: 20px;
+  text-align: left;
 }
-.tab-list ul {
-  display: flex;
-  align-items: center;
-  padding-left: 0;
-}
-.tab-list ul li:first-child {
-  padding-left: 0;
-}
-.tab-list ul li {
-  flex: inherit;
-  height: auto;
-  padding: 0 14px;
-  border: none;
-}
-.tab-list .loactionList {
-  justify-content: flex-start;
-}
-.tab-list .loactionList li a {
-  font-size: 20px;
-  font-weight: 600px;
+.tab-list span {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 0;
   background: none;
-  color: black;
+  font-size: 20px;
+  font-weight: 600;
+  color: #909090;
+}
+
+.tab-list span.active,
+.tab-list span:hover {
+  color: #00f; /* 선택된 지역 및 hover 시 글자 색상 변경 */
+  border-bottom: 2px solid #00f; /* 선택된 지역 및 hover 시 밑줄 추가 및 색상 변경 */
+  padding-bottom: 0px; /* 밑줄과 텍스트 간격 조절 */
 }
 .CompanyList {
   text-align: start;
@@ -443,10 +437,21 @@ hr {
   position: static;
   margin-top: 25px;
 }
-.CompanyList .btn span {
+.btn.more {
   display: inline-block;
-  padding-right: 34px;
+  margin-top: 10px;
+  background-color: #d2e0fb; /* 배경색 */
+  color: black;
+  text-decoration: none; /* 링크에 있는 기본 밑줄 제거 */
+  border-radius: 5px; /* 둥근 테두리 */
+  transition: background-color 0.3s; /* 배경색 변경 시 부드러운 효과 */
+  padding: 0 15px;
 }
+
+.btn.more:hover {
+  background-color: #afc7f7; /* 마우스 호버 시 배경색 변경 */
+}
+
 .board-Tourisspot {
   flex: 1;
   padding-left: 50px;
@@ -469,11 +474,13 @@ hr {
   position: relative;
   height: 100%;
 }
+ul.tourisspotList {
+  padding-left: 0;
+}
 .tourisspotList li {
-  order: 0;
-  margin-right: 40px;
   height: 44%;
-  width: 48%;
+  width: 44%;
+  margin-right: 100px;
 }
 .tourisspotList li:first-child {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -507,6 +514,20 @@ hr {
   flex-direction: column;
   text-align: left;
   gap: 5px;
+}
+.text-wrap h3 {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* 표시할 줄 수 */
+  -webkit-box-orient: vertical;
+}
+.text-wrap p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 5; /* 표시할 줄 수 */
+  -webkit-box-orient: vertical;
 }
 
 .text-wrap .viewcnt {
@@ -656,6 +677,59 @@ hr {
   }
 }
 
-/*                                                                 어떻게 할까 생각중                                                 */
+/* 여기가 하단에 그 게시판쪽  */
+@media (max-width: 1200px) {
+  .section4 h3 {
+    padding-bottom: 50px;
+  }
+}
 
-/*  스냅 이벤트 스크롤 이벤트?   실패 포인터로 변경*/
+@media (max-width: 1000px) {
+  .section4 h3 {
+    display: none;
+    padding-bottom: 50px;
+  }
+  .board-section {
+    display: inline;
+  }
+  .board-section .board-Company {
+    width: 100%;
+    border-right: 0;
+  }
+  .board-Tourisspot {
+    padding-top: 50px;
+    padding-left: 0;
+    width: 100%;
+  }
+  .tourisspotList {
+    padding-left: 0;
+  }
+  .board-Tourisspot .swiper-pagination {
+    bottom: -5px;
+    position: relative;
+  }
+
+  .tab-list span {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 730px) {
+  .tourisspotList li a {
+    width: 90%;
+  }
+  .text-wrap .viewcnt {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .board-Tourisspot .swiper-pagination {
+    position: relative;
+    width: 39%;
+  }
+  .text-wrap p {
+    padding-right: 20px;
+  }
+}
