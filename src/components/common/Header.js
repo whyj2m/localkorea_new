@@ -28,6 +28,7 @@ import { jwtDecode } from "jwt-decode";
 
 function Header() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [weatherInfo, setWeatherInfo] = useState(null);
   const [isHovering, setIsHovering] = useState(false);
@@ -157,7 +158,7 @@ function Header() {
 
     // 메인 페이지로 이동할 때 헤더를 업데이트
     if (location.pathname === "/") {
-      console.log("메인 페이지로 이동했습니다.");
+      // console.log("메인 페이지로 이동했습니다.");
     }
   }, [location.pathname, userData]);
 
@@ -170,6 +171,17 @@ function Header() {
 
     handleCloseLogoutModal();
     // 기타 로그아웃에 필요한 로직 수행
+    window.location.href = "/";
+  };
+
+  // 비로그인 클릭시 이동이벤트
+  const handleMyPageClick = () => {
+    if (isLoggedIn) {
+      navigate("/mypage");
+    } else {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+    }
   };
 
   return (
@@ -229,6 +241,11 @@ function Header() {
               show={showBoardDropdown}
               onMouseEnter={handleMouseOverBoardDropdown}
               onMouseLeave={handleMouseOutBoardDropdown}
+              onClick={() => {
+                // 클릭 이벤트 처리
+                // 예: 페이지 이동
+                navigate("/board/tourisSpot");
+              }}
             >
               <NavDropdown.Item as={Link} to="/board/tourisSpot">
                 관광지 추천
@@ -244,7 +261,7 @@ function Header() {
         </Navbar.Collapse>
         <div className="header-main-icon">
           {isLoggedIn ? (
-            <Nav onClick={handleShowLogoutModal}>
+            <Nav className="logout" onClick={handleShowLogoutModal}>
               <span>로그아웃</span>
             </Nav>
           ) : (
@@ -252,7 +269,11 @@ function Header() {
               <span>로그인</span>
             </Nav>
           )}
-          <Nav as={Link} to="/mypage">
+          <Nav
+            as={Link}
+            to={isLoggedIn ? "/mypage" : "/login"}
+            onClick={handleMyPageClick}
+          >
             <IoPeople />
           </Nav>
           <FaHeart style={{ fontSize: "26px" }} />

@@ -15,12 +15,18 @@
 .regionfood-title p {
   display: block;
   padding: 7px 0 0;
-  font-size: 18px;
+  font-size: 14px;
   letter-spacing: -0.7px;
   line-height: 24px;
   color: #666;
 }
-
+.regionfood-title strong {
+  font-size: 30px;
+  font-weight: 800;
+  color: black;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
 .regionfood-list {
   display: flex;
   flex-wrap: wrap;

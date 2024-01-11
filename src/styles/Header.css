@@ -124,6 +124,10 @@
   font-size: 20px;
 }
 
+.logout span {
+  cursor: pointer;
+}
+
 /* 모바일 화면일 때의 스타일 */
 @media screen and (max-width: 720px) {
   #pageline {
@@ -194,7 +198,7 @@
   }
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1300px) {
   #pageline {
     display: none;
   }

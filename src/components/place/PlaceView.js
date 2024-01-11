@@ -3,10 +3,15 @@ import "../../styles/place/PlaceView.css";
 import { IoEyeSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
-import { FaExternalLinkAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getLocalPlaceView, postHeart } from "../../api/LocalPlaceApi";
+import {
+  getHeartList,
+  getLocalPlaceView,
+  postHeart,
+  checkIfHearted,
+  deleteHeart,
+} from "../../api/LocalPlaceApi";
 import Kakaomap from "../../api/Kakaomap";
 import PlaceModal from "./PlcaeModal";
 import { jwtDecode } from "jwt-decode";
@@ -21,7 +26,7 @@ function PlaceView() {
   // 로그인 상태 확인 함수
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // 하트 상태 함수
-  const [isHearted, setIsHearted] = useState(false); // 하트 상태 추가
+  const [isHearted, setIsHearted] = useState(); // 하트 상태 추가
 
   const navigate = useNavigate();
 
@@ -30,7 +35,10 @@ function PlaceView() {
       try {
         const placeResponse = await getLocalPlaceView(placeNo);
         setPlaceData(placeResponse.data);
-        console.log(placeResponse.data);
+
+        // 하트 리스트를 가져옵니다.
+        const heartList = await getHeartList();
+        console.log("하트 리스트:", heartList);
 
         const currentUrl = window.location.href;
         setShareUrl(currentUrl);
@@ -39,16 +47,19 @@ function PlaceView() {
         setIsLoggedIn(!!accessToken);
 
         // 토큰이 존재하는 경우에만 디코딩
-        if (isLoggedIn && accessToken) {
+        if (accessToken) {
           // accessToken이 존재할 때만 디코딩 수행
           try {
             const decodedToken = jwtDecode(accessToken);
-            const userId = decodedToken.id;
+            const userId = decodedToken.id; // userId 값 설정
+            console.log("decodedToken.id:", decodedToken.id); // 추가된 로그
 
-            setIsHearted(
-              placeData.heartCnt > 0 &&
-                placeData.heartCnt.some((heart) => heart.id === userId)
-            );
+            // 좋아요 여부 확인 함수 호출
+            const isHeartedResult = await checkIfHearted(userId, placeNo); // userId 사용
+            console.log(isHeartedResult);
+            setIsHearted(isHeartedResult); // 상태 업데이트
+
+            // 나머지 부분 생략
           } catch (error) {
             console.error("토큰 디코딩 오류:", error);
           }
@@ -59,7 +70,7 @@ function PlaceView() {
     };
 
     fetchPlaceData();
-  }, [placeNo, isLoggedIn]); // isLoggedIn을 useEffect 의존성 배열에 추가
+  }, [placeNo]);
 
   const handleHeartClick = async () => {
     if (!isLoggedIn) {
@@ -73,21 +84,31 @@ function PlaceView() {
       const decodedToken = jwtDecode(accessToken);
       const userId = decodedToken.id;
 
+      let alertMessage = ""; // 알림 메시지 변수 추가
+
       if (isHearted) {
-        // 하트를 이미 클릭한 경우 취소
-        // HeartApi에서 cancelHeart 함수 호출 (예시로 작성한 함수, 실제 함수명에 맞게 수정 필요)
-        // await cancelHeart({ id: userId, placeNo });
-        // 클릭 이후에 서버로부터 최신 데이터를 가져와서 화면 업데이트
+        // 좋아요 취소 - deleteHeart 함수 호출
+        await deleteHeart(userId, placeNo);
+        alertMessage = "좋아요가 취소되었습니다.";
       } else {
-        // 하트를 클릭한 경우
+        // 좋아요 - postHeart 함수 호출
         await postHeart({ id: userId, placeNo });
-        // 클릭 이후에 서버로부터 최신 데이터를 가져와서 화면 업데이트
+        alertMessage = "좋아요가 등록되었습니다.";
       }
 
-      const updatedPlaceResponse = await getLocalPlaceView(placeNo);
-      setPlaceData(updatedPlaceResponse.data);
+      // 조회수를 다시 가져오지 않고, 하트 수만 업데이트
+      setPlaceData((prevPlaceData) => ({
+        ...prevPlaceData,
+        heartCnt: isHearted
+          ? prevPlaceData.heartCnt - 1
+          : prevPlaceData.heartCnt + 1,
+      }));
+
       // 하트 상태 업데이트
       setIsHearted(!isHearted);
+
+      // 알림 메시지 출력
+      alert(alertMessage);
     } catch (error) {
       console.error("하트 클릭 오류:", error);
     }
@@ -106,7 +127,8 @@ function PlaceView() {
               <IoEyeSharp /> <p>{placeData.viewCnt || 0}</p>
             </span>
             <span onClick={handleHeartClick}>
-              <FaHeart /> <p>{placeData.heartCnt || 0}</p>
+              {isHearted ? <FaHeart /> : <CiHeart className="heart-icon " />}
+              <p>{placeData.heartCnt || 0}</p>
             </span>
             {/*  모달에 Url값 전달 */}
             <PlaceModal
