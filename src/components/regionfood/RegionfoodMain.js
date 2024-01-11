@@ -159,19 +159,13 @@ function RegionfoodMain() {
         className="regionfood-title container"
         style={{ paddingTop: "200px" }}
       >
-        <h3>방방곡곡 특산물</h3>
-        <p>
-          "비슷하게 뭘"
-          <br />
-          "넣으면"
-          <br />
-          "괜찮게"
-        </p>
-        {/* 전체가 가짜 데이터 컬럼명이라 이렇게 삼항으로 처리 */}
-        <h3>{localName && localName.name} </h3>
+        {" "}
+        <strong> 지역특산물 </strong>
+        <p>"방방곡곡! 각 지역별 대표 특산물을 소개합니다."</p>
+        <hr className="container" style={{ marginBottom: "25px" }} />
       </div>
       {/* 카테고라 */}
-      <div className="container">
+      <div className="container" style={{ marginBottom: "40px" }}>
         <Location2
           onCategoryClick={handleCategoryClick}
           basePath="/localFoods"

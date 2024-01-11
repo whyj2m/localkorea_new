@@ -19,7 +19,8 @@ function Mypage() {
   const [showModalCP, setShowModalCP] = useState(false);
   const [showModalCI, setShowModalCI] = useState(false);
   const [userInfo, setUserInfo] = useState({
-    id:"", name:""
+    id: "",
+    name: "",
   });
 
   const fetchUserInfo = async () => {
@@ -55,17 +56,23 @@ function Mypage() {
       <div className="d-block d-lg-flex">
         <div className="tab d-lg-block d-flex col-lg-3 mb-5">
           <div className="board tab_inner" onClick={() => setComp(BoardList)}>
-            <div className="icon d-lg-none"><BsFileRichtext /></div>
+            <div className="icon d-lg-none">
+              <BsFileRichtext />
+            </div>
             게시글
           </div>
           <hr className="d-none d-lg-block" />
           <div className="reply tab_inner" onClick={() => setComp(ReplyList)}>
-            <div className="icon d-lg-none"><FaRegCommentDots /></div>
+            <div className="icon d-lg-none">
+              <FaRegCommentDots />
+            </div>
             댓글
           </div>
           <hr className="d-none d-lg-block" />
           <div className="like tab_inner" onClick={() => setComp(LikeList)}>
-            <div className="icon d-lg-none"><FaHeart/></div>
+            <div className="icon d-lg-none">
+              <FaHeart />
+            </div>
             좋아요
           </div>
         </div>
@@ -75,10 +82,24 @@ function Mypage() {
               <IoPerson />
             </div>
             <div className="inside">
-              <div className="greeting mb-3">{userInfo.name}({userInfo.id})님 환영합니다!</div>
+              <div className="greeting mb-3">
+                {userInfo.name}({userInfo.id})님 환영합니다!
+              </div>
               <div className="menu">
-                <Button onClick={()=>{setShowModalCP(true)}}>비밀번호 변경</Button>
-                <Button onClick={()=>{setShowModalCI(true)}}>회원정보 변경</Button>
+                <Button
+                  onClick={() => {
+                    setShowModalCP(true);
+                  }}
+                >
+                  비밀번호 변경
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowModalCI(true);
+                  }}
+                >
+                  회원정보 변경
+                </Button>
               </div>
             </div>
           </div>
@@ -88,12 +109,8 @@ function Mypage() {
           </div>
         </div>
       </div>
-      <ChangePw
-        show={showModalCP}
-        onHide={() => setShowModalCP(false)}
-      />
-      <ChangeInfo show={showModalCI}
-        onHide={() => setShowModalCI(false)}/>
+      <ChangePw show={showModalCP} onHide={() => setShowModalCP(false)} />
+      <ChangeInfo show={showModalCI} onHide={() => setShowModalCI(false)} />
     </Container>
   );
 }

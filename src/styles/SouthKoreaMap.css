@@ -12,9 +12,6 @@
   fill: #8eaccd;
   cursor: pointer;
 }
-.SeoulLand {
-  fill: #d2e0fb;
-}
 
 .selected {
   fill: #8eaccd !important;

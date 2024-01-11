@@ -65,18 +65,15 @@ function PlaceMain() {
   }, [handleScroll]);
   return (
     <div>
-      <div className="place-title" style={{ paddingTop: "150px" }}>
+      <div className="place-title" style={{ paddingTop: "185px" }}>
         <h2> 관광지 </h2>
-        <p>Trendings Places</p>
+        <p>Tourist attraction</p>
         <hr className="container" />
       </div>
-      <div className="container">
+      <div className="container" style={{ marginBottom: "60px" }}>
         <Location2 onCategoryClick={handleCategoryClick} basePath="/place" />
       </div>
       <div className="place-content container">
-        <div className="plcae-content-title">
-          <h2>{localName.name}</h2>
-        </div>
         <div className="place-total-set">
           <strong>
             {/* 총건수 확인 */}총<span> {localData.length} </span>건
