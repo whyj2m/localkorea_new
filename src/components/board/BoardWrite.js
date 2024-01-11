@@ -105,24 +105,60 @@ function BoardWrite() {
     
 
 
+    // 0110새벽까지 됐는데 왜 안 될까
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    
+    //     const formData = new FormData();
+    
+    //     // 빈 배열을 전송하여 파일이 없는 경우에도 files를 전송
+    //     formData.append('files', []);
+    
+    //     // 파일이 있는 경우에만 파일을 추가
+    //     if (uploadedFiles.length > 0) {
+    //         uploadedFiles.forEach((fileObject, index) => {
+    //             formData.append(`files`, fileObject.file);
+    //         });
+    //     }
+
+    //     else{
+    //         alert('이미지를 첨부해야합니다!'); 
+    //         return;
+    //     }
+    
+    //     formData.append('title', title);
+    //     formData.append('content', content);
+    //     formData.append('boardCno', boardCno);
+    //     formData.append('locationCno', locationCno);
+    //     formData.append('location', getLocationName(locationCno));
+    
+    //     try {
+    //         const response = await postBoardWrite(formData);
+    //         console.log(response);
+    //         alert('게시글 작성 성공');
+    //         window.location.href = '/board/tourisSpot';
+    //     } catch (error) {
+    //         console.log("게시글 작성 실패");
+    //         alert('게시글 작성 실패');
+    //     }
+    // };
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
     
+        if (boardCno === '1' && uploadedFiles.length === 0) {
+            alert('여행 메이트 게시물은 이미지를 첨부해야합니다!');
+            return;
+        }
+    
         const formData = new FormData();
     
-        // 빈 배열을 전송하여 파일이 없는 경우에도 files를 전송
-        formData.append('files', []);
-    
-        // 파일이 있는 경우에만 파일을 추가
         if (uploadedFiles.length > 0) {
             uploadedFiles.forEach((fileObject, index) => {
                 formData.append(`files`, fileObject.file);
             });
-        }
-
-        else{
-            alert('이미지를 첨부해야합니다!'); 
-            return;
+        } else {
+            formData.append('files', []); // 빈 배열 전송
         }
     
         formData.append('title', title);
@@ -135,14 +171,12 @@ function BoardWrite() {
             const response = await postBoardWrite(formData);
             console.log(response);
             alert('게시글 작성 성공');
-            window.location.href = '/board/tourisSpot';
+            navigate('/board/tourisSpot'); // useNavigate 사용하여 경로 변경
         } catch (error) {
             console.log("게시글 작성 실패");
             alert('게시글 작성 실패');
         }
     };
-    
-
 
 
     return (
