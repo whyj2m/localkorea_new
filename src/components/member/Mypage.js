@@ -22,19 +22,32 @@ function Mypage() {
     id:"", name:""
   });
 
-  useEffect(()=> {
-    async function fetchUserInfo() {
-      try {
-        // const response = await axios.get(`http://localhost:8081/mypage/${userId}`)
-        // setUserInfo(response.data)
-        const response = await getMember()
-        setUserInfo(response.data)
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
+  const fetchUserInfo = async () => {
+    try {
+      const response = await getMember();
+      setUserInfo(response.data);
+    } catch (error) {
+      console.error("Error fetching user info:", error);
     }
+  };
+
+  useEffect(() => {
     fetchUserInfo();
   }, [showModalCI]);
+
+  // 페이지 처음 로딩될 때 사용자 정보를 가져옴
+  useEffect(() => {
+    const fetchInitialUserInfo = async () => {
+      try {
+        const response = await getMember();
+        setUserInfo(response.data);
+      } catch (error) {
+        console.error("Error fetching initial user info:", error);
+      }
+    };
+
+    fetchInitialUserInfo();
+  }, []); // 빈 의존성 배열을 사용하여 페이지가 처음 렌더링 될 때만 호출
 
   return (
     <Container className="mypage">
@@ -42,17 +55,17 @@ function Mypage() {
       <div className="d-block d-lg-flex">
         <div className="tab d-lg-block d-flex col-lg-3 mb-5">
           <div className="board tab_inner" onClick={() => setComp(BoardList)}>
-            <div class="icon d-lg-none"><BsFileRichtext /></div>
+            <div className="icon d-lg-none"><BsFileRichtext /></div>
             게시글
           </div>
           <hr className="d-none d-lg-block" />
           <div className="reply tab_inner" onClick={() => setComp(ReplyList)}>
-            <div class="icon d-lg-none"><FaRegCommentDots /></div>
+            <div className="icon d-lg-none"><FaRegCommentDots /></div>
             댓글
           </div>
           <hr className="d-none d-lg-block" />
           <div className="like tab_inner" onClick={() => setComp(LikeList)}>
-            <div class="icon d-lg-none"><FaHeart/></div>
+            <div className="icon d-lg-none"><FaHeart/></div>
             좋아요
           </div>
         </div>
