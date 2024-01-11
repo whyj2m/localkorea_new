@@ -39,13 +39,13 @@ function FestivalMain() {
 
   return (
     <div>
-      <div className="festival-title" style={{ paddingTop: "150px" }}>
+      <div className="festival-title" style={{ paddingTop: "180px" }}>
         <h2> 축제 </h2>
-        <p>Festival</p>
+        <p> Festival </p>
         <hr className="container" />
       </div>
       {/*  여기서 베이스가 되는 url 지정 */}
-      <div className="container">
+      <div className="container" style={{ marginBottom: "60px" }}>
         <Location2 onCategoryClick={handleCategoryClick} basePath="/festival" />
       </div>
       <div className="festival-content container">
@@ -87,7 +87,6 @@ function FestivalMain() {
             {localData.map((festival, index) => (
               <li key={index}>
                 <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
-                  {/* 이미지가 있다고 가정하고 imagePath를 사용 */}
                   <div className="festival-list-image">
                     <img
                       src={`/assets/festival/${localNo}/${index + 1}.jpg`}

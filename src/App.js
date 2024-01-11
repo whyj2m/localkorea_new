@@ -9,6 +9,9 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer.js";
 import Main from "./components/common/Main";
 import ScrollToTop from "./components/common/ScrolltoTop.js";
+
+
+
 import {
   SearchForm,
   TourisSpot,
@@ -39,6 +42,8 @@ const Login = lazy(() => import("./components/member/Login"));
 const Signup = lazy(() => import("./components/member/Signup"));
 const Mypage = lazy(() => import("./components/member/Mypage"));
 
+const CompanyView = lazy(() => import("./components/board/BoardDetail/CompanyView"));
+
 function App() {
   return (
     <div className="App" id="App">
@@ -63,6 +68,8 @@ function App() {
           <Route path="/board/boardWrite" element={<BoardWrite />} />
           <Route path="/boardView/:bno" element={<BoardView />} />
           <Route path="/board/edit/:bno" element={<BoardEdit />} />
+          <Route path="/board/BoardDetail/CompanyView/:bno" element={<CompanyView />} />
+
           <Route path="/search/whole" element={<SearchDetail />} />
           <Route path="/search/local" element={<SearchLocal />} />
           <Route path="/search/festival" element={<SearchFestival />} />

@@ -53,7 +53,6 @@ function FestivalView() {
   const { localNo, festivalNo } = useParams();
   const [festivalData, setFestivalData] = useState(null);
   const [localFestivals, setLocalFestivals] = useState([]); // 축제 정보
-
   // width값에 따라 슬라이더 몇개 보여줄지 정하는 코드
   const [slidesPerView, setSlidesPerView] = useState(calculateSlidesPerView);
 
