@@ -19,10 +19,20 @@ export const getTourBaordList = async () => {
     }
 }
 
-// get tourisSpot 게시글 상세조회 
+// get tourisSpot 게시글 bno별 상세조회 
 export const getTourBaordDetail = async (bno) => {
     try {
         const response = await axiosInstance.get(`/board/tourisSpot/${bno}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// get company 게시글 bno별 상세조회
+export const getCompanyDetail = async (bno) => {
+    try {
+        const response = await axiosInstance.get(`/board/company/${bno}`);
         return response;
     } catch (error) {
         throw error;
