@@ -38,11 +38,8 @@
 .header-category .active {
   border-radius: 10px;
   border: 1px dotted transparent; /* 초기에 투명한 점선으로 설정 */
-  box-shadow: 3px 3px 3px #3498db;
-  padding-bottom: 4px;
+  background-color: #d2e0fb;
   display: inline-block;
-  transition: border-color 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55),
-    box-shadow 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .header-category .active:hover {
@@ -81,7 +78,7 @@
   background-color: white;
 }
 
-/* (헤더 hidden 처리를 위한 CSS  */
+/* (헤더 hidden 처리를 위한 CSS */
 .hidden {
   display: none;
 }
@@ -117,14 +114,11 @@
 }
 
 .header-category a:hover {
-  /* background-color: #3498db; */
-  color: black;
-  /* font-size: 1.5em; */
+  color: #333; /* 텍스트 색상 변경 */
   position: relative;
   border-bottom: 2px solid;
   transition: 1s;
 }
-
 /* 로그인상태 css 부분 */
 .header-main-icon span {
   font-size: 20px;
@@ -178,7 +172,7 @@
     position: absolute;
     display: flex;
     right: 80px;
-    top: 25px;
+    top: 37px;
     margin-right: 10px;
   }
 
@@ -243,7 +237,7 @@
     position: absolute;
     display: flex;
     right: 80px;
-    top: 25px;
+    top: 37px;
     margin-right: 10px;
   }
 

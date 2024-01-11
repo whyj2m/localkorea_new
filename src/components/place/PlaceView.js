@@ -2,6 +2,7 @@ import "../../styles/place/PlaceView.css";
 
 import { IoEyeSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
+import { CiHeart } from "react-icons/ci";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -19,6 +20,8 @@ function PlaceView() {
 
   // 로그인 상태 확인 함수
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // 하트 상태 함수
+  const [isHearted, setIsHearted] = useState(false); // 하트 상태 추가
 
   const navigate = useNavigate();
 
@@ -26,57 +29,70 @@ function PlaceView() {
     const fetchPlaceData = async () => {
       try {
         const placeResponse = await getLocalPlaceView(placeNo);
-        console.log("장소 상세 정보:", placeResponse);
         setPlaceData(placeResponse.data);
+        console.log(placeResponse.data);
 
-        // URL 정보 설정
         const currentUrl = window.location.href;
         setShareUrl(currentUrl);
 
-        // 로그인 상태 확인
         const accessToken = localStorage.getItem("ACCESS_TOKEN");
         setIsLoggedIn(!!accessToken);
+
+        // 토큰이 존재하는 경우에만 디코딩
+        if (isLoggedIn && accessToken) {
+          // accessToken이 존재할 때만 디코딩 수행
+          try {
+            const decodedToken = jwtDecode(accessToken);
+            const userId = decodedToken.id;
+
+            setIsHearted(
+              placeData.heartCnt > 0 &&
+                placeData.heartCnt.some((heart) => heart.id === userId)
+            );
+          } catch (error) {
+            console.error("토큰 디코딩 오류:", error);
+          }
+        }
       } catch (error) {
         console.error("데이터 못가져옴 :", error);
       }
     };
 
     fetchPlaceData();
-  }, [placeNo]);
+  }, [placeNo, isLoggedIn]); // isLoggedIn을 useEffect 의존성 배열에 추가
 
-  // 하트 클릭 처리 함수
   const handleHeartClick = async () => {
     if (!isLoggedIn) {
-      // 로그인되어 있지 않다면 로그인 페이지로 이동하도록 처리 (이 부분은 프로젝트에 맞게 수정 필요)
       alert("로그인이 필요합니다.");
-      navigate("/login"); // 리다이렉트 처리
-
+      navigate("/login");
       return;
     }
+
     try {
-      // 로그인 상태 확인 함수
       const accessToken = localStorage.getItem("ACCESS_TOKEN");
-
-      // JWT를 디코딩하여 페이로드에 액세스합니다
       const decodedToken = jwtDecode(accessToken);
+      const userId = decodedToken.id;
 
-      // 디코딩된 페이로드에서 사용자 ID에 액세스합니다
-      const userId = decodedToken.id; // "sub"는 사용자 ID에 대한 표준 클레임입니다
+      if (isHearted) {
+        // 하트를 이미 클릭한 경우 취소
+        // HeartApi에서 cancelHeart 함수 호출 (예시로 작성한 함수, 실제 함수명에 맞게 수정 필요)
+        // await cancelHeart({ id: userId, placeNo });
+        // 클릭 이후에 서버로부터 최신 데이터를 가져와서 화면 업데이트
+      } else {
+        // 하트를 클릭한 경우
+        await postHeart({ id: userId, placeNo });
+        // 클릭 이후에 서버로부터 최신 데이터를 가져와서 화면 업데이트
+      }
 
-      // 사용자 ID를 로그에 기록하거나 필요한 대로 사용합니다
-      console.log("JWT에서 추출한 사용자 ID:", userId);
-
-      // HeartApi에서 postHeart 함수 호출
-      await postHeart({ id: userId, placeNo }); // 사용자 ID 동적으로 설정
-      alert("좋아요 클릭 하셨습니다! 마이페이지 확인해주세요~");
-
-      // 클릭 이후에 서버로부터 최신 데이터를 가져와서 화면 업데이트
       const updatedPlaceResponse = await getLocalPlaceView(placeNo);
       setPlaceData(updatedPlaceResponse.data);
+      // 하트 상태 업데이트
+      setIsHearted(!isHearted);
     } catch (error) {
       console.error("하트 클릭 오류:", error);
     }
   };
+
   return (
     <div className="container" style={{ paddingTop: "200px" }}>
       {placeData && (

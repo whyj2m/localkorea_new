@@ -33,11 +33,24 @@ export const getTourBaordDetail = async (bno) => {
 export const getImg = async (bno) => {
     try {
         const response = await axiosInstance.get(`/api/images/${bno}`);
-        return response;
+        return response.data; // 이미지 데이터 반환
     } catch (error) {
-        throw error;
+        if (error.response && error.response.status === 404) {
+            // 이미지가 없는 경우, 빈 응답으로 처리
+            return null; // 빈 응답 반환
+        }
+        throw error; // 다른 오류는 그대로 throw
     }
 }
+
+// export const getImg = async (bno) => {
+//     try {
+//         const response = await axiosInstance.get(`/api/images/${bno}`);
+//         return response;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
 
 // get company 게시글 목록조회 
 export const getCompanyBaordList = async () => {
@@ -89,6 +102,16 @@ export const deleteBoard = async (bno) => {
 export const postReply = async (replyData) => {
     try {
         const response = await axiosInstance.post(`/board/reply`, replyData)
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// 댓글 조회
+export const getReply = async (bno) => {
+    try {
+        const response = await axiosInstance.get(`/board/company/${bno}`)
         return response;
     } catch (error) {
         throw error;
