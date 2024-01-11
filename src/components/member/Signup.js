@@ -350,7 +350,7 @@ function Signup() {
               className="grp chk"
             />
             <div className="d-grid">
-              <Button variant="secondary" type="submit">Sign Up</Button>
+              <Button type="submit">회원가입</Button>
             </div>
           </Form>
           <hr />

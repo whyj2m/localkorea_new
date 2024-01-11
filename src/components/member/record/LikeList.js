@@ -101,12 +101,12 @@ function LikeList() {
           <FaHeart className="h-icon" />
         </Card.Body>
       </Card>
-      <div className="btn_more">
+      {/* <div className="btn_more">
         <Button variant="outline-secondary">
           더보기
           <IoIosArrowForward className="arrow" />
         </Button>
-      </div>
+      </div> */}
     </>
   );
 }
