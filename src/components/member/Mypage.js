@@ -10,9 +10,13 @@ import ChangeInfo from "./modal/ChangeInfo";
 import { BsFileRichtext } from "react-icons/bs";
 import { FaRegCommentDots } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
+import { jwtDecode } from "jwt-decode";
 
 import axios from "axios";
 import { getMember } from "../../api/MemberApi";
+
+const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+const decodedToken = jwtDecode(ACCESS_TOKEN);
 
 function Mypage() {
   const [comp, setComp] = useState(BoardList);
@@ -35,20 +39,6 @@ function Mypage() {
   useEffect(() => {
     fetchUserInfo();
   }, [showModalCI]);
-
-  // 페이지 처음 로딩될 때 사용자 정보를 가져옴
-  useEffect(() => {
-    const fetchInitialUserInfo = async () => {
-      try {
-        const response = await getMember();
-        setUserInfo(response.data);
-      } catch (error) {
-        console.error("Error fetching initial user info:", error);
-      }
-    };
-
-    fetchInitialUserInfo();
-  }, []); // 빈 의존성 배열을 사용하여 페이지가 처음 렌더링 될 때만 호출
 
   return (
     <Container className="mypage">
