@@ -16,7 +16,7 @@ import { FaRegEye } from "react-icons/fa";
 //  스와이퍼 부분
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { getTourBaordList } from "../../api/BoardApi.js";
+import { getCompanyBaordList, getTourBaordList } from "../../api/BoardApi.js";
 
 function Section2Swiper({
   festivalData,
@@ -179,7 +179,7 @@ function Section4Swiper() {
           <SwiperSlide key={index}>
             {/* 여기에서 이미지 URL을 사용하여 이미지 표시 */}
             <ul className="tourisspotList">
-              {pair.map((item, subIndex) => (
+              {pair.slice(0, 5).map((item, subIndex) => (
                 <li className="swiper-slide" key={subIndex}>
                   {item.bno !== undefined ? (
                     <Link to={`/boardView/${item.bno}`}>
@@ -227,6 +227,9 @@ function Main() {
 
   // 관광지 추천 게시판 글 가져오기
   const [TourBoardListData, setTourBoardListData] = useState([]);
+
+  const [selectedCompanyLocationFilter, setSelectedCompanyLocationFilter] =
+    useState("서울");
 
   const handlePlaceUpdate = (location, festivals, foods, localNo) => {
     setLocationData(location);
@@ -297,6 +300,34 @@ function Main() {
       return 1; // 더 작은 창 폭에는 1개의 슬라이드만 표시
     }
   }
+
+  // 여행메이트 게시판 글 가져오기
+  const [CompanyBoardListData, setCompanyBoardListData] = useState([]);
+
+  useEffect(() => {
+    const fetchCompanyBoardListData = async () => {
+      try {
+        const response = await getCompanyBaordList();
+        const data = response.data;
+        console.log("CompanyBoardListData: ", response.data);
+        setCompanyBoardListData(data);
+      } catch (error) {
+        console.error("Error fetching local data:", error);
+      }
+    };
+
+    fetchCompanyBoardListData();
+  }, []);
+
+  const handleLocationChange = (location) => {
+    setSelectedCompanyLocationFilter(location);
+  };
+
+  const filteredCompanyBoardListData = CompanyBoardListData.filter(
+    (boardItem) =>
+      selectedCompanyLocationFilter === "전체 지역" ||
+      boardItem.location === selectedCompanyLocationFilter
+  );
 
   return (
     <div>
@@ -419,57 +450,47 @@ function Main() {
                 <p>여행 메이트</p>
               </div>
               <div className="tab-list">
-                <ul className="loactionList">
-                  <li className="loaction">
-                    <a href="#">서울</a>
-                  </li>
-                  <li className="loaction">
-                    <a href="#">대구</a>
-                  </li>
-                  <li className="loaction">
-                    <a href="#">부산</a>
-                  </li>
-                </ul>
+                {[
+                  "서울",
+                  "인천",
+                  "대전",
+                  "부산",
+                  "경기",
+                  "충청",
+                  "강원",
+                  "전라",
+                  "경상",
+                ].map((location, index) => (
+                  <span
+                    key={index}
+                    className={`location ${
+                      selectedCompanyLocationFilter === location ? "active" : ""
+                    }`}
+                    onClick={() => handleLocationChange(location)}
+                  >
+                    {location}
+                  </span>
+                ))}
               </div>
+
               <div className="CompanyList">
                 <ul>
-                  <li>
-                    <a href="#">
-                      {" "}
-                      <p>게시판 제목이 나옵니다! </p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      {" "}
-                      <p> 여기에 어디 갈사람? </p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      {" "}
-                      <p>게시판 제목이 나옵니다! </p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      {" "}
-                      <p> 여기에 어디 갈사람? </p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      {" "}
-                      <p> 여기에 어디 갈사람? </p>
-                    </a>
-                  </li>
+                  {filteredCompanyBoardListData.map((boardItem) => (
+                    <li key={boardItem.id}>
+                      <a href="#">
+                        <p>{boardItem.title}</p>
+                      </a>
+                    </li>
+                  ))}
                 </ul>
                 <a href="#" className="btn more">
-                  {" "}
-                  <span>여긴 더보기 (클릭하면 게시판목록으로이동)</span>
+                  <Link to="/board/company">
+                    <span> 더보기 </span>
+                  </Link>
                 </a>
               </div>
             </div>
+
             <div className="board-Tourisspot">
               <div className="title">
                 <p>관광지 추천</p>

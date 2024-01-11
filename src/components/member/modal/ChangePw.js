@@ -1,10 +1,30 @@
 import axios from "axios";
 import { Form, Button, Modal, InputGroup } from "react-bootstrap";
-import { chgPw } from "../../../api/MemberApi";
-
-const userId = "test3";
+import { checkPwMatch, chgPw } from "../../../api/MemberApi";
+import { useState } from "react";
 
 function ChangePw(props) {
+  const [pwMatch, setPwMatch] = useState(true);
+  const [pwLengthValid, setPwLengthValid] = useState(true);
+
+  const checkPasswordMatch = async () => {
+    try {
+      const currentPassword = document.getElementById("prevPW").value;
+      // 기존 비밀번호와 일치하는지 확인
+      const isPasswordMatch = await checkPwMatch(currentPassword);
+
+      if (!isPasswordMatch) {
+        setPwMatch(false);
+        return;
+      }
+
+      setPwMatch(true);
+      alert("기존 비밀번호가 일치합니다.");
+    } catch (error) {
+      console.error("Error checking password match:", error);
+      // 에러 처리 로직 추가
+    }
+  };
 
   const handlePasswordChange = async () => {
     try {
@@ -17,12 +37,28 @@ function ChangePw(props) {
         alert("비밀번호를 모두 입력하세요.");
         return;
       }
+      
+      // 기존 비밀번호와 일치하는지 확인
+      const isPasswordMatch = await checkPwMatch(currentPassword);
+
+      if (!isPasswordMatch) {
+        setPwMatch(false);
+        return;
+      }
 
       // 새로운 비밀번호와 확인 비밀번호가 일치하는지 확인
       if (password !== confirmPassword) {
         alert("새로운 비밀번호와 확인 비밀번호가 일치하지 않습니다.");
         return;
       }
+
+      // // 새로운 비밀번호 길이 검사
+      // if (password.length < 8) {
+      //   setPwLengthValid(false);
+      //   return;
+      // } else {
+      //   setPwLengthValid(true);
+      // }
 
       const response = await chgPw();
 
@@ -35,12 +71,23 @@ function ChangePw(props) {
     }
   }
 
+  const handlePasswordInputChange = (e) => {
+    const password = e.target.value;
+
+    // 새로운 비밀번호 길이 검사
+    if (password.length < 8) {
+      setPwLengthValid(false);
+    } else {
+      setPwLengthValid(true);
+    }
+  };
+
   return (
     <Modal
       {...props}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
-      centered
+      centered className="changePwModal"
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -58,8 +105,11 @@ function ChangePw(props) {
                   aria-describedby="passwordHelpBlock"
                   placeholder="Enter your Password"
                 />
-                <Button>비밀번호 확인</Button>
+                <Button onClick={checkPasswordMatch}>비밀번호 확인</Button>
               </InputGroup>
+              {!pwMatch && (
+              <div className="error">* 기존 비밀번호와 일치하지 않습니다.</div>
+              )}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="chgPW">변경할 비밀번호</Form.Label>
@@ -68,7 +118,11 @@ function ChangePw(props) {
                 id="chgPW"
                 aria-describedby="passwordHelpBlock"
                 placeholder="Enter your Password"
+                onChange={handlePasswordInputChange}
               />
+              {!pwLengthValid && (
+                <div className="error">* 비밀번호는 8자리 이상이어야 합니다.</div>
+              )}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label htmlFor="chkPW">비밀번호 다시 입력</Form.Label>

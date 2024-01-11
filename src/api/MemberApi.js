@@ -3,8 +3,9 @@ import { jwtDecode } from "jwt-decode";
 
 const baseURL = process.env.REACT_APP_BASE_URL;
 const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
-const decodedToken = jwtDecode(ACCESS_TOKEN);
-const userId = decodedToken.id;
+
+// const decodedToken = jwtDecode(ACCESS_TOKEN);
+// const userId = decodedToken.id;
 
 const axiosInstance = axios.create({
     baseURL,
@@ -55,9 +56,16 @@ export const googleLogin = async () => {
 // 회원정보
 export const getMember = async ()=> {
     try {
-        
-        const response = await axiosInstance.get(`/mypage/${userId}`)
-        return response
+        if(ACCESS_TOKEN) {
+            const decodedToken = jwtDecode(ACCESS_TOKEN);
+            const userId = decodedToken.id;
+            const response = await axiosInstance.get(`/mypage/${userId}`)
+            return response
+        } 
+        // else {
+        //     alert("유효하지 않은 요청입니다. 로그인 페이지로 이동합니다.");
+        //     window.location.href = "/login"; // 로그인 페이지로 이동
+        // }
     } catch (error) {
         throw error
     }
@@ -66,6 +74,8 @@ export const getMember = async ()=> {
 // 회원정보 수정
 export const chgInfo = async ()=> {
     try {
+        const decodedToken = jwtDecode(ACCESS_TOKEN);
+        const userId = decodedToken.id;
         const changedName = document.getElementById("chgName").value;
         const changedPhone = document.getElementById("chgPH").value;
         const changedEmail = document.getElementById("chgEmail").value;
@@ -81,9 +91,28 @@ export const chgInfo = async ()=> {
     }
 }
 
+// 비밀번호 확인
+export const checkPwMatch = async (currentPassword) => {
+    try {
+      const decodedToken = jwtDecode(ACCESS_TOKEN);
+      const userId = decodedToken.id;
+      
+      const response = await axiosInstance.post(`/mypage/${userId}/checkPw`, {
+        currentPassword,
+      });
+  
+      return response.data;
+    } catch (error) {
+      console.error("Error checking password match:", error);
+      return false;
+    }
+  };
+
 // 비밀번호 변경
 export const chgPw = async ()=> {
     try {
+        const decodedToken = jwtDecode(ACCESS_TOKEN);
+        const userId = decodedToken.id;
         const currentPassword = document.getElementById("prevPW").value;
         const password = document.getElementById("chgPW").value;
         const confirmPassword = document.getElementById("chkPW").value;
