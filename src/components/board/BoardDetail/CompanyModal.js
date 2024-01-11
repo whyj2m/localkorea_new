@@ -1,6 +1,8 @@
 // import React, { useState } from 'react';
 import { useEffect, useState } from "react";
-import { Button, Modal, Card, Form } from 'react-bootstrap';
+import { useParams } from "react-router-dom";
+import { Button, Modal, Card } from 'react-bootstrap';
+import { createBrowserHistory } from 'history'; // 모달주소이동
 
 // 아이콘
 import { FaPlane } from "react-icons/fa6";
@@ -15,6 +17,7 @@ import moment from 'moment';
 
 import { getCompanyBaordList } from '../../../api/BoardApi';
 import { postReply } from "../../../api/BoardApi";
+import { getReply } from "../../../api/BoardApi";
 
 // css
 import 'react-toastify/dist/ReactToastify.css';
@@ -24,9 +27,20 @@ import '../../../styles/board/companyModal.scss';
 function CompanyModal() {
 
   const [show, setShow] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const history = createBrowserHistory();
 
-  const handleShow = () => setShow(true);
-  const handleClose = () => setShow(false);
+  const handleShow = (bno) => {
+    setShow(true);
+    setSelectedItem(bno);
+    history.push(`/board/company/${bno}`);
+  };
+
+  const handleClose = () => {
+    setShow(false);
+    setSelectedItem(null);
+    history.push('/board/company');
+  };
 
   const [commentContent, setCommentContent] = useState('');
 
@@ -45,23 +59,56 @@ function CompanyModal() {
   //   });
   // };
 
+
+
+
+
+
+
+
+
+
+
+  // 댓글 가져오기
+  const [replyList, setReplyList] = useState([]);
+  const { bno } = useParams();
+
+  useEffect(() => {
+    const fetchReplyData = async () => {
+      try {
+        const response = await getReply(); // 댓글을 가져오는 함수 호출
+        const data = response.data;
+        console.log("ReplyData: ", data);
+        setReplyList(data); // 반환된 데이터 배열을 상태로 설정 (댓글 목록)
+      } catch (error) {
+        console.error("Error fetching reply data:", error);
+      }
+    };
+
+    fetchReplyData(); // 댓글 가져오기 함수 호출
+  }, []);
+
+
+
+
   // 여행메이트 게시판 글 가져오기
   const [CompanyBoardListData, setCompanyBoardListData] = useState([]);
 
   useEffect(() => {
-    const fetchCompanyBoardListData = async () => {
-      try {
-        const response = await getCompanyBaordList();
-        const data = response.data
-        console.log("CompanyBoardListData: ", response.data);
-        setCompanyBoardListData(data);
-      } catch (error) {
-        console.error("Error fetching local data:", error);
-      }
-    };
+  const fetchReplyData = async () => {
+    try {
+      const response = await getReply(); // 댓글을 가져오는 함수 호출
+      const data = response.data;
+      console.log("응답 데이터:", data); // 응답 데이터를 로그에 남김
+      setReplyList(data); // 반환된 데이터 배열을 상태로 설정 (댓글 목록)
+    } catch (error) {
+      console.error("댓글 데이터를 불러오는 중 에러 발생:", error);
+    }
+  };
 
-    fetchCompanyBoardListData();
-  }, []);
+  fetchReplyData(); // 댓글 가져오기 함수 호출
+}, []);
+
 
   const handleSubmit = async (e, bno) => {
     e.preventDefault();
@@ -101,13 +148,13 @@ function CompanyModal() {
         theme="light"
       />
 
-      <Button className='apply-btn' onClick={handleShow}>
-        자세히
-        <FaPlane className='ariPlane-btn' />
-      </Button>
 
       {CompanyBoardListData.map(item => (
-        <div key={item.id} className='d-flex justify-content-center modal-'>
+        <div key={item.bno} className='d-flex justify-content-center modal-'>
+          <Button className='apply-btn' onClick={() => handleShow(item.bno)}>
+            자세히
+            <FaPlane className='ariPlane-btn' />
+          </Button>
           <Modal className='companyModal' show={show} onHide={handleClose}>
             <Modal.Header className='modal-header' closeButton></Modal.Header>
             <Modal.Body>
@@ -133,7 +180,7 @@ function CompanyModal() {
                         {item.content}
                       </div>
                       <div className='Reply_div'>
-                        <h4>댓글</h4>
+
 
 
                         <div className='Reply_write'>
@@ -176,16 +223,18 @@ function CompanyModal() {
                   {/* 오른쪽 구역 */}
                   <div className="area-right col-md-6">
                     <div className="Reply-list">
-                      <div className="Reply-nav">
-                        <div className="nick-name">nick-name</div>
-                        <div className="time">2018-3-2</div>
-                        <Button className="delete" variant="link">삭제</Button>
-                      </div>
-                      {/* 댓글 */}
-                      <div >
-                        <div className="Reply-content">댓글입니다샬라샬라샬라샬라샬라</div>
-                        <div className="Reply-content">네네네</div>
-                      </div>
+                      {replyList.map((reply, index) => (
+                        <div key={index}>
+                          <div className="Reply-nav">
+                            <div className="nick-name">{reply.id}</div>
+                            <div className="time">{reply.regDate}</div>
+                            <Button className="delete" variant="link">삭제</Button>
+                          </div>
+                          <div>
+                            <div className="Reply-content">{reply.content}</div>
+                          </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>

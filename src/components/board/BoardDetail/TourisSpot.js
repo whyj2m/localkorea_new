@@ -157,8 +157,11 @@ function TourisSpot() {
                                 ...prevImageSrcMap,
                                 [item.bno]: imageUrl,
                             }));
-                        } else {
-                            console.error(`이미지가 없습니다 : ${item.bno}`);
+                        } 
+                        else {
+                            // console.error(`이미지가 없습니다 : ${item.bno}`);
+                            return;
+
                         }
                     }
                 });

@@ -206,7 +206,7 @@
 //                             <div className="line" />
 //                             {/* 버튼 */}
 //                             <Row className='justify-content-end'>
-//                                 <editAndDeleteBtn/>
+//                                 <EditAndDeleteBtn/>
 //                                 {/* <Col xs={1} md={1} className='boardView-btn'>
 //                                     <Link to={`/board/edit/${item.bno}`}>
 //                                         <Button variant="link">수정</Button>
