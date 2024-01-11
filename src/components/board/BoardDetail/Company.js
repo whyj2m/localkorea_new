@@ -12,16 +12,18 @@ import '../../../styles/board/company.scss';
 
 function Company() {
 
-    // modal
-    const [showModal, setShowModal] = useState(false);
 
-    const handleShowModal = () => setShowModal(true); // 모달 열기 
-    const handleCloseModal = () => setShowModal(false); // 모달 닫기
-
+    // 글 작성 페이지로 이동
     const navigate = useNavigate();
     const handleButtonClick = () => {
         navigate('/board/boardWrite'); // 절대 경로 '/board/boardWrite'로 이동
     };
+
+   // 상세 페이지로 이동
+   const handleButtonView = (bno) => {
+    navigate(`/board/BoardDetail/CompanyView/${bno}`);
+};
+
 
     // 여행메이트 게시판 글 가져오기
     const [CompanyBoardListData, setCompanyBoardListData] = useState([]);
@@ -69,14 +71,14 @@ function Company() {
                                                     <p>{item.location}</p>
                                                 </div>
                                                 <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
-                                                {/* <Card.Text className='tag'>#모든 성별 #20대 #산책</Card.Text> */}
+                                          
                                             </Card.Body>
                                         </Col>
                                         <Col xs={3} md={3}>
                                             <div className="d-flex flex-column align-items-center">
                                                 <BsPeopleFill className='pepole-icon' />
                                                 <Card.Text>1/4</Card.Text>
-                                                <Modal showModal={showModal} closeModal={handleCloseModal} />
+                                                <Button className='write-btn' as="input" type="submit" value="자세히 보기" onClick={() => handleButtonView(item.bno)} />
                                             </div>
                                         </Col>
                                     </Row>

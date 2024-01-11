@@ -6,12 +6,12 @@ import "swiper/css/pagination";
 import { useEffect, useState } from "react";
 import { IoEyeSharp } from "react-icons/io5";
 
-import "../../styles/Main.css";
 import SouthKoreaMap from "../common/SouthKoreaMap.js";
 import Video from "./Video.js";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
 import { FaRegEye } from "react-icons/fa";
+import "../../styles/Main.css";
 
 //  스와이퍼 부분
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
@@ -191,7 +191,7 @@ function Section4Swiper() {
                           />
                         ) : (
                           <img
-                            src={`${process.env.PUBLIC_URL}/assets/etc/clone.jpg`}
+                            src={`${process.env.PUBLIC_URL}/assets/etc/noImg.png`}
                           />
                         )}
                       </div>
@@ -342,9 +342,12 @@ function Main() {
 
         <div className="section1-headname">
           <h3>
-            "지역으로 보는"
-            <strong> 방방곡곡 관광지 </strong>
+            <strong> 세하마노 방방곡곡 </strong>
           </h3>
+        </div>
+
+        <div className="place-locations">
+          {locationData.length > 0 && locationData[0].location}
         </div>
         {/* 여기 구분선 */}
         <hr style={{ marginBottom: "25px", marginTop: "0" }} />
@@ -353,9 +356,6 @@ function Main() {
             <div className="section1-place">
               <h3>
                 {/* 지역 나타내는 곳 */}
-                <strong>
-                  {locationData.length > 0 && locationData[0].location}
-                </strong>
                 요즘뜨는 관광지
               </h3>
             </div>
@@ -405,8 +405,8 @@ function Main() {
         <hr />
         <div className="section2 section">
           {/* 로케이션데이터에 지역정보가 있어서 [0]번 베열 이용해서 지역이름 설정 */}
-          <strong>{locationData.length > 0 && locationData[0].location}</strong>
-          <h3> 방방곡곡 축제정보</h3>
+          <strong>Festival</strong>
+          <h3> 축제/행사 정보모음 </h3>
 
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
           <div>
@@ -424,8 +424,8 @@ function Main() {
         </div>
         <hr />
         <div className="section3 section">
-          <strong>{locationData.length > 0 && locationData[0].location}</strong>
-          <h3> 방방곡곡 특산물'S </h3>
+          <strong> 지역특산물 </strong>
+          <h3> "방방곡곡! 각 지역별 대표 특산물을 소개합니다." </h3>
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
           <div>
             <Section3Swiper
@@ -442,7 +442,8 @@ function Main() {
         </div>
 
         <div className="section4 section">
-          <h3> 방방곡곡 온누리 말 </h3>
+          <strong className="board-title"> Board </strong>
+          <h3> 새하마노의 누리꾼 소식을 만나보세요! </h3>
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
           <div className="board-section">
             <div className="board-Company">

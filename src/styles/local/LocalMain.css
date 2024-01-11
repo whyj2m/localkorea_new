@@ -18,8 +18,15 @@
   font-weight: bold;
   padding-top: 10px;
 }
+.localmain-info span {
+  width: 141px;
+}
 .localmain-info span > p {
   font-size: 20px;
+}
+.localmain-info span:nth-child(2) {
+  font-size: 65px;
+  padding-top: 10px;
 }
 
 /* 지역소개 부분  */

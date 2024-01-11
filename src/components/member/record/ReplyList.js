@@ -8,52 +8,42 @@ function ReplyList() {
       <table className="replylist">
         <thead>
           <tr>
-            <th>카테고리</th>
+            <th>지역</th>
             <th>글제목</th>
             <th>댓글내용</th>
-            <th>좋아요수</th>
+            <th>작성일</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>관광지 추천</td>
+            <td>서울</td>
             <td>게시글 제목입니다.</td>
             <td>작성한 댓글 내용</td>
-            <td>
-              <FaHeart />3
-            </td>
+            <td>2024-01-11</td>
           </tr>
           <tr>
-            <td>관광지 추천</td>
+            <td>충청</td>
             <td>게시글 제목입니다.</td>
             <td>작성한 댓글 내용</td>
-            <td>
-              <FaHeart />3
-            </td>
+            <td>2024-01-11</td>
           </tr>
           <tr>
-            <td>관광지 추천</td>
+            <td>서울</td>
             <td>게시글 제목입니다.</td>
             <td>작성한 댓글 내용</td>
-            <td>
-              <FaHeart />3
-            </td>
+            <td>2024-01-11</td>
           </tr>
           <tr>
-            <td>관광지 추천</td>
+            <td>강원</td>
             <td>게시글 제목입니다.</td>
             <td>작성한 댓글 내용</td>
-            <td>
-              <FaHeart />3
-            </td>
+            <td>2024-01-11</td>
           </tr>
           <tr>
-            <td>관광지 추천</td>
+            <td>인천</td>
             <td>게시글 제목입니다.</td>
             <td>작성한 댓글 내용</td>
-            <td>
-              <FaHeart />3
-            </td>
+            <td>2024-01-11</td>
           </tr>
         </tbody>
       </table>
