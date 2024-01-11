@@ -1,0 +1,55 @@
+@import '/src/reset.scss';
+
+.companyView{
+
+  width: 1000px;
+  height: 500px;
+  background: #dfdede50;
+
+  // .view-header{
+  //   font-size: 50px;
+  // }
+
+    .nav{
+      display: flex;
+      flex-direction: column;
+      
+       // 장소
+      .nav-location{
+        margin: 0 5px;
+        font-size: 20px;
+
+        .nav-location-icon{
+          width: 30px;
+          height: 30px;
+        } 
+      }
+
+      // 날짜
+      .nav-date{
+          margin: 0 5px;
+          font-size: 20px;
+        .nav-date-icon{
+          width: 30px;
+          height: 30px;
+        }
+
+        // .nave-date-regDate{
+        //   font-size: 20px;
+        // }
+      }
+
+      // 작성자
+      .nav-writer{
+        font-size: 20px;
+
+        .nav-person-icno{
+            width: 30px;
+            height: 30px;
+        }
+        
+      }
+
+  
+    }
+}
