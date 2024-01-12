@@ -127,7 +127,7 @@ function Section4Swiper() {
         );
 
         console.log("TourBoardListData: ", newData);
-        setTourBoardListData(newData);
+        setTourBoardListData(newData.slice(0, 8)); // 데이터 8개만 짤라버림 게시글 8개.
       } catch (error) {
         console.error("Error fetching local data:", error);
       }
@@ -179,43 +179,49 @@ function Section4Swiper() {
           <SwiperSlide key={index}>
             {/* 여기에서 이미지 URL을 사용하여 이미지 표시 */}
             <ul className="tourisspotList">
-              {pair.slice(0, 5).map((item, subIndex) => (
-                <li className="swiper-slide" key={subIndex}>
-                  {item?.bno !== undefined ? (
-                    <Link to={`/board/tourisSpotView/${item.bno}`}>
-                      <div className="thumb-wrap">
-                        {item.imageUrl ? (
-                          <img
-                            src={item.imageUrl}
-                            alt={`Tourisspot ${index + subIndex + 1}`}
-                          />
-                        ) : (
-                          <img
-                            src={`${process.env.PUBLIC_URL}/assets/etc/noImg.png`}
-                          />
-                        )}
-                      </div>
-                      <div className="text-wrap">
-                        <span> 서울 </span>
-                        <strong> 작성자 </strong>
-                        <h3>{item.title}</h3>
-                        <p>{item.content}</p>
-                        <span className="viewcnt">
-                          <IoEyeSharp /> <p>{item.viewCnt || 0}</p>
-                        </span>
-                      </div>
-                    </Link>
-                  ) : (
-                    <p>BNO is undefined</p>
-                  )}
-                </li>
-              ))}
+              {pair.slice(0, 4).map(
+                (
+                  item,
+                  subIndex // Render only the first 4 items
+                ) => (
+                  <li className="swiper-slide" key={subIndex}>
+                    {item?.bno !== undefined ? (
+                      <Link to={`/board/tourisSpotView/${item.bno}`}>
+                        <div className="thumb-wrap">
+                          {item.imageUrl ? (
+                            <img
+                              src={item.imageUrl}
+                              alt={`Tourisspot ${index + subIndex + 1}`}
+                            />
+                          ) : (
+                            <img
+                              src={`${process.env.PUBLIC_URL}/assets/etc/noImg.png`}
+                            />
+                          )}
+                        </div>
+                        <div className="text-wrap">
+                          <span> 서울 </span>
+                          <strong> 작성자 </strong>
+                          <h3>{item.title}</h3>
+                          <p>{item.content}</p>
+                          <span className="viewcnt">
+                            <IoEyeSharp /> <p>{item.viewCnt || 0}</p>
+                          </span>
+                        </div>
+                      </Link>
+                    ) : (
+                      <p>BNO is undefined</p>
+                    )}
+                  </li>
+                )
+              )}
             </ul>
           </SwiperSlide>
         ))}
     </Swiper>
   );
 }
+
 function Main() {
   const location = useLocation();
   const [locationData, setLocationData] = useState([]);
@@ -484,11 +490,9 @@ function Main() {
                     </li>
                   ))}
                 </ul>
-                <a href="#" className="btn more">
-                  <Link to="/board/company">
-                    <span> 더보기 </span>
-                  </Link>
-                </a>
+                <Link to="/board/company" className="btn more">
+                  <span> 더보기 </span>
+                </Link>
               </div>
             </div>
 
