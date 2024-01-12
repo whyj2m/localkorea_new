@@ -182,7 +182,7 @@ function Section4Swiper() {
               {pair.slice(0, 5).map((item, subIndex) => (
                 <li className="swiper-slide" key={subIndex}>
                   {item?.bno !== undefined ? (
-                    <Link to={`/boardView/${item.bno}`}>
+                    <Link to={`/board/tourisSpotView/${item.bno}`}>
                       <div className="thumb-wrap">
                         {item.imageUrl ? (
                           <img

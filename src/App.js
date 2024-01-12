@@ -23,15 +23,21 @@ const Company = lazy(() => import("./components/board/BoardDetail/Company"));
 
 const Notice = lazy(() => import("./components/board/BoardDetail/Notice"));
 const BoardWrite = lazy(() => import("./components/board/BoardWrite"));
-const TourisSpot = lazy(() => import("./components/board/BoardDetail/TourisSpot"));
-const TourisSpotView = lazy(() => import('./components/board/TourisSpotView'));
+const TourisSpot = lazy(() =>
+  import("./components/board/BoardDetail/TourisSpot")
+);
+const TourisSpotView = lazy(() => import("./components/board/TourisSpotView"));
 const BoardEdit = lazy(() => import("./components/board/BoardEdit"));
-const CompanyView = lazy(() => import("./components/board/BoardDetail/CompanyView"));
+const CompanyView = lazy(() =>
+  import("./components/board/BoardDetail/CompanyView")
+);
 
 const SearchDetail = lazy(() => import("./components/search/SearchDetail"));
 const SearchLocal = lazy(() => import("./components/search/SearchLocal"));
 const SearchFestival = lazy(() => import("./components/search/SearchFestival"));
-const SearchRegionalItem = lazy(() => import("./components/search/SearchRegionalItem"));
+const SearchRegionalItem = lazy(() =>
+  import("./components/search/SearchRegionalItem")
+);
 
 const Login = lazy(() => import("./components/member/Login"));
 const Signup = lazy(() => import("./components/member/Signup"));
@@ -49,10 +55,16 @@ function App() {
           <Route path="/place/:localNo" element={<PlaceMain />} />
           <Route path="/place/:localNo/:placeNo" element={<PlcaeView />} />
           <Route path="/festival/:localNo" element={<FestivalMain />} />
-          <Route path="/festival/:localNo/:festivalNo" element={<FestivalView />}/>
-          
+          <Route
+            path="/festival/:localNo/:festivalNo"
+            element={<FestivalView />}
+          />
+
           <Route path="/board/tourisSpot" element={<TourisSpot />} />
-          <Route path="/board/tourisSpotView/:bno" element={<TourisSpotView />} />
+          <Route
+            path="/board/tourisSpotView/:bno"
+            element={<TourisSpotView />}
+          />
           <Route path="/board/company" element={<Company />} />
           <Route path="/board/companyView/:bno" element={<CompanyView />} />
           <Route path="/board/notice" element={<Notice />} />
