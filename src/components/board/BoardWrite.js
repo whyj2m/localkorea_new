@@ -44,18 +44,6 @@ function BoardWrite() {
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        const userInput = e.target.value;
-    
-    // 글자수 제한 (예: 500자)
-    if (userInput.length <= 500) {
-      setContent(userInput);
-    }
-
-    // 띄어쓰기 처리
-    const trimmedInput = userInput.replace(/\s+/g, ' ');
-    setContent(trimmedInput);
-
-
         if (name === 'title') {
             setTitle(value);
         } else if (name === 'content') {
@@ -130,46 +118,6 @@ function BoardWrite() {
         }
     };
 
-
-
-    // 0110새벽까지 됐는데 왜 안 될까
-    // const handleSubmit = async (e) => {
-    //     e.preventDefault();
-
-    //     const formData = new FormData();
-
-    //     // 빈 배열을 전송하여 파일이 없는 경우에도 files를 전송
-    //     formData.append('files', []);
-
-    //     // 파일이 있는 경우에만 파일을 추가
-    //     if (uploadedFiles.length > 0) {
-    //         uploadedFiles.forEach((fileObject, index) => {
-    //             formData.append(`files`, fileObject.file);
-    //         });
-    //     }
-
-    //     else{
-    //         alert('이미지를 첨부해야합니다!'); 
-    //         return;
-    //     }
-
-    //     formData.append('title', title);
-    //     formData.append('content', content);
-    //     formData.append('boardCno', boardCno);
-    //     formData.append('locationCno', locationCno);
-    //     formData.append('location', getLocationName(locationCno));
-
-    //     try {
-    //         const response = await postBoardWrite(formData);
-    //         console.log(response);
-    //         alert('게시글 작성 성공');
-    //         window.location.href = '/board/tourisSpot';
-    //     } catch (error) {
-    //         console.log("게시글 작성 실패");
-    //         alert('게시글 작성 실패');
-    //     }
-    // };
-
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -195,26 +143,6 @@ function BoardWrite() {
         formData.append('location', getLocationName(locationCno));
         formData.append('id', userId);
 
-
-        //    try {
-        //     // 토큰을 Authorization 헤더에 추가
-        //     const config = {
-        //         headers: {
-        //             'Content-Type': 'multipart/form-data',
-        //             'Authorization': `Bearer ${accessToken}` // 토큰 추가
-        //         }
-        //     };
-
-        //     // API 요청 시에 헤더를 함께 전송
-        //     const response = await postBoardWrite(formData, config);
-
-        //     console.log("성공", response);
-        //     alert('게시글 작성 성공');
-        //     navigate('/board/tourisSpot'); // useNavigate 사용하여 경로 변경
-        // } catch (error) {
-        //     console.log("게시글 작성 실패");
-        //     alert('게시글 작성 실패');
-        // }
         try {
             // API 요청 시에 헤더를 함께 전송할 필요 없음
             const response = await postBoardWrite(formData);
@@ -256,6 +184,7 @@ function BoardWrite() {
                                     type="text"
                                     name="title"
                                     id="title"
+                                    maxLength={100}
                                     placeholder="제목을 입력하세요"
                                     value={title}
                                     onChange={handleChange}
@@ -339,10 +268,11 @@ function BoardWrite() {
                             <Form.Label>내용 *</Form.Label>
                             <Form.Control
                                 rows={10}
+                                id="content"
                                 as="textarea"
                                 name="content"
+                                maxLength={800}
                                 placeholder="내용을 입력하세요"
-                                id="content"
                                 value={content}
                                 onChange={handleChange}
                             />

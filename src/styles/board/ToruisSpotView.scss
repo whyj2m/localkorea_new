@@ -60,11 +60,12 @@
     .board-content{
         padding: 50px 30px;
         font-size: 20px;
+        white-space: pre-line; // 줄바꿈
     }
 
     .file {
-        width: 200px;
-        height: 300px;
+        // width: 200px;
+        // height: 300px;
         display: table-cell;
         vertical-align: middle;
         padding: 25px 0;
