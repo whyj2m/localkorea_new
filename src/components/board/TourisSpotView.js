@@ -26,10 +26,10 @@ import { jwtDecode } from "jwt-decode";
 function EditAndDeleteBtn() {
     const { bno } = useParams();
     const accessToken = localStorage.getItem('ACCESS_TOKEN');
-const decodedToken = typeof accessToken === 'string' ? jwtDecode(accessToken) : null;
+    const decodedToken = typeof accessToken === 'string' ? jwtDecode(accessToken) : null;
 
     const customerId = decodedToken?.id;
-    
+
     const [loadingData, setLoadingData] = useState(true);
     const [TourBaordDetailData, setTourBaordDetailData] = useState([]);
     const navigate = useNavigate();
@@ -152,60 +152,54 @@ function TourisSpotView() {
 
     return (
         <div>
-            <BoardNav />
+            {/* <BoardNav /> */}
 
             <div className='container'>
+                <div className='boardView-header'>
+                    - 관광지 추천 -
+                </div>
                 <div className='boardView-all'>
 
                     {TourBaordDetailData.length > 0 && TourBaordDetailData.map(item => (
                         <Row key={item.bno}>
-                            <div className='boardView-bno'>{item.bno}번 추천글</div>
+                            <div className='boardView-bno'>NO. {item.bno}</div>
 
                             {/* 제목 */}
-                            <Row>
-                                <Col xs={4} md={2} className='boardView-title'>
-                                    <p>제목</p>
-                                </Col>
-                                <Col xs={8} md={8} className='BoardContent'>
-                                    <div>{item.title}</div>
-                                </Col>
-                                <div className="line" />
-                            </Row>
+                            <div className="line" />
+                            <Col xs={8} md={8}>
+                                <div className='boardView-title'>{item.title}</div>
+                            </Col>
 
-                            {/* 시간 */}
-                            <Row>
-                                <Col xs={4} md={2} className='boardView-date'>
-                                    <p>작성일</p>
-                                </Col>
-                                <Col xs={8} md={4} className='BoardContent'>
-                                    <div>{moment(item.regDate).format('LLL')}</div>
-                                </Col>
-                                <Col xs={4} md={2} className='boardView-date'>
-                                    <p>최종수정일</p>
-                                </Col>
-                                <Col xs={8} md={4} className='BoardContent'>
-                                    <div>{moment(item.updateDate).format('LLL')}</div>
-                                </Col>
-                                <div className="line" />
-                            </Row>
+                            <div className="line" />
+
+                            <div className='boardView-detail'>
+                                <div className='board-detail-date'>
+                                    <div className='date'>{moment(item.regDate).format('L')}</div>
+                                </div>
+                                <div className='board-detail-writer'>
+                                    <div className='writer'>{item.id.id}</div>
+                                </div>
+                                <div className='board-detail-view'>
+                                    <div className='view'>{item.viewCount}</div>
+                                </div>
+                            </div>
+                            <div className="line" />
 
                             {/* 내용 */}
                             <Row>
-                                <Col xs={4} md={2} className='boardView-content'>
-                                    <p>내용</p>
-                                </Col>
-                                <Col xs={8} md={8} className='BoardContent'>
-                                    <div>{item.content}</div>
+                                <Col xs={8} md={12} className='BoardContent'>
+                                    <div className='board-content'>{item.content}</div>
                                 </Col>
                                 <div className="line" />
                             </Row>
 
                             {/* 사진 */}
                             <Row>
-                                <Col xs={8} md={4} className='BoardContent'>
-                                    <div>
+                                <Col xs={8} md={8} className='file'>
+                                    <div className='ms-auto'>
                                         {imageSrc ? (
                                             <img
+                                                className='imgs'
                                                 src={imageSrc}
                                                 alt={`Image ${bno}`}
                                                 width={300}
@@ -223,16 +217,6 @@ function TourisSpotView() {
                             {/* 버튼 */}
                             <Row className='justify-content-end'>
                                 <EditAndDeleteBtn />
-                                {/* <Col xs={1} md={1} className='boardView-btn'>
-                                    <Link to={`/board/edit/${item.bno}`}>
-                                        <Button variant="link">수정</Button>
-                                    </Link>
-                                </Col>
-                                <Col xs={1} md={1} className='boardView-btn'>
-                                    <Button variant="link" disabled={loading} onClick={handleDelete}>
-                                        삭제
-                                    </Button>
-                                </Col> */}
                                 <Col xs={1} md={1} className='boardView-btn'>
                                     <Link to="/board/tourisSpot">
                                         <Button variant="link">목록</Button>
