@@ -8,14 +8,11 @@ function ChangeInfo(props) {
   const [memberInfo, setMemberInfo] = useState({
     id:"", name:"", phoneNum:"", email:""
   })
-
-  // 이메일로 발송된 코드
-  const [codeFromEmail, setCodeFromEmail] = useState("");
-  const [vcSuccess, setVcSuccess] = useState(null);
-
-  const [verificationCode, setVerificationCode] = useState("");
-
-  const [vcValid, setVcValid] = useState(true);
+  
+  const [codeFromEmail, setCodeFromEmail] = useState(""); // 이메일로 발송된 코드
+  const [vcSuccess, setVcSuccess] = useState(null); // 인증상태
+  const [verificationCode, setVerificationCode] = useState(""); // 입력한 인증번호
+  const [vcValid, setVcValid] = useState(true); // 인증번호 유효성
 
   useEffect(()=>{
     async function fetchMemberInfo() {
@@ -31,6 +28,12 @@ function ChangeInfo(props) {
 
   const handleInfoChange = async () => {
     try {
+      // 이름, 휴대폰번호, 이메일 중 하나라도 비어있으면 경고 메시지 출력
+      if (!memberInfo.name || !memberInfo.phoneNum || !memberInfo.email) {
+        alert("모든 항목을 입력해주세요.");
+        return;
+      }
+      
       // 이메일 인증 코드를 확인하고 검증합니다.
       if (!verificationCode) {
         alert("인증번호를 입력해주세요.");
@@ -48,10 +51,15 @@ function ChangeInfo(props) {
         return;
       }
 
-      const changeInfoResponse  = await chgInfo();
-      // 응답 처리
-      alert(changeInfoResponse.data)
-      props.onHide();
+      // vcSuccess가 true일 때에만 회원정보 수정 가능
+      if (vcSuccess) {
+        const changeInfoResponse = await chgInfo();
+        // 응답 처리
+        alert(changeInfoResponse.data);
+        props.onHide();
+      } else {
+        alert("인증에 실패하여 회원정보 변경이 불가능합니다.");
+      }
     } catch (error) {
       console.error("Error changing member info:", error);
       // 에러 처리 로직 추가
@@ -59,9 +67,16 @@ function ChangeInfo(props) {
     }
   }
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     setVerificationCode("");
     setVcSuccess(null);
+    // 다시 유저 데이터를 불러옴
+    try {
+      const response = await getMember();
+      setMemberInfo(response.data);
+    } catch (error) {
+      console.error("Error fetching member info:", error);
+    }
     props.onHide();
   };
 
@@ -76,6 +91,7 @@ function ChangeInfo(props) {
       // 응답 로그를 출력하고 코드를 상태에 저장합니다.
       console.log(response);
       setCodeFromEmail(response.data);
+      setVcValid(true); // 인증번호를 발송하면 기존 메시지를 초기화
     } catch (error) {
       // 오류 처리
       console.error("이메일 전송 에러:", error);
@@ -95,6 +111,17 @@ function ChangeInfo(props) {
     }
   }
 
+  const handleChangeEmailVC = (e) => {
+    const inputVerificationCode = e.target.value;
+
+    // 입력된 인증번호와 저장된 코드 비교
+    if (inputVerificationCode === codeFromEmail) {
+      setVcValid(true);
+    } else {
+      setVcValid(false);
+    }
+  };
+
   // 휴대폰번호 입력 형식
   const formatPhoneNumber = (inputNumber) => {
     // 숫자만 추출하여 "-" 추가
@@ -107,8 +134,9 @@ function ChangeInfo(props) {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered className="changeInfo"
+      backdrop="static"
     >
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
           회원정보 변경
         </Modal.Title>
@@ -144,6 +172,7 @@ function ChangeInfo(props) {
                 <Form.Control
                   id="chgEmail"
                   placeholder="Enter your Email"
+                  value={memberInfo.email}
                   aria-label="Recipient's username"
                   aria-describedby="basic-addon2"
                 />
@@ -154,14 +183,15 @@ function ChangeInfo(props) {
               <Form.Label htmlFor="chgEmailVC">인증번호 확인</Form.Label>
               <Form.Control
                 type="text"
-                id="chgEmailVC" name="vc"
+                id="chgEmailVC" 
                 placeholder="Enter verification code"
                 value={verificationCode}
                 onChange={(e) =>{
-                  setVerificationCode(e.target.value)
+                  setVerificationCode(e.target.value);
+                  handleChangeEmailVC(e);
                 }}
               />
-            {vcSuccess && (
+            {vcValid && verificationCode && (
               <div className="success">
                 인증에 성공했습니다.
               </div>
@@ -176,7 +206,7 @@ function ChangeInfo(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleCancel}>취소</Button>
-        <Button variant="primary" onClick={handleInfoChange}>
+        <Button className="modify_btn" onClick={handleInfoChange}>
             변경
           </Button>
       </Modal.Footer>

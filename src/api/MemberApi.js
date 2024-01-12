@@ -47,6 +47,7 @@ export const googleLogin = async () => {
             localStorage.setItem("token", token)
             localStorage.setItem("refreshToken", refreshToken)
         }
+        window.location.href = "/";
     } catch (error) {
         // 에러 처리
         console.error("Google login error: ", error);
