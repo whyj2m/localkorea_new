@@ -17,6 +17,7 @@ const BoardEdit = () => {
    const navigate = useNavigate(); // 페이지이동
    const [TourBaordDetailData, setTourBaordDetailData] = useState([]);
    const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true); // 파일업로드
+   const [content, setContent] = useState(''); // 글 자수 제한
    const [updateDate, setUpdateDate] = useState({
       title: '',
       content: '',
@@ -26,6 +27,7 @@ const BoardEdit = () => {
    });
    
    const handleSubmit = async (e) => {
+      
       e.preventDefault();
       try {
          //  const response = await putBoard(bno, updateDate); // 왜그런지 모르겠지만 put은 안됨
@@ -111,6 +113,14 @@ const BoardEdit = () => {
          [name]: value,
          location: newLocation
       }));
+
+      
+      const userInput = e.target.value;
+
+      // 띄어쓰기 처리
+      const trimmedInput = userInput.replace(/\s+/g, ' ');
+      setContent(trimmedInput);
+      
    };
    
    
@@ -216,6 +226,7 @@ const BoardEdit = () => {
                            as="textarea"
                            name="content"
                            placeholder="내용을 입력하세요"
+                           maxLength={800}
                            value={updateDate.content || item.content}
                            onChange={handleChange}
                         />

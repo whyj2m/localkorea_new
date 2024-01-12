@@ -181,8 +181,8 @@ function Section4Swiper() {
             <ul className="tourisspotList">
               {pair.slice(0, 5).map((item, subIndex) => (
                 <li className="swiper-slide" key={subIndex}>
-                  {item.bno !== undefined ? (
-                    <Link to={`/boardView/${item.bno}`}>
+                  {item?.bno !== undefined ? (
+                    <Link to={`/board/tourisSpotView/${item.bno}`}>
                       <div className="thumb-wrap">
                         {item.imageUrl ? (
                           <img
@@ -478,9 +478,9 @@ function Main() {
                 <ul>
                   {filteredCompanyBoardListData.map((boardItem) => (
                     <li key={boardItem.id}>
-                      <a href="#">
+                      <Link>
                         <p>{boardItem.title}</p>
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>

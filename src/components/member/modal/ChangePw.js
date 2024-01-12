@@ -52,14 +52,6 @@ function ChangePw(props) {
         return;
       }
 
-      // // 새로운 비밀번호 길이 검사
-      // if (password.length < 8) {
-      //   setPwLengthValid(false);
-      //   return;
-      // } else {
-      //   setPwLengthValid(true);
-      // }
-
       const response = await chgPw();
 
       // 응답 처리
@@ -88,8 +80,9 @@ function ChangePw(props) {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered className="changePwModal"
+      backdrop="static"
     >
-      <Modal.Header closeButton>
+      <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
           비밀번호 변경
         </Modal.Title>
@@ -137,7 +130,7 @@ function ChangePw(props) {
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={props.onHide}>취소</Button>
-        <Button variant="primary" onClick={handlePasswordChange}>변경</Button>
+        <Button className="modify_btn" onClick={handlePasswordChange}>변경</Button>
       </Modal.Footer>
     </Modal>
   );
