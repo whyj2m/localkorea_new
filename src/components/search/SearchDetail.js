@@ -10,6 +10,8 @@ import { useEffect, useState } from "react";
 import { getLocalFestivals } from "../../api/LocalFestivalApi";
 import { getLocalFoods } from "../../api/LocalFoodsApi";
 import { getLocalPlaces } from "../../api/LocalPlaceApi";
+import { CiHeart } from "react-icons/ci";
+import { Link } from "react-router-dom";
 
 function SearchDetail() {
   // 검색 결과를 저장할 state
@@ -25,23 +27,23 @@ function SearchDetail() {
     setSearchTerm(searchTerm);
   };
 
-  // 검색어 제출 핸들러
   const handleSearchSubmit = async (term) => {
     setSearchTerm(term);
 
     try {
-      // 검색어가 비어 있지 않다면 로컬 데이터에서 검색 수행
-      if (term.trim() !== "") {
-        const festivalsResponse = await getLocalFestivals();
-        const foodsResponse = await getLocalFoods();
-        const placesResponse = await getLocalPlaces();
+      const festivalsResponse = await getLocalFestivals(term);
+      const foodsResponse = await getLocalFoods(term);
+      const placesResponse = await getLocalPlaces(term);
 
-        setFestivals(festivalsResponse.data);
-        setFoods(foodsResponse.data);
-        setPlaces(placesResponse.data);
-      }
+      console.log("Festivals Response:", festivalsResponse.data);
+      console.log("Foods Response:", foodsResponse.data);
+      console.log("Places Response:", placesResponse.data);
+
+      setFestivals(festivalsResponse.data);
+      setFoods(foodsResponse.data);
+      setPlaces(placesResponse.data);
     } catch (error) {
-      console.error("검색 중 오류 발생:", error);
+      console.error("데이터 가져오기 중 오류 발생:", error);
     }
   };
 
@@ -75,20 +77,42 @@ function SearchDetail() {
   const filteredPlaces = places.filter((place) =>
     place.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log(filteredPlaces);
+  console.log("검색어 관광지 : ", filteredPlaces);
 
   const filteredFestivals = festivals.filter((festival) =>
     festival.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log(filteredFestivals);
+  console.log("검색어 축제 : ", filteredFestivals);
 
   const filteredFoods = foods.filter((food) =>
     food.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  console.log("검색어 특산물 : ", filteredFoods);
+
+  // 검색된 데이터의 총 길이 계산
+  const totalLength =
+    filteredPlaces.length + filteredFestivals.length + filteredFoods.length;
+  console.log(totalLength);
+
+  const placelength = filteredPlaces.length;
+  console.log(placelength);
+
+  const festivallength = filteredFestivals.length;
+  console.log(festivallength);
+
+  const foodlength = filteredFoods.length;
+  console.log(foodlength);
 
   return (
     <div className="search">
-      <Search onSearch={handleSearch} onSearchSubmit={handleSearchSubmit} />
+      <Search
+        onSearch={handleSearch}
+        onSearchSubmit={handleSearchSubmit}
+        displayedTotalLength={totalLength}
+        placelength={placelength}
+        festivallength={festivallength}
+        foodlength={foodlength}
+      />
       <Container>
         <div className="search_local">
           <div className="sub_title">
@@ -102,30 +126,39 @@ function SearchDetail() {
           </div>
           <hr className="contour" />
           {filteredPlaces.map((place, index) => (
-            <Row key={index} className="search_result">
-              <Col sm={12} md={4} className="img">
-                <img
-                  src={`/assets/place/${place.localNo.localNo}/${place.placeNo}.jpg`}
-                  alt={place.name}
-                />
-              </Col>
-              {/* 텍스트 정보 */}
-              <Col sm={12} md={8}>
-                <Row>
-                  <Col xs={10} className="text">
-                    <h3 className="title">{place.name}</h3>
-                    <p className="address">{place.address}</p>
-                    {/* 추가적인 정보 출력 */}
-                  </Col>
-                  <Col xs={2}>
-                    {/* 조회 수 */}
-                    <div className="views">
-                      <BsEye className="icon" /> {place.views}
-                    </div>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
+            <Link
+              to={`/place/${place.localNo.localNo}/${place.placeNo}`}
+              key={index}
+              className="search_result"
+            >
+              <Row>
+                <Col sm={12} md={4} className="img">
+                  <img
+                    src={`/assets/place/${place.localNo.localNo}/${place.placeNo}.jpg`}
+                    alt={place.name}
+                  />
+                </Col>
+                {/* 텍스트 정보 */}
+                <Col sm={12} md={8}>
+                  <Row className="search_places">
+                    <Col xs={10} className="text">
+                      <h3 className="title">{place.name}</h3>
+                      <p className="location">{place.location}</p>
+                      <span className="content">{place.content}</span>
+                    </Col>
+                    <Col xs={2}>
+                      {/* 조회 수 */}
+                      <div className="views">
+                        <BsEye className="view" />{" "}
+                        <span>{place.viewCnt || 0}</span>
+                        <CiHeart className="heart" />{" "}
+                        <span>{place.heartCnt || 0}</span>
+                      </div>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Link>
           ))}
         </div>
 
@@ -142,28 +175,34 @@ function SearchDetail() {
           </div>
           <hr className="contour" />
           {filteredFestivals.map((festival, index) => (
-            <Row key={index} className="search_result">
-              <Col sm={12} md={4} className="img">
-                <img
-                  src={`/assets/festival/${festival.localNo.localNo}/${festival.festivalNo}.jpg`}
-                  alt={festival.name}
-                />
-              </Col>
-              <Col sm={12} md={8}>
-                <Row>
-                  <Col xs={10} className="text">
-                    <h3 className="title">{festival.name}</h3>
-                    <p className="address">{festival.address}</p>
-                    <p className="explanation">{festival.description}</p>
-                  </Col>
-                  <Col xs={2}>
-                    <div className="views">
-                      <BsEye className="icon" /> {festival.views}
-                    </div>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
+            <Link
+              to={`/festival/${festival.localNo.localNo}/${festival.festivalNo}`}
+              key={index}
+              className="search_result"
+            >
+              <Row>
+                <Col sm={12} md={4} className="img">
+                  <img
+                    src={`/assets/festival/${festival.localNo.localNo}/${festival.festivalNo}.jpg`}
+                    alt={festival.name}
+                  />
+                </Col>
+                <Col sm={12} md={8}>
+                  <Row className="search_">
+                    <Col xs={10} className="text">
+                      <h3 className="title">{festival.name}</h3>
+                      <p className="location">{festival.location}</p>
+                      <p className="content">{festival.content}</p>
+                    </Col>
+                    <Col xs={2}>
+                      <div className="views">
+                        <BsEye className="icon" /> {festival.viewCnt || 0}
+                      </div>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Link>
           ))}
         </div>
 
@@ -179,17 +218,19 @@ function SearchDetail() {
             </Button>
           </div>
           <hr className="contour" />
-          {filteredFoods.map((food, index) => (
-            <Row key={index} className="search_result">
-              <Col sm={6} lg={3}>
+          <Row className="search_result">
+            {filteredFoods.map((food, index) => (
+              <Col key={index} sm={6} lg={3} className="search_foods">
                 <div className="img">
-                  <img src={food.imagePath} alt={food.name} />
+                  <img
+                    src={`/assets/regionfood/${food.localNo.localNo}/${food.foodNo}.jpg`}
+                  />
                 </div>
+                <p>{food.localNo.name}</p>
                 <h3 className="title">{food.name}</h3>
-                <p>{food.description}</p>
               </Col>
-            </Row>
-          ))}
+            ))}
+          </Row>
         </div>
       </Container>
     </div>
