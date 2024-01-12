@@ -36,7 +36,8 @@
       .help {
         text-align: center;
         span {
-          color: $test4;
+          color: $test4; font-weight: bold;
+          a {font-weight: bold;}
         }
       }
     }
@@ -103,9 +104,6 @@
         margin-bottom: 5px;
         .success p {color: #75b798;}
         .send_progress {height: 7px; margin: 10px 0; 
-          // .progress-bar {
-          //   background-color: $test1;
-          // }
         }
       }
       .form-label {
@@ -125,7 +123,7 @@
       .help {
         text-align: center;
         span {
-          color: $test4;
+          color: $test4; font-weight: bold;
         }
       }
     }
@@ -198,6 +196,7 @@
     .tab_inner{
       width: 30%;
       .icon {font-size: 40px; margin-bottom: 10px; color: purple;}
+      .icon:hover {color: #980098;}
     }
   }
 
@@ -207,7 +206,7 @@
     }
     .profile {
       text-align: center;
-      background: #d7e5ca;
+      background: $test3;
       height: 150px;
       position: relative;
 
@@ -376,16 +375,12 @@
   }
 }
 
-.changePwModal {
-  .error {
-    color: red; font-size: small;
-  }
-}
-
-
-.changeInfo {
+.changePwModal, .changeInfo {
   .success {color: #75b798; font-size: small}
   .error {
     color: red; font-size: small;
   }
+  .modify_btn {border: 1px solid $test4; background: $test4;}
+  .modify_btn:hover {border: 1px solid $test1; background: $test1;}
+  .modal-header{background: $test1;}
 }
