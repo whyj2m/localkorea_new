@@ -121,10 +121,34 @@
   display: flex;
   justify-content: space-between;
 }
+// 관광지
+.search_places .text .content {
+  color: black;
+  font-size: 15px;
+}
 
+.search_places div .views {
+  font-size: 18px;
+  font-weight: bold;
+  float: right;
+}
+.search_places div .views svg {
+  margin-left: 10px;
+}
+.search_places div .views span {
+  color: black;
+  font-weight: bold;
+  margin-left: 3px;
+}
 // 이미지 처리
 .search_result .img img {
   width: 100%;
   height: 200px;
   object-fit: cover;
+}
+
+// 특산물
+.search_foods p {
+  font-size: 15px;
+  font-weight: bold;
 }
