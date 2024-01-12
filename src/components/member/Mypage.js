@@ -10,16 +10,9 @@ import ChangeInfo from "./modal/ChangeInfo";
 import { BsFileRichtext } from "react-icons/bs";
 import { FaRegCommentDots } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
-import { jwtDecode } from "jwt-decode";
-
-import axios from "axios";
 import { getMember } from "../../api/MemberApi";
 
-const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
-const decodedToken = jwtDecode(ACCESS_TOKEN);
-
 function Mypage() {
-  const [comp, setComp] = useState(BoardList);
   const [showModalCP, setShowModalCP] = useState(false);
   const [showModalCI, setShowModalCI] = useState(false);
   const [userInfo, setUserInfo] = useState({
@@ -40,26 +33,28 @@ function Mypage() {
     fetchUserInfo();
   }, [showModalCI]);
 
+  const [comp, setComp] = useState(<BoardList/>);
+
   return (
     <Container className="mypage">
       <h2 className="title">마이페이지</h2>
       <div className="d-block d-lg-flex">
         <div className="tab d-lg-block d-flex col-lg-3 mb-5">
-          <div className="board tab_inner" onClick={() => setComp(BoardList)}>
+          <div className="board tab_inner" onClick={() => setComp(<BoardList/>)}>
             <div className="icon d-lg-none">
               <BsFileRichtext />
             </div>
             게시글
           </div>
           <hr className="d-none d-lg-block" />
-          <div className="reply tab_inner" onClick={() => setComp(ReplyList)}>
+          <div className="reply tab_inner" onClick={() => setComp(<ReplyList/>)}>
             <div className="icon d-lg-none">
               <FaRegCommentDots />
             </div>
             댓글
           </div>
           <hr className="d-none d-lg-block" />
-          <div className="like tab_inner" onClick={() => setComp(LikeList)}>
+          <div className="like tab_inner" onClick={() => setComp(<LikeList/>)}>
             <div className="icon d-lg-none">
               <FaHeart />
             </div>
@@ -95,7 +90,7 @@ function Mypage() {
           </div>
           <hr />
           <div className="myrecord">
-            <div children={comp} />
+            {comp}
           </div>
         </div>
       </div>

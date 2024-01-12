@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate } from "react-router-dom";
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/board/boardEdit.scss';
@@ -23,25 +23,25 @@ const BoardEdit = () => {
       content: '',
       boardCno: '1',
       locationCno: '1',
-      location:'서울'
+      location: '서울'
    });
-   
+
    const handleSubmit = async (e) => {
-      
+
       e.preventDefault();
       try {
          //  const response = await putBoard(bno, updateDate); // 왜그런지 모르겠지만 put은 안됨
-          const response = await axios.put(`http://localhost:8081/board/edit/${bno}`, updateDate);
-          if (response.status === 200) {
-              alert("게시글 수정 완료");
-              navigate("/board/tourisSpot")
-          } else {
-              alert("게시글 수정 실패");
-          }
+         const response = await axios.put(`http://localhost:8081/board/edit/${bno}`, updateDate);
+         if (response.status === 200) {
+            alert("게시글 수정 완료");
+            navigate("/board/tourisSpot")
+         } else {
+            alert("게시글 수정 실패");
+         }
       } catch (error) {
-          alert("게시글 수정 오류");
+         alert("게시글 수정 오류");
       }
-  };
+   };
 
    useEffect(() => {
       const fetchTourBaordDetailData = async () => {
@@ -60,6 +60,7 @@ const BoardEdit = () => {
    useEffect(() => {
       if (TourBaordDetailData.length > 0) {
          const initialData = TourBaordDetailData[0];
+
          setUpdateDate({
             title: initialData.title || '',
             content: initialData.content || '',
@@ -67,14 +68,19 @@ const BoardEdit = () => {
             locationCno: initialData.locationCno || '1',
             location: initialData.location || '서울'
          });
+         console.log("test :", initialData.title)
       }
    }, [TourBaordDetailData]);
 
    // 업데이트
    const handleChange = (e) => {
       const { name, value } = e.target;
-      let newLocation = '';
-   
+      let newLocation = 'updateDate.location';
+      // let newLocation = '';
+      
+      // 문자열 시작에 공백 여러개면 제거
+      const trimmedInput = (name === 'title' || name === 'content') ? value.replace(/^\s+/g, '') : value;
+
       switch (value) {
          case '1':
             newLocation = '서울';
@@ -107,23 +113,37 @@ const BoardEdit = () => {
             newLocation = '';
             break;
       }
-   
+
       setUpdateDate((prevData) => ({
          ...prevData,
-         [name]: value,
+         [name]: trimmedInput,
          location: newLocation
       }));
 
-      
       const userInput = e.target.value;
 
-      // 띄어쓰기 처리
-      const trimmedInput = userInput.replace(/\s+/g, ' ');
-      setContent(trimmedInput);
-      
+      // 'title'이 빈 문자열이 아닌 경우에만 업데이트
+      if ((name === 'title' || name === 'content') && value !== '') {
+         // 줄바꿈으로 대체
+         const formattedValue = value.replace(/\n/g, '\n');
+       
+         setUpdateDate((prevData) => ({
+           ...prevData,
+           [name]: formattedValue,
+         //   [name]: value,
+           location: newLocation,
+         }));
+       } else {
+         setUpdateDate((prevData) => ({
+           ...prevData,
+           location: newLocation,
+         }));
+       }
+       
+
    };
-   
-   
+
+
    // 파일업로드
    useEffect(() => {
       setIsFileUploadDisabled(false); // 처음 로드할 때 파일 업로드 활성화
@@ -152,7 +172,7 @@ const BoardEdit = () => {
                            <Form.Control
                               type="text"
                               name="title"
-                              value={updateDate.title || item.title}
+                              value={updateDate.title}
                               onChange={handleChange}
                            />
                         </Col>
@@ -227,7 +247,7 @@ const BoardEdit = () => {
                            name="content"
                            placeholder="내용을 입력하세요"
                            maxLength={800}
-                           value={updateDate.content || item.content}
+                           value={updateDate.content}
                            onChange={handleChange}
                         />
                      </Form.Group>

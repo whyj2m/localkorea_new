@@ -137,3 +137,30 @@ export const getMemberList = async ()=> {
     }
 }
 
+// mypage - boardlist - tourspot
+export const getMyTourspotList = async () => {
+    try {
+        if(ACCESS_TOKEN) {
+            const decodedToken = jwtDecode(ACCESS_TOKEN);
+            const userId = decodedToken.id;
+            const response = await axiosInstance.get(`/mypage/boardlist/tourspot/${userId}`)
+            return response
+        } 
+    } catch (error) {
+        throw error
+    }
+}
+
+// mypage - boardlist - tourspot
+export const getMyTravelmateList = async () => {
+    try {
+        if(ACCESS_TOKEN) {
+            const decodedToken = jwtDecode(ACCESS_TOKEN);
+            const userId = decodedToken.id;
+            const response = await axiosInstance.get(`/mypage/boardlist/travelmate/${userId}`)
+            return response
+        } 
+    } catch (error) {
+        throw error
+    }
+}

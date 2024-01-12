@@ -1,5 +1,5 @@
 // css
-import '../../styles/board/boardView.scss';
+import '../../styles/board/ToruisSpotView.scss';
 import { Row, Col, Button } from 'react-bootstrap';
 
 // react
