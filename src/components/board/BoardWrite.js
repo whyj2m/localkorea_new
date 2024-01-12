@@ -1,35 +1,60 @@
+// react
 import React, { useState, useEffect } from 'react';
-import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 
+// css
+import { Button, Form, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/board/boardWrite.scss';
 
+// 컴포넌트
 import BoardNav from './BoardNav';
 
+// API
 import { postBoardWrite } from '../../api/BoardApi';
+
+// 토큰
+import { jwtDecode } from "jwt-decode";
 
 function BoardWrite() {
     const navigate = useNavigate();
     const [files, setFiles] = useState([]);
     const [uploadedFiles, setUploadedFiles] = useState([]); // 이미지파일데이터
     const [isFileUploadDisabled, setIsFileUploadDisabled] = useState(true); // 파일 업로드
+
+    // 글 작성 값
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
     const [boardCno, setBoardCno] = useState('1');
     const [locationCno, setLocationCno] = useState('1');
 
-        useEffect(() => {
-            if (boardCno === '2') { // 여행 메이트 카테고리 선택 시
-                setIsFileUploadDisabled(true); // 파일 업로드 비활성화
-            } else {
-                setIsFileUploadDisabled(false); // 다른 카테고리 선택 시 파일 업로드 활성화
-            }
-        }, [boardCno]);
+    // 토큰 가져오기
+    const accessToken = localStorage.getItem('ACCESS_TOKEN');
+    const decodedToken = jwtDecode(accessToken); // jwt 디코딩하여 페이로드에 엑세스
+    const userId = decodedToken.id; // 사용자id에 엑세스
+
+    useEffect(() => {
+        if (boardCno === '2') { // 여행 메이트 카테고리 선택 시
+            setIsFileUploadDisabled(true); // 파일 업로드 비활성화
+        } else {
+            setIsFileUploadDisabled(false); // 다른 카테고리 선택 시 파일 업로드 활성화
+        }
+    }, [boardCno]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        const userInput = e.target.value;
+    
+    // 글자수 제한 (예: 500자)
+    if (userInput.length <= 500) {
+      setContent(userInput);
+    }
+
+    // 띄어쓰기 처리
+    const trimmedInput = userInput.replace(/\s+/g, ' ');
+    setContent(trimmedInput);
+
 
         if (name === 'title') {
             setTitle(value);
@@ -67,13 +92,15 @@ function BoardWrite() {
                 return '';
         }
     };
+
+    // 파일 업로드
     const handleFileChange = (files) => {
         if (files && files.length > 0) {
             const newFiles = [];
-    
+
             const readFile = (file, index) => {
                 const reader = new FileReader();
-    
+
                 reader.onload = () => {
                     const fileObject = {
                         name: file.name,
@@ -83,17 +110,17 @@ function BoardWrite() {
                         file_path: '/images/' + file.name,
                         file: file // 파일 객체 정보를 추가
                     };
-    
+
                     newFiles.push(fileObject);
-    
+
                     if (newFiles.length === files.length) {
                         setUploadedFiles(newFiles); // 파일 로드가 완료되면 업로드된 파일 목록 업데이트
                     }
                 };
-    
+
                 reader.readAsDataURL(file);
             };
-    
+
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
                 readFile(file, i);
@@ -102,18 +129,18 @@ function BoardWrite() {
             setUploadedFiles([]);
         }
     };
-    
+
 
 
     // 0110새벽까지 됐는데 왜 안 될까
     // const handleSubmit = async (e) => {
     //     e.preventDefault();
-    
+
     //     const formData = new FormData();
-    
+
     //     // 빈 배열을 전송하여 파일이 없는 경우에도 files를 전송
     //     formData.append('files', []);
-    
+
     //     // 파일이 있는 경우에만 파일을 추가
     //     if (uploadedFiles.length > 0) {
     //         uploadedFiles.forEach((fileObject, index) => {
@@ -125,13 +152,13 @@ function BoardWrite() {
     //         alert('이미지를 첨부해야합니다!'); 
     //         return;
     //     }
-    
+
     //     formData.append('title', title);
     //     formData.append('content', content);
     //     formData.append('boardCno', boardCno);
     //     formData.append('locationCno', locationCno);
     //     formData.append('location', getLocationName(locationCno));
-    
+
     //     try {
     //         const response = await postBoardWrite(formData);
     //         console.log(response);
@@ -142,17 +169,17 @@ function BoardWrite() {
     //         alert('게시글 작성 실패');
     //     }
     // };
-    
+
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         if (boardCno === '1' && uploadedFiles.length === 0) {
-            alert('여행 메이트 게시물은 이미지를 첨부해야합니다!');
+            alert('여행 메이트 카테고리는 이미지를 첨부해야합니다!');
             return;
         }
-    
+
         const formData = new FormData();
-    
+
         if (uploadedFiles.length > 0) {
             uploadedFiles.forEach((fileObject, index) => {
                 formData.append(`files`, fileObject.file);
@@ -160,16 +187,39 @@ function BoardWrite() {
         } else {
             formData.append('files', []); // 빈 배열 전송
         }
-    
+
         formData.append('title', title);
         formData.append('content', content);
         formData.append('boardCno', boardCno);
         formData.append('locationCno', locationCno);
         formData.append('location', getLocationName(locationCno));
-    
+        formData.append('id', userId);
+
+
+        //    try {
+        //     // 토큰을 Authorization 헤더에 추가
+        //     const config = {
+        //         headers: {
+        //             'Content-Type': 'multipart/form-data',
+        //             'Authorization': `Bearer ${accessToken}` // 토큰 추가
+        //         }
+        //     };
+
+        //     // API 요청 시에 헤더를 함께 전송
+        //     const response = await postBoardWrite(formData, config);
+
+        //     console.log("성공", response);
+        //     alert('게시글 작성 성공');
+        //     navigate('/board/tourisSpot'); // useNavigate 사용하여 경로 변경
+        // } catch (error) {
+        //     console.log("게시글 작성 실패");
+        //     alert('게시글 작성 실패');
+        // }
         try {
+            // API 요청 시에 헤더를 함께 전송할 필요 없음
             const response = await postBoardWrite(formData);
-            console.log(response);
+
+            console.log("성공 : ", response);
             alert('게시글 작성 성공');
             navigate('/board/tourisSpot'); // useNavigate 사용하여 경로 변경
         } catch (error) {

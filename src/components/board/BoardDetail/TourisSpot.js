@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link, useNavigate } from 'react-router-dom';
@@ -5,7 +6,7 @@ import { Form, Button, Card, Col, Row, Pagination } from 'react-bootstrap';
 import moment from 'moment'; // 시간
 
 import { getTourBaordList } from '../../../api/BoardApi';
-import { getImg } from "../../../api/BoardApi";
+// import { getImg } from "../../../api/BoardApi";
 import BoardNav from '../BoardNav';
 
 import '../../../styles/board/board.scss';
@@ -214,8 +215,8 @@ function TourisSpot() {
                         </Col>
                     </Row>
                     {/* 필터링된 결과를 출력 */}
-                    {currentItems.map((item, index) => (
-                        <Link to={`/boardView/${item.bno}`} key={item.bno} className="tour-board-link" >
+                    {currentItems.map((item) => (
+                        <Link to={`/board/tourisSpotView/${item.bno}`} key={item.bno} className="tour-board-link">
                             <Card className='TourisSpot-Card'>
                                 <Row>
                                     <Col xs={9} md={3}>
@@ -274,4 +275,4 @@ function TourisSpot() {
     );
 }
 
-export { TourisSpot };
+export default TourisSpot;
