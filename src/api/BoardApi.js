@@ -8,6 +8,7 @@ const axiosInstance = axios.create({
     }
 })
 
+// tourisSpot API 시작
 // get tourisSpot 게시글 목록조회 
 export const getTourBaordList = async () => {
     try {
@@ -28,26 +29,54 @@ export const getTourBaordDetail = async (bno) => {
         throw error;
     }
 }
+// tourisSpot API 끝
 
-// get company 게시글 bno별 상세조회
-export const getCompanyDetail = async (bno) => {
+// company API 시작
+// get company 게시글 목록조회 
+export const getCompanyBaordList = async () => {
     try {
-        const response = await axiosInstance.get(`/board/company/${bno}`);
+        const response = await axiosInstance.get("/board/company")
         return response;
     } catch (error) {
         throw error;
     }
 }
 
+// get company 게시글 bno별 상세조회
+export const getCompanyDetail = async (bno) => {
+    try {
+      const response = await axiosInstance.get(`/board/companyView/${bno}`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+ // company API 끝 
+
+// tourisSpot 이미지
 // 이미지 조회
+// export const getImg = async (bno) => {
+//     try {
+//         const response = await axiosInstance.get(`/api/images/${bno}`);
+//         return response.data; // 이미지 데이터 반환
+//     } catch (error) {
+//         if (error.response && error.response.status === 404) {
+//             // 이미지가 없는 경우, 빈 응답으로 처리
+//             return null; // 빈 응답 반환
+//         }
+//         throw error; // 다른 오류는 그대로 throw
+//     }
+// }
+
+// 이미지 (단일)조회
 export const getImg = async (bno) => {
     try {
         const response = await axiosInstance.get(`/api/images/${bno}`);
-        return response.data; // 이미지 데이터 반환
+        return [response.data]; // 이미지 데이터를 배열로 감싸서 반환
     } catch (error) {
         if (error.response && error.response.status === 404) {
-            // 이미지가 없는 경우, 빈 응답으로 처리
-            return null; // 빈 응답 반환
+            // 이미지가 없는 경우, 빈 배열로 처리
+            return []; // 빈 배열 반환
         }
         throw error; // 다른 오류는 그대로 throw
     }
@@ -62,15 +91,6 @@ export const getImg = async (bno) => {
 //     }
 // }
 
-// get company 게시글 목록조회 
-export const getCompanyBaordList = async () => {
-    try {
-        const response = await axiosInstance.get("/board/company")
-        return response;
-    } catch (error) {
-        throw error;
-    }
-}
 
 // 게시글 작성
 export const postBoardWrite = async (formData) => {
@@ -108,10 +128,11 @@ export const deleteBoard = async (bno) => {
     }
 }
 
+// company 댓글 API 시작
 // 댓글 작성
 export const postReply = async (replyData) => {
     try {
-        const response = await axiosInstance.post(`/board/reply`, replyData)
+        const response = await axiosInstance.post(`/board/companyView/reply`, replyData)
         return response;
     } catch (error) {
         throw error;
@@ -121,9 +142,11 @@ export const postReply = async (replyData) => {
 // 댓글 조회
 export const getReply = async (bno) => {
     try {
-        const response = await axiosInstance.get(`/board/company/${bno}`)
+        // console.log("bno 테스트: ", bno)
+        const response = await axiosInstance.get(`/board/companyView/reply/${bno}`)
         return response;
     } catch (error) {
         throw error;
     }
 }
+// company 댓글 API 끝

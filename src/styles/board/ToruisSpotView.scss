@@ -33,7 +33,7 @@
             margin-right: 20px;
         }
   
-        .write{
+        .writer{
             margin-right: 20px;
         }
   
@@ -63,32 +63,31 @@
         white-space: pre-line; // 줄바꿈
     }
 
-    .file {
-        // width: 200px;
-        // height: 300px;
-        display: table-cell;
-        vertical-align: middle;
+    .fileName {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         padding: 25px 0;
         background: #f5f5f5;
         text-align: center;
         font-family: 'S-CoreDream-4Regular';
         color: #444;
       
+        p{
+            font-weight: bold;
+        }
+    }
+    
+    .imgFile{
         .imgs {
           object-fit: cover;
           margin-right: 100px;
+          border-radius: 10px;
+          margin: 10px;
+          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
-      }
-      
 
-
-
-
-
-
-
-
-
+    }
 
     // 구분선
     .line { 
@@ -102,17 +101,9 @@
         }
     }
 
-    // p{
-    //     background-color: $test3;
-    //     height: 100%;
-    //     padding: 0px 20px 0 20px;
-        
-    // }
-    
-    // .boardView-content{
-    //     height: 400px;
-    // }
+    .line-bold{
+        border-bottom: 2px solid #565454;
+        width: 100%;
+    }
 
 }
-
-

@@ -21,7 +21,7 @@ function Company() {
 
    // 상세 페이지로 이동
    const handleButtonView = (bno) => {
-    navigate(`/board/BoardDetail/CompanyView/${bno}`);
+    navigate(`/board/CompanyView/${bno}`);
 };
 
 

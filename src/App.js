@@ -29,7 +29,7 @@ const TourisSpot = lazy(() =>
 const TourisSpotView = lazy(() => import("./components/board/TourisSpotView"));
 const BoardEdit = lazy(() => import("./components/board/BoardEdit"));
 const CompanyView = lazy(() =>
-  import("./components/board/BoardDetail/CompanyView")
+  import("./components/board/CompanyView.js")
 );
 
 const SearchDetail = lazy(() => import("./components/search/SearchDetail"));
