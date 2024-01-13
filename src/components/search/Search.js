@@ -4,12 +4,28 @@ import { IoSearch } from "react-icons/io5";
 import { Container } from "react-bootstrap";
 import { useState } from "react";
 
-function Search({ onSearch, onSearchSubmit }) {
+function Search({
+  onSearch,
+  onSearchSubmit,
+  displayedTotalLength,
+  placelength,
+  festivallength,
+  foodlength,
+}) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
 
-  const handleSearchSubmit = (e) => {
+  const handleSearchSubmit = async (e) => {
     e.preventDefault();
-    onSearchSubmit(searchTerm);
+    const results = await onSearch(searchTerm);
+
+    if (results !== undefined) {
+      setSearchResults(results);
+      onSearchSubmit(searchTerm);
+    }
+
+    // Remove the setDisplayedTotalLength line
+    console.log(displayedTotalLength);
   };
 
   return (
@@ -35,8 +51,8 @@ function Search({ onSearch, onSearchSubmit }) {
           </div>
           <div className="result_comment">
             <h3>
-              "<span>검색어</span>"에 관한 <span>17</span>건의 검색결과가
-              있습니다.
+              "{searchTerm}"에 관한 <span>{displayedTotalLength}</span>건의
+              검색결과가 있습니다.
             </h3>
           </div>
         </div>
@@ -48,22 +64,22 @@ function Search({ onSearch, onSearchSubmit }) {
           >
             <Nav.Item>
               <Nav.Link href="/search/whole" className="mx-3">
-                전체 (100건)
+                전체 ({displayedTotalLength}건)
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link href="/search/local" className="mx-3">
-                관광지 (100건)
+                관광지 ({placelength}건)
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link href="/search/festival" className="mx-3">
-                축제 (100건)
+                축제 ({festivallength}건)
               </Nav.Link>
             </Nav.Item>
             <Nav.Item>
               <Nav.Link href="/search/specialties" className="mx-3">
-                특산물 (100건)
+                특산물 ({foodlength}건)
               </Nav.Link>
             </Nav.Item>
           </Nav>
