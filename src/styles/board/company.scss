@@ -8,16 +8,48 @@
     color: #939090;
 }
 
+// 카드 내부
 .Company-card{
-    width: 530px;
-    height: 200px;
+    // width: 350px;
+    height: 400px;
     // margin-bottom: 30px;
-    padding: 15px;
+    padding: 0 15px;
     box-shadow: 4px 12px 40px 6px rgba(0, 0, 0, 0.09);
 
     // &:hover {
     //     width: 700px; 
     // }
+
+    .body-header{
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+
+        .body-location{
+
+             display: flex;
+             background: #D2E0FB;
+             
+            //  margin: 0;
+            // width: 30px;
+            // height: 40px;
+            // background: pink;
+    
+            .body-location-name{
+            font-size: 25px;
+            font-weight: bold;
+            color: #939090;
+            padding: 0;
+            margin: 10px;
+            
+            }
+        }
+
+        
+    }
+    .body-title{
+        font-size: 20px;
+    }
 }
 
 .apply-btn{
@@ -42,21 +74,3 @@
     }
 }
 
-// .area-img {
-//     width: 30px;
-//     height: 30px;
-//     background-position: center; 
-//     background-size: cover;
-//     background-image: url('../../..//public/assets/etc/icon_area.png');
-//     background-position: 0 0;
-// }
-
-.tag{
-    // padding: 15px 0 10px 0;
-    font-size: 14px;
-    font-weight: 300;
-    line-height: 19px;
-    margin: 0 3px 0 0;
-    text-decoration: none solid rgb(102, 102, 102);
-    color: #666666;
-  }

@@ -3,7 +3,6 @@ import { Container, Row, Col } from "react-bootstrap";
 import "../../styles/Search.scss";
 import { FaAngleRight } from "react-icons/fa6";
 import { BsEye } from "react-icons/bs";
-import { FaHeart } from "react-icons/fa";
 import Search from "./Search";
 import { useEffect, useState } from "react";
 
@@ -188,7 +187,7 @@ function SearchDetail() {
                   />
                 </Col>
                 <Col sm={12} md={8}>
-                  <Row className="search_">
+                  <Row className="search_festival">
                     <Col xs={10} className="text">
                       <h3 className="title">{festival.name}</h3>
                       <p className="location">{festival.location}</p>
