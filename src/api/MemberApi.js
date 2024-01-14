@@ -47,7 +47,7 @@ export const googleLogin = async () => {
             localStorage.setItem("token", token)
             localStorage.setItem("refreshToken", refreshToken)
         }
-        window.location.href = "/";
+        // window.location.href = "/";
     } catch (error) {
         // 에러 처리
         console.error("Google login error: ", error);
@@ -158,6 +158,20 @@ export const getMyTravelmateList = async () => {
             const decodedToken = jwtDecode(ACCESS_TOKEN);
             const userId = decodedToken.id;
             const response = await axiosInstance.get(`/mypage/boardlist/travelmate/${userId}`)
+            return response
+        } 
+    } catch (error) {
+        throw error
+    }
+}
+
+// mypage - likelist
+export const getMyLikeList = async () => {
+    try {
+        if(ACCESS_TOKEN) {
+            const decodedToken = jwtDecode(ACCESS_TOKEN);
+            const userId = decodedToken.id;
+            const response = await axiosInstance.get(`hearts/details/${userId}`)
             return response
         } 
     } catch (error) {
