@@ -234,29 +234,7 @@ function Header() {
             <NavLink to="/place/1">관광지</NavLink>
             <NavLink to="/festival/1">축제</NavLink>
             <NavLink to="/localFoods/1">특산물</NavLink>
-            <NavDropdown
-              title="게시판"
-              id="board-dropdown"
-              className={"dropdown"}
-              show={showBoardDropdown}
-              onMouseEnter={handleMouseOverBoardDropdown}
-              onMouseLeave={handleMouseOutBoardDropdown}
-              onClick={() => {
-                // 클릭 이벤트 처리
-                // 예: 페이지 이동
-                navigate("/board/tourisSpot");
-              }}
-            >
-              <NavDropdown.Item as={Link} to="/board/tourisSpot">
-                관광지 추천
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/board/company">
-                여행 메이트
-              </NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/board/notice">
-                공지사항
-              </NavDropdown.Item>
-            </NavDropdown>
+            <NavLink to="/board/tourisSpot">게시판</NavLink>
           </Nav>
         </Navbar.Collapse>
         <div className="header-main-icon">
