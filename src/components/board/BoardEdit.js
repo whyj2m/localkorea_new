@@ -221,7 +221,9 @@ const BoardEdit = () => {
                               <option value="7" selected={updateDate.locationCno === '7'}>강원</option>
                               <option value="8" selected={updateDate.locationCno === '8'}>전라</option>
                               <option value="9" selected={updateDate.locationCno === '9'}>경상</option>
-                              {/* <option value="3">대전</option>
+                              {/* <option value="1">서울</option>
+                              <option value="2">인천</option>
+                              <option value="3">대전</option>
                               <option value="4">부산</option>
                               <option value="5">경기</option>
                               <option value="6">충천</option>
