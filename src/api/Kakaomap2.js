@@ -82,16 +82,14 @@ function Kakaomap2({ location }) {
         id="map"
         style={{ width: "100%", height: "400px", position: "relative" }}
       >
-        <button ref={findRoadButtonRef} id="findRoadButton2">
+        <a
+          href={`https://map.kakao.com/link/to/${location},${latitude},${longlatitude}`}
+          id="findRoadButton2"
+          target="_blank"
+        >
           길찾기
-        </button>
+        </a>
       </div>
-      <a
-        href={`https://map.kakao.com/link/to/${location},${latitude},${longlatitude}`}
-        style={{ width: "200px", height: "200px" }}
-      >
-        버튼친구
-      </a>
     </>
   );
 }

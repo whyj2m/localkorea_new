@@ -348,7 +348,7 @@ function Main() {
 
         <div className="section1-headname">
           <h3>
-            <strong> 세하마노 방방곡곡 </strong>
+            <strong> 새하마노 방방곡곡 </strong>
           </h3>
         </div>
 
