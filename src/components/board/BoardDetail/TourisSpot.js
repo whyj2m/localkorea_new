@@ -1,40 +1,21 @@
 
+// react
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Card, Col, Row, Pagination } from 'react-bootstrap';
-import moment from 'moment'; // 시간
 
+// 시간
+import moment from 'moment'; 
+
+// API
 import { getTourBaordList } from '../../../api/BoardApi';
 // import { getImg } from "../../../api/BoardApi";
 import BoardNav from '../BoardNav';
 
+// css
 import '../../../styles/board/board.scss';
 import '../../../styles/board/tourisSpot.scss';
-
-// 검색창
-// function SearchForm() {
-//     return (
-//         <>
-//             <div className="container search">
-//                 <div className="row justify-content-end">
-//                     <Col md={3} sx={6}>
-//                         <Form className="d-flex ">
-//                             <Form.Control
-//                                 type="search"
-//                                 placeholder="Search"
-//                                 className="me-2 form-control-sm border-0 border-bottom"
-//                                 aria-label="zSearch"
-//                             />
-//                             <Button className='search-btn' as="input" type="submit" value="검색" />{' '}
-//                         </Form>
-//                     </Col>
-//                 </div>
-//             </div >
-//         </>
-//     );
-// }
-
 
 function TourisSpot() {
     const navigate = useNavigate();
@@ -176,6 +157,7 @@ function TourisSpot() {
         if (currentItems.length > 0) {
             fetchImages();
         }
+        
     }, [currentItems, imageSrcMap]);
 
     return (

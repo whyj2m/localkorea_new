@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 // 시간
 import moment from 'moment'; // 시간    
@@ -16,12 +17,10 @@ import 'moment/locale/ko'; // 시간 한글로
 // api
 import { getTourBaordDetail } from '../../api/BoardApi';
 import { deleteBoard } from '../../api/BoardApi';
-import BoardNav from './BoardNav';
 
 // 토큰
 import { jwtDecode } from "jwt-decode";
 
-// 수정 삭제 버튼 컴포넌트
 // 수정 삭제 버튼 컴포넌트
 function EditAndDeleteBtn() {
     const { bno } = useParams();
@@ -40,7 +39,7 @@ function EditAndDeleteBtn() {
             try {
                 const response = await getTourBaordDetail(bno);
                 const data = response.data;
-                setTourBaordDetailData(Array.isArray(data) ? data : [data]);
+                setTourBaordDetailData(Array.isArray(data) ? data : [data]); // 배열로 감싸기
                 setLoadingData(false);
             } catch (error) {
                 console.error('Error fetching local data:', error);
@@ -67,42 +66,37 @@ function EditAndDeleteBtn() {
         return <div>Loading...</div>;
     }
 
+    // 배열의 첫 번째 요소를 가져오도록 수정
+    const item = TourBaordDetailData[0];
 
-    return (
-        <>
-            {TourBaordDetailData.map(item => {
-                // console.log("유저 ID:", userId);
-                // console.log("작성자 ID:", item);
-                if (item.id && item.id.id) { // item 및 item.id가 존재하는지 확인
-                    console.log("작성자의 ID:", item.id.id);
+    if (item && item.id && item.id.id) {
+        console.log("작성자의 ID:", item.id.id);
 
-
-                    if (customerId === item.id.id) {
-                        // 토큰이 있고, 작성자의 ID와 토큰의 ID가 일치하는 경우
-                        return (
-                            <React.Fragment key={item.bno}>
-                                <Col xs={1} md={1} className='boardView-btn'>
-                                    <Link to={`/board/edit/${item.bno}`}>
-                                        <Button variant="link">수정</Button>
-                                    </Link>
-                                </Col>
-                                <Col xs={1} md={1} className='boardView-btn'>
-                                    <Button variant="link" disabled={loading} onClick={handleDelete}>
-                                        삭제
-                                    </Button>
-                                </Col>
-                            </React.Fragment>
-                        );
-                    } else {
-                        // 토큰이 있지만, 작성자의 ID와 토큰의 ID가 일치하지 않는 경우
-                        return null;
-                    }
-                }
-                return null; // item이나 item.id가 없는 경우 null 반환
-            })}
-        </>
-    );
+        if (customerId === item.id.id) {
+            // 토큰이 있고, 작성자의 ID와 토큰의 ID가 일치하는 경우
+            return (
+                <React.Fragment key={item.bno}>
+                    <Col xs={1} md={1} className='boardView-btn'>
+                        <Link to={`/board/edit/${item.bno}`}>
+                            <Button variant="link">수정</Button>
+                        </Link>
+                    </Col>
+                    <Col xs={1} md={1} className='boardView-btn'>
+                        <Button variant="link" disabled={loading} onClick={handleDelete}>
+                            삭제
+                        </Button>
+                    </Col>
+                </React.Fragment>
+            );
+        } else {
+            // 토큰이 있지만, 작성자의 ID와 토큰의 ID가 일치하지 않는 경우
+            return null;
+        }
+    }
+    
+    return null; // item이나 item.id가 없는 경우 null 반환
 }
+
 
 // 관광지 추천 게시판 상세 내용 가져오기
 function TourisSpotView() {
@@ -128,27 +122,46 @@ function TourisSpotView() {
     }, [bno]);
 
     // 이미지 보여주기
+    // useEffect(() => {
+    //     // fetch -> exios로 변경 예정
+    //     const fetchImage = async () => {
+    //         try {
+    //             const response = await fetch(`http://localhost:8081/api/images/${bno}`);
+    //             if (response.ok) {
+    //                 const blob = await response.blob(); // 이미지 데이터를 blob으로 변환
+    //                 const imageUrl = URL.createObjectURL(blob); // blob URL 생성
+    //                 setImageSrc(imageUrl); // 이미지 주소를 state에 저장
+    //             }
+    //             else {
+    //                 setImageSrc('../../assets/test/noImg.png'); // 대체이미지
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching image:', error);
+    //         }
+    //     };
+    //     fetchImage();
+    // }, [bno]);
+
     useEffect(() => {
-        // fetch -> exios로 변경 예정
+        // axios로 변경
         const fetchImage = async () => {
             try {
-                const response = await fetch(`http://localhost:8081/api/images/${bno}`);
-                if (response.ok) {
-                    const blob = await response.blob(); // 이미지 데이터를 blob으로 변환
-                    const imageUrl = URL.createObjectURL(blob); // blob URL 생성
+                const response = await axios.get(`http://localhost:8081/api/images/${bno}`, { responseType: 'blob' });
+    
+                if (response.status === 200) {
+                    const imageUrl = URL.createObjectURL(response.data); // blob URL 생성
                     setImageSrc(imageUrl); // 이미지 주소를 state에 저장
-                }
-                else {
+                } else {
                     setImageSrc('../../assets/test/noImg.png'); // 대체이미지
-                    // console.error('Failed to fetch image');
                 }
             } catch (error) {
-                // setImageSrc('../../assets/test/noImg.png');
                 console.error('Error fetching image:', error);
             }
         };
+    
         fetchImage();
     }, [bno]);
+    
 
     return (
         <div>
@@ -165,7 +178,7 @@ function TourisSpotView() {
                             <div className='boardView-bno'>NO. {item.bno}</div>
 
                             {/* 제목 */}
-                            <div className="line" />
+                            <div className="line-bold" />
                             <Col xs={8} md={8}>
                                 <div className='boardView-title'>{item.title}</div>
                             </Col>
@@ -180,7 +193,7 @@ function TourisSpotView() {
                                     <div className='writer'>{item.id.id}</div>
                                 </div>
                                 <div className='board-detail-view'>
-                                    <div className='view'>{item.viewCount}</div>
+                                    <div className='view'>{item.viewCnt}</div>
                                 </div>
                             </div>
                             <div className="line" />
@@ -195,15 +208,18 @@ function TourisSpotView() {
 
                             {/* 사진 */}
                             <Row>
-                                <Col xs={8} md={8} className='file'>
+                                <Col xs={8} md={2} className='fileName'>
+                                    <p>첨부파일</p>
+                                </Col>
+                                <Col xs={8} md={10} className='imgFile'>
                                     <div className='ms-auto'>
                                         {imageSrc ? (
                                             <img
                                                 className='imgs'
                                                 src={imageSrc}
                                                 alt={`Image ${bno}`}
-                                                width={300}
-                                                height={250}
+                                                width={280}
+                                                height={200}
                                                 style={{ objectFit: 'cover' }}
                                             />
                                         ) : (
@@ -213,7 +229,8 @@ function TourisSpotView() {
                                     </div>
                                 </Col>
                             </Row>
-                            <div className="line" />
+                            
+                            <div className="line-bold" />
                             {/* 버튼 */}
                             <Row className='justify-content-end'>
                                 <EditAndDeleteBtn />
@@ -224,12 +241,11 @@ function TourisSpotView() {
                                 </Col>
                             </Row>
                         </Row>
-                    ))}
+                   ))}
                 </div>
             </div>
         </div>
     );
 };
 
-// export { TourisSpotView, EditAndDeleteBtn };
 export default TourisSpotView;

@@ -7,7 +7,7 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/board/boardWrite.scss';
 
-// 컴포넌트
+// component
 import BoardNav from './BoardNav';
 
 // API
