@@ -1,7 +1,8 @@
 import { Pagination } from "react-bootstrap";
 import { BsEye } from "react-icons/bs";
-import { FaRegCommentDots } from "react-icons/fa";
+import { FaExclamationCircle } from "react-icons/fa";
 import { useEffect, useState } from "react";
+import { Link } from 'react-router-dom';
 import { getMyTourspotList, getMyTravelmateList } from "../../../api/MemberApi";
 
 function BoardList() {
@@ -127,6 +128,8 @@ function BoardList() {
       <h3 className="title">나의 활동 - 게시글</h3>
       
       <h4 className="title">관광지 추천</h4>
+      {totalItems > 0 ? (
+      <>
       <table className="boardlist recommendAttraction">
         <thead>
           <tr>
@@ -138,11 +141,21 @@ function BoardList() {
         <tbody>
           {currentItems.map((tourspot) => (
             <tr key={tourspot.bno}>
-              <td>{tourspot.location}</td>
-              <td>{tourspot.title}</td>
+               <td>
+                <Link to={`/board/tourisSpotView/${tourspot.bno}`}>
+                  {tourspot.location}
+                </Link>
+              </td>
               <td>
-                <BsEye />
-                {tourspot.viewCnt}
+                <Link to={`/board/tourisSpotView/${tourspot.bno}`}>
+                  {tourspot.title}
+                </Link>
+              </td>
+              <td>
+                <Link to={`/board/tourisSpotView/${tourspot.bno}`}>
+                  <BsEye />
+                  {tourspot.viewCnt}
+                </Link>
               </td>
             </tr>
           ))}
@@ -163,86 +176,45 @@ function BoardList() {
         <Pagination.Next onClick={handleNextPage} />
         <Pagination.Last onClick={() => handlePageClick(pageNumbers.length)}/>
       </Pagination>
+      </>
+      ): (<div className="no_data">
+      <div className="emptyIcon">
+        <FaExclamationCircle />
+      </div>
+      <h3>관광지 추천 활동 내역이 없습니다.</h3>
+      </div>)}
       <h4 className="title">여행 메이트</h4>
+      {totalItems2 > 0 ? (
+      <>
       <table className="boardlist travel_mate">
         <thead>
           <tr>
             <th>지역</th>
             <th>제목</th>
             <th>조회수</th>
-            <th>댓글수</th>
           </tr>
         </thead>
         <tbody>
-          {/* {currentItems2.map((tourspot) => (
+          {currentItems2.map((tourspot) => (
             <tr key={tourspot.bno}>
-              <td>{tourspot.location}</td>
-              <td>{tourspot.title}</td>
               <td>
-                <BsEye />
-                {tourspot.viewCnt}
+                <Link to={`/board/company/${tourspot.bno}`}>
+                  {tourspot.location}
+                </Link>
               </td>
               <td>
-                <FaRegCommentDots />
-                {tourspot.replyCnt}
+                <Link to={`/board/company/${tourspot.bno}`}>
+                  {tourspot.title}
+                </Link>
+              </td>
+              <td>
+                <Link to={`/board/company/${tourspot.bno}`}>
+                  <BsEye />
+                  {tourspot.viewCnt}
+                </Link>
               </td>
             </tr>
-          ))} */}
-          <tr>
-            <td>서울</td>
-            <td>게시글 제목입니다.</td>
-            <td>
-              <BsEye />
-              11
-            </td>
-            <td>
-              <FaRegCommentDots />9
-            </td>
-          </tr>
-          <tr>
-            <td>인천</td>
-            <td>게시글 제목입니다.</td>
-            <td>
-              <BsEye />
-              11
-            </td>
-            <td>
-              <FaRegCommentDots />9
-            </td>
-          </tr>
-          <tr>
-            <td>부산</td>
-            <td>게시글 제목입니다.</td>
-            <td>
-              <BsEye />
-              11
-            </td>
-            <td>
-              <FaRegCommentDots />9
-            </td>
-          </tr>
-          <tr>
-            <td>인천</td>
-            <td>게시글 제목입니다.</td>
-            <td>
-              <BsEye />
-              11
-            </td>
-            <td>
-              <FaRegCommentDots />9
-            </td>
-          </tr>
-          <tr>
-            <td>인천</td>
-            <td>게시글 제목입니다.</td>
-            <td>
-              <BsEye />
-              11
-            </td>
-            <td>
-              <FaRegCommentDots />9
-            </td>
-          </tr>
+          ))}
         </tbody>
       </table>
       <Pagination className="pagination justify-content-center">
@@ -260,6 +232,13 @@ function BoardList() {
         <Pagination.Next onClick={handleNextPage} />
         <Pagination.Last onClick={() => handlePageClick(pageNumbers2.length)}/>
       </Pagination>
+      </>
+    ) : (<div className="no_data">
+      <div className="emptyIcon">
+        <FaExclamationCircle />
+      </div>
+      <h3>여행 메이트 활동 내역이 없습니다.</h3>
+      </div>)}
     </>
   );
 }

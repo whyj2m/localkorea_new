@@ -5,11 +5,19 @@
   width: 1000px;
   height: 500px;
   background: #dfdede50;
+  border-radius: 30px;
+  padding: 15px;
 
   // .view-header{
   //   font-size: 50px;
   // }
 
+  .main-title{
+    padding: 20px 0 10px 10px;
+    margin: 0px;
+  }
+
+  // nav 시작
     .nav{
       display: flex;
       flex-direction: column;
@@ -29,27 +37,70 @@
       .nav-date{
           margin: 0 5px;
           font-size: 20px;
+          display: flex;
+          align-items: center;
+
         .nav-date-icon{
           width: 30px;
           height: 30px;
+          margin-right: 5px;
         }
 
-        // .nave-date-regDate{
-        //   font-size: 20px;
-        // }
+        .nave-date-regDate {
+          margin: 0; // 상하 여백제거
+        }
       }
 
       // 작성자
       .nav-writer{
         font-size: 20px;
+        margin: 0 5px 20px 5px;
 
         .nav-person-icno{
             width: 30px;
             height: 30px;
+            margin-right: 5px;
         }
         
       }
-
-  
     }
+    // nav 끝
+
+    // 입력
+    .Reply_div{
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
+      margin-top: 20px;
+
+      .Reply_write{
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        width: 480px;
+
+        // 입력창
+        textarea {
+          flex: 1;
+          height: 100px;
+          padding: 10px;
+          font-size: 16px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          resize: none;
+        }
+
+        // 입력 버튼
+        #reply_submit_button {
+          margin-left: 10px;
+          height: 80px;
+          padding: 10px 20px;
+          font-size: 16px;
+          border: 1px solid #ccc;
+          border-radius: 5px;
+          background-color: #f9f9f9;
+          cursor: pointer;
+        }
+      }
+    }
+
 }
