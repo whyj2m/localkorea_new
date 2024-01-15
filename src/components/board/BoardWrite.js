@@ -162,131 +162,134 @@ function BoardWrite() {
             <BoardNav />
 
             <div className="container">
-                <div className='instructions'>
-                    <img src='../../assets/etc/pointbar.png' alt='pointbar' />
-                    <div className='instructions-explanation'>작성 안내</div>
-                    <div className='instructions-content'>
-                        새하마노 방방곡곡은 대한민국의 문화와 자연을 사랑하는 이들에게 맞춤형 여행을 제공하고,
-                        지역 문화와 자연환경을 소개합니다. 저희는 새로운 장소와 경험을 찾고, 좋은 곳을 알리며,
-                        관심과 사랑으로 대한민국의 다양한 매력을 세계에 알리고자 합니다. 여러분의 많은 관심과 참여를 부탁드립니다.
-                    </div>
-                </div>
-                <div className='write'>
-                    <Form onSubmit={handleSubmit}>
-                        <Row className="align-items-center">
-                            <Col xs={4} md={1}>
-                                <Form.Group id="title" className="mb-0" >
-                                    <Form.Label className="mr-2">제목 *</Form.Label>
-                                </Form.Group>
-                            </Col>
-                            <Col xs={8} md={8}>
-                                <Form.Control
-                                    type="text"
-                                    name="title"
-                                    id="title"
-                                    maxLength={100}
-                                    placeholder="제목을 입력하세요"
-                                    value={title}
-                                    onChange={handleChange}
-                                />
-                            </Col>
-                        </Row>
-                        <div className='underline' />
+                <div className="boardWrite">
+                    <div className='instructions'>
+                        <img src='../../assets/etc/pointbar.png' alt='pointbar' />
                         <Row>
-                            <Col xs={4} md={1}>
-                                <Form.Group id="cate" className="mb-0">
-                                    <Form.Label className="mr-2">구분 *</Form.Label>
-                                </Form.Group>
-                            </Col>
-                            <Col xs={8} md={2}>
-                                <div>
-                                    <select
-                                        className="form-select"
-                                        name="boardCno"
-                                        id="boardCno"
-                                        value={boardCno}
+                            <Col xs={12} md={12} className='instructions-explanation'>작성 안내</Col>
+                                <Col xs={12} md={12}  className='instructions-content '>
+                                    새하마노 방방곡곡은 대한민국의 문화와 자연을 사랑하는 이들에게 맞춤형 여행을 제공하고,
+                                    지역 문화와 자연환경을 소개합니다. 저희는 새로운 장소와 경험을 찾고, 좋은 곳을 알리며,
+                                    관심과 사랑으로 대한민국의 다양한 매력을 세계에 알리고자 합니다. 여러분의 많은 관심과 참여를 부탁드립니다.
+                                </Col>
+                        </Row>
+                    </div>
+                    <div className='write'>
+                        <Form onSubmit={handleSubmit}>
+                            <Row className="align-items-center">
+                                <Col xs={4} md={1}>
+                                    <Form.Group id="title" className="mb-0" >
+                                        <Form.Label className="mr-2">제목</Form.Label>
+                                    </Form.Group>
+                                </Col>
+                                <Col xs={8} md={5}>
+                                    <Form.Control
+                                        type="text"
+                                        name="title"
+                                        id="title"
+                                        maxLength={100}
+                                        placeholder="제목을 입력하세요"
+                                        value={title}
+                                        onChange={handleChange}
+                                    />
+                                </Col>
+                            </Row>
+                            <div className='underline' />
+                            <Row>
+                                <Col xs={4} md={1}>
+                                    <Form.Group id="cate">
+                                        <Form.Label>구분</Form.Label>
+                                    </Form.Group>
+                                </Col>
+                                <Col xs={8} md={2}>
+                                    <div>
+                                        <select
+                                            className="form-select"
+                                            name="boardCno"
+                                            id="boardCno"
+                                            value={boardCno}
+                                            onChange={handleChange}
+                                        >
+                                            <option value="1">관광지 추천</option>
+                                            <option value="2">여행 메이트</option>
+                                        </select>
+                                    </div>
+                                </Col>
+                                <Col xs={4} md={1}>
+                                    <Form.Group id="locationCno">
+                                        <Form.Label>지역</Form.Label>
+                                    </Form.Group>
+                                </Col>
+                                <Col xs={8} md={2}>
+                                    <select className="form-select"
+                                        // id="localCate"
+                                        name="locationCno"
+                                        id="locationCno"
+                                        value={locationCno}
                                         onChange={handleChange}
                                     >
-                                        <option value="1">관광지 추천</option>
-                                        <option value="2">여행 메이트</option>
+                                        <option value="1">서울</option>
+                                        <option value="2">인천</option>
+                                        <option value="3">대전</option>
+                                        <option value="4">부산</option>
+                                        <option value="5">경기</option>
+                                        <option value="6">충천</option>
+                                        <option value="7">강원</option>
+                                        <option value="8">전라</option>
+                                        <option value="9">경상</option>
                                     </select>
+                                </Col>
+                            </Row>
+                            <div className='underline' />
+                            <Col md={6} className='d-flex justify-content-end'>
+                                <div className="input-group mb-3">
+                                    <input
+                                        accept="image/*"
+                                        multiple
+                                        type="file"
+                                        onChange={(e) => handleFileChange(e.target.files)}
+                                        className="form-control"
+                                        // id="inputGroupFile02"
+                                        id="file"
+                                        disabled={isFileUploadDisabled}
+                                    />
+                                    <label className="input-group-text" htmlFor="inputGroupFile02">
+                                        업로드
+                                    </label>
                                 </div>
+                                {/* 업로드된 이미지 미리보기 */}
+                                {uploadedFiles.map((fileObject, index) => (
+                                    <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '10px' }}>
+                                        <img src={fileObject.src} alt='FileUpload' style={{ width: '200px', height: '200px', objectFit: 'cover', marginBottom: '5px' }} />
+                                        <p>{fileObject.name}</p>
+                                    </div>
+                                ))}
                             </Col>
-                            <Col xs={4} md={1}>
-                                <Form.Group id="locationCno" className="mb-0">
-                                    <Form.Label className="mr-2">지역 *</Form.Label>
-                                </Form.Group>
-                            </Col>
-                            <Col xs={8} md={2}>
-                                <select className="form-select"
-                                    // id="localCate"
-                                    name="locationCno"
-                                    id="locationCno"
-                                    value={locationCno}
+                            <div className='underline' />
+                            <Form.Group id="content">
+                                <Form.Label>내용</Form.Label>
+                                <Form.Control
+                                    rows={10}
+                                    id="content"
+                                    as="textarea"
+                                    name="content"
+                                    maxLength={800}
+                                    placeholder="내용을 입력하세요"
+                                    value={content}
                                     onChange={handleChange}
-                                >
-                                    <option value="1">서울</option>
-                                    <option value="2">인천</option>
-                                    <option value="3">대전</option>
-                                    <option value="4">부산</option>
-                                    <option value="5">경기</option>
-                                    <option value="6">충천</option>
-                                    <option value="7">강원</option>
-                                    <option value="8">전라</option>
-                                    <option value="9">경상</option>
-                                </select>
-                            </Col>
-                        </Row>
-                        <div className='underline' />
-
-                        <Col md={6} className='d-flex justify-content-end'>
-                            <div className="input-group mb-3">
-                                <input
-                                    accept="image/*"
-                                    multiple
-                                    type="file"
-                                    onChange={(e) => handleFileChange(e.target.files)}
-                                    className="form-control"
-                                    // id="inputGroupFile02"
-                                    id="file"
-                                    disabled={isFileUploadDisabled}
+                                    style={{ resize: 'none' }}
                                 />
-                                <label className="input-group-text" htmlFor="inputGroupFile02">
-                                    업로드
-                                </label>
-                            </div>
-                            {/* 업로드된 이미지 미리보기 */}
-                            {uploadedFiles.map((fileObject, index) => (
-                                <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '10px' }}>
-                                    <img src={fileObject.src} alt='FileUpload' style={{ width: '200px', height: '200px', objectFit: 'cover', marginBottom: '5px' }} />
-                                    <p>{fileObject.name}</p>
-                                </div>
-                            ))}
-                        </Col>
-                        <div className='underline' />
-                        <Form.Group id="content">
-                            <Form.Label>내용 *</Form.Label>
-                            <Form.Control
-                                rows={10}
-                                id="content"
-                                as="textarea"
-                                name="content"
-                                maxLength={800}
-                                placeholder="내용을 입력하세요"
-                                value={content}
-                                onChange={handleChange}
-                            />
-                        </Form.Group>
-                        <Col className="d-flex justify-content-end">
-                            <Button variant="primary" type="submit" id="btn-save" onClick={handleSubmit}>
-                                등록
-                            </Button>
-                        </Col>
-                    </Form>
+                            </Form.Group>
+                            <Col className="d-flex justify-content-end">
+                                <Button variant="primary" type="submit" id="btn-save" onClick={handleSubmit}>
+                                    등록
+                                </Button>
+                            </Col>
+                        </Form>
+                    </div>
                 </div>
             </div>
         </>
     );
 }
-{/* } */ }
 export default BoardWrite;
