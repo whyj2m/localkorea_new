@@ -222,7 +222,6 @@ function BoardWrite() {
                                 </Col>
                                 <Col xs={8} md={2}>
                                     <select className="form-select"
-                                        // id="localCate"
                                         name="locationCno"
                                         id="locationCno"
                                         value={locationCno}
@@ -241,30 +240,38 @@ function BoardWrite() {
                                 </Col>
                             </Row>
                             <div className='underline' />
-                            <Col md={6} className='d-flex justify-content-end'>
-                                <div className="input-group mb-3">
-                                    <input
-                                        accept="image/*"
-                                        multiple
-                                        type="file"
-                                        onChange={(e) => handleFileChange(e.target.files)}
-                                        className="form-control"
-                                        // id="inputGroupFile02"
-                                        id="file"
-                                        disabled={isFileUploadDisabled}
-                                    />
-                                    <label className="input-group-text" htmlFor="inputGroupFile02">
-                                        업로드
-                                    </label>
-                                </div>
-                                {/* 업로드된 이미지 미리보기 */}
-                                {uploadedFiles.map((fileObject, index) => (
-                                    <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '10px' }}>
-                                        <img src={fileObject.src} alt='FileUpload' style={{ width: '200px', height: '200px', objectFit: 'cover', marginBottom: '5px' }} />
-                                        <p>{fileObject.name}</p>
-                                    </div>
-                                ))}
-                            </Col>
+                            <Row>
+    <Col md={6} className='d-flex justify-content-end'>
+        <div className="input-group mb-3">
+            <input
+                accept="image/*"
+                multiple
+                type="file"
+                onChange={(e) => handleFileChange(e.target.files)}
+                className="form-control"
+                id="file"
+                disabled={isFileUploadDisabled}
+            />
+            <label className="input-group-text" htmlFor="inputGroupFile02">
+                업로드
+            </label>
+        </div>
+    </Col>
+
+    {/* 업로드된 이미지 미리보기 */}
+    <Col md={12}>
+        <div className="d-flex flex-wrap">
+            {uploadedFiles.map((fileObject, index) => (
+                <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '10px', marginRight: '10px' }}>
+                    <img src={fileObject.src} alt='FileUpload' style={{ width: '200px', height: '200px', objectFit: 'cover', marginBottom: '5px' }} />
+                    <p>{fileObject.name}</p>
+                </div>
+            ))}
+        </div>
+    </Col>
+</Row>
+
+
                             <div className='underline' />
                             <Form.Group id="content">
                                 <Form.Label>내용</Form.Label>

@@ -29,6 +29,10 @@
 .video-text h1 {
   text-shadow: 2px 2px 4px rgba(2, 2, 2, 0.8); /* 글자 그림자 추가 */
 }
+.video-text h3 {
+  text-shadow: 2px 2px 4px rgba(2, 2, 2, 0.8); /* 글자 그림자 추가 */
+  font-size: 30px;
+}
 /* -------------------------------------------------------- 여기까지 동영상 CSS -------------------------------------------------------------- */
 /* regionfood 페이지에서만 적용되는 스타일 */
 .video.regionfood .video-text h1 {
@@ -40,7 +44,14 @@
 
 @media screen and (max-width: 767px) {
   .video-text h1 {
-    font-size: 15px;
-    width: 400px;
+    font-size: 18px;
+    width: 350px;
+  }
+}
+
+@media (min-width: 550px) and (max-width: 1200px) {
+  .video-text h1 {
+    font-size: 25px;
+    width: 500px;
   }
 }

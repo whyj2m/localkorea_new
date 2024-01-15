@@ -38,10 +38,10 @@ function CompanyView() {
 
   // 토큰 가져오기
   const accessToken = localStorage.getItem('ACCESS_TOKEN');
-  const decodedToken = jwtDecode(accessToken); // jwt 디코딩하여 페이로드에 엑세스
-  const userId = decodedToken.id; // 사용자id에 엑세스
+  const decodedToken = accessToken ? jwtDecode(accessToken) : null; // jwt 디코딩하여 페이로드에 엑세스, 토큰이있는경우만 디코딩
+  const userId = decodedToken?.id; // 사용자id에 엑세스
+  const userName = decodedToken?.name;
 
-  
 
   // 댓글 조회
   const fetchReplyData = async () => {
@@ -103,52 +103,58 @@ function CompanyView() {
     setCommentContent(e.target.value);
   };
 
-// 댓글 삭제
-const deleteReplyApi = async (rno) => {
-  try {
-    const response = await deleteReply(rno);
-    return response;
-  } catch (error) {
-    throw error;
-  }
-};
-
-// 삭제 버튼 클릭 시 호출되는 함수
-const handleDeleteReply = async (rno) => {
-  try {
-    const response = await deleteReplyApi(rno); // 함수 이름 수정
-
-    if (response.status === 200) {
-      window.location.reload();
-      console.log('댓글이 성공적으로 삭제되었습니다.');
-    } else {
-      // 실패 시 에러 처리
-      console.error('댓글 삭제 실패');
+  // 댓글 삭제
+  const deleteReplyApi = async (rno) => {
+    try {
+      const response = await deleteReply(rno);
+      return response;
+    } catch (error) {
+      throw error;
     }
-  } catch (error) {
-    // 네트워크 에러 등의 예외 처리
-    console.error('댓글 삭제 중 오류 발생', error);
+  };
+
+  // 삭제 버튼 클릭 시 호출되는 함수
+  const handleDeleteReply = async (rno) => {
+    try {
+      const response = await deleteReplyApi(rno); // 함수 이름 수정
+
+      if (response.status === 200) {
+        window.location.reload();
+        console.log('댓글이 성공적으로 삭제되었습니다.');
+      } else {
+        // 실패 시 에러 처리
+        console.error('댓글 삭제 실패');
+      }
+    } catch (error) {
+      // 네트워크 에러 등의 예외 처리
+      console.error('댓글 삭제 중 오류 발생', error);
+    }
   }
-}
+
+  // 로그인한 id와 댓글단 id가 같을 때 삭제
+  const shouldShowDeleteButton = (reply) => {
+    return userId === reply.id;
+  };
 
   return (
     <>
       {/* 게시글확인 + 댓글입력창 */}
       {companyBoardListData.map(item => (
-        <div key={item.uniqueId} className='d-flex justify-content-center modal-'>
+        <div key={item.bno} className='d-flex justify-content-center modal-'>
           <div className='companyView'>
             <div className="row">
               <div className="area-left col-md-6">
                 <div className="info-left">
-                  <h2 className="main-title">{item.title}</h2>
+                  <h2>#{item.bno}</h2>
+                  <h3 className="main-title">{item.title}</h3>
                   <div className="nav">
                     <div>
                       <p className='nav-location'><MdOutlineLocationOn className='nav-location-icon' />{item.location}</p>
                     </div>
                     <div className='nav-date'>
-                    <MdDateRange/>
+                      <div className="nav-date-icon"><MdDateRange /></div>
                       <p className="nave-date-regDate">{moment(item.regDate).format('YYYY/MM/DD')}</p>
-                      
+
                     </div>
                     <div>
                       <p className='nav-writer'><IoPersonCircleOutline className="nav-person-icno" />{item.id.name}</p>
@@ -159,7 +165,7 @@ const handleDeleteReply = async (rno) => {
                     {item.content}
                   </div>
                   <div className='reply_div'>
-                      <p>{item.id.name}</p>
+                    <p>{userName}</p>
                     <div className='reply_write'>
                       <textarea
                         rows='3'
@@ -187,17 +193,20 @@ const handleDeleteReply = async (rno) => {
               <div className="area-right col-md-6">
                 <div className="reply-list">
                   {replyList.map((reply) => (
-                    <div className="reply-single">
-                      <div key={reply.bno} >
+                    <div className="reply-single" key={reply.rno}>
+                      <div  >
                         <div className="reply-section1">
                           <div className="nick-name">{reply.name}</div>
                           {/* <CiHeart /> */}
                         </div>
-                        <div className="reply-section2"> 
+                        <div className="reply-section2">
                           <div className="reply-content">{reply.content}</div>
-                          <LuDelete className="delete-icon" onClick={() => handleDeleteReply(reply.rno)}/>
+                          {/* <LuDelete className="delete-icon" onClick={() => handleDeleteReply(reply.rno)}/> */}
+                          {shouldShowDeleteButton(reply) && (
+                            <LuDelete className="delete-icon" onClick={() => handleDeleteReply(reply.rno)} />
+                          )}
                         </div>
-                          <span  className="time">{moment(reply.regDate).fromNow()}</span>
+                        <span className="time">{moment(reply.regDate).fromNow()}</span>
                       </div>
                     </div>
                   ))}
@@ -207,6 +216,7 @@ const handleDeleteReply = async (rno) => {
           </div>
         </div>
       ))}
+      <div>목록</div>
     </>
   );
 }

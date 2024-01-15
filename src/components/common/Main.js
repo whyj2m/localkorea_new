@@ -166,12 +166,12 @@ function Section4Swiper() {
           return acc;
         }, [])
         .map((pair, index) => (
-          <SwiperSlide key={pair[0].bno}>
+          <SwiperSlide key={pair[0]?.bno}>
             <ul className="tourisspotList">
-              {pair.slice(0, 4).map((item, subIndex) => (
-                <li className="swiper-slide" key={item.bno}>
+              {pair.map((item, subIndex) => (
+                <li className="swiper-slide" key={subIndex}>
                   {item?.bno !== undefined ? (
-                    <Link to={`/board/tourisSpotView/${item.bno}`}>
+                    <Link to={`/board/tourisSpotView/${item?.bno}`}>
                       <div className="thumb-wrap">
                         {item.imageUrl ? (
                           <img
