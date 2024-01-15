@@ -35,9 +35,10 @@
 
       .help {
         text-align: center;
+        cursor: default;
         span {
           color: $test4; font-weight: bold;
-          a {font-weight: bold;}
+          cursor: pointer;
         }
       }
     }
@@ -102,7 +103,7 @@
 
       .grp {
         margin-bottom: 5px;
-        .success p {color: #75b798;}
+        .success p {color: #41d24d;}
         .send_progress {height: 7px; margin: 10px 0; 
         }
       }
@@ -163,6 +164,7 @@
       }
     }
   }
+  .success {color: #41d24d; font-size: .875em}
 }
 
 @media screen and (max-width: 992px) {
@@ -285,11 +287,12 @@
       .replylist {
         th:nth-child(1),
         td:nth-child(1) {
-          width: 20%;
+          width: 15%;
         }
         th:nth-child(2),
         td:nth-child(2) {
-          width: 25%;
+          width: 30%;
+          padding-right: 10px;
         }
         th:nth-child(3),
         td:nth-child(3) {
@@ -332,9 +335,8 @@
 
 .likecard {
   margin-bottom: 20px;
-  // border: 1px solid #d3d3d3;
   border: 0;
-  box-shadow: 5px 5px 10px #d3d3d3;
+  box-shadow: 5px 5px 15px #d3d3d3;
   .card-body {
     display: flex;
     .card-img {width: 20%; object-fit: cover;}
@@ -387,11 +389,24 @@
 }
 
 .changePwModal, .changeInfo {
-  .success {color: #75b798; font-size: small}
+  .success {color: #41d24d; font-size: small}
   .error {
     color: red; font-size: small;
   }
   .modify_btn {border: 1px solid $test4; background: $test4;}
   .modify_btn:hover {border: 1px solid $test1; background: $test1;}
   .modal-header{background: $test1;}
+}
+.findId, .findPw {
+  .success {color: #41d24d; font-size: small}
+  .error {
+    color: red; font-size: small;
+  }
+  .modify_btn {border: 1px solid $test4; background: $test4;}
+  .modify_btn:hover {border: 1px solid $test1; background: $test1;}
+  .modal-header{background: $test1;}
+}
+
+.findPwError {
+  color: red;
 }

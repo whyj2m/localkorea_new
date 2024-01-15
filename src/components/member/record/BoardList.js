@@ -11,7 +11,9 @@ function BoardList() {
 
   const [totalItems, setTotalTourspotItems] = useState(0);
   const [totalItems2, setTotalTravelmateItems] = useState(0);
+
   const [currentPage, setCurrentPage] = useState(1);
+  const [currentPageTravelmate, setCurrentPageTravelmate] = useState(1);
   const itemsPerPage = 5; // 한 페이지당 보여질 아이템 수
 
   useEffect(() => {
@@ -92,22 +94,44 @@ function BoardList() {
   };
 
   // 페이지 번호를 클릭할 때 호출되는 핸들러
-  const handlePageClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
-
-  // 이전 페이지로 이동하는 핸들러
-  const handlePreviousPage = () => {
-    if (currentPage > 1) {
-        setCurrentPage(currentPage - 1);
+  const handlePageClick = (pageNumber, section) => {
+    if (section === 'tourspot') {
+      setCurrentPage(pageNumber);
+    } else if (section === 'travelmate') {
+      setCurrentPageTravelmate(pageNumber);
     }
   };
 
+  // 이전 페이지로 이동하는 핸들러
+  const handlePreviousPage = (section) => {
+    if (section === 'tourspot') {
+      if (currentPage > 1) {
+        setCurrentPage(currentPage - 1);
+      }
+    } else if (section === 'travelmate') {
+      if (currentPageTravelmate > 1) {
+        setCurrentPageTravelmate(currentPageTravelmate - 1);
+      }
+    }
+  };
+
+
   // 다음 페이지로 이동하는 핸들러
-  const handleNextPage = () => {
-    const totalPages = Math.ceil(totalItems / itemsPerPage);
-    if (currentPage < totalPages) {
+  // const handleNextPage = () => {
+  //   const totalPages = Math.ceil(totalItems / itemsPerPage);
+  //   if (currentPage < totalPages) {
+  //       setCurrentPage(currentPage + 1);
+  //   }
+  // };
+  const handleNextPage = (section, totalPages) => {
+    if (section === 'tourspot') {
+      if (currentPage < totalPages) {
         setCurrentPage(currentPage + 1);
+      }
+    } else if (section === 'travelmate') {
+      if (currentPageTravelmate < totalPages) {
+        setCurrentPageTravelmate(currentPageTravelmate + 1);
+      }
     }
   };
 
@@ -119,9 +143,10 @@ function BoardList() {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   const currentItems = tourspotList.slice(startIndex, endIndex);
-  const currentItems2 = travelmateList.slice(startIndex, endIndex);
 
-  
+  const startIndex2 = (currentPageTravelmate - 1) * itemsPerPage;
+  const endIndex2 = startIndex2 + itemsPerPage;
+  const currentItems2 = travelmateList.slice(startIndex2, endIndex2);
 
   return (
     <>
@@ -162,19 +187,17 @@ function BoardList() {
         </tbody>
       </table>
       <Pagination className="pagination justify-content-center">
-        <Pagination.First onClick={() => handlePageClick(1)}/>
-        <Pagination.Prev onClick={handlePreviousPage} />
+        <Pagination.Prev onClick={() => handlePreviousPage('tourspot')} />
         {pageNumbers.map((number) => (
           <Pagination.Item
             key={number}
             active={number === currentPage}
-            onClick={()=>handlePageClick(number)}
+            onClick={()=>handlePageClick(number, 'tourspot')}
           >
             {number}
           </Pagination.Item>
         ))}
-        <Pagination.Next onClick={handleNextPage} />
-        <Pagination.Last onClick={() => handlePageClick(pageNumbers.length)}/>
+        <Pagination.Next onClick={() => handleNextPage('tourspot', Math.ceil(totalItems / itemsPerPage))} />
       </Pagination>
       </>
       ): (<div className="no_data">
@@ -182,6 +205,7 @@ function BoardList() {
         <FaExclamationCircle />
       </div>
       <h3>관광지 추천 활동 내역이 없습니다.</h3>
+      <p>새하마노의 누리꾼에게 당신의 관광지를 추천해주세요!</p>
       </div>)}
       <h4 className="title">여행 메이트</h4>
       {totalItems2 > 0 ? (
@@ -198,17 +222,17 @@ function BoardList() {
           {currentItems2.map((tourspot) => (
             <tr key={tourspot.bno}>
               <td>
-                <Link to={`/board/company/${tourspot.bno}`}>
+                <Link to={`/board/CompanyView/${tourspot.bno}`}>
                   {tourspot.location}
                 </Link>
               </td>
               <td>
-                <Link to={`/board/company/${tourspot.bno}`}>
+                <Link to={`/board/CompanyView/${tourspot.bno}`}>
                   {tourspot.title}
                 </Link>
               </td>
               <td>
-                <Link to={`/board/company/${tourspot.bno}`}>
+                <Link to={`/board/CompanyView/${tourspot.bno}`}>
                   <BsEye />
                   {tourspot.viewCnt}
                 </Link>
@@ -218,19 +242,17 @@ function BoardList() {
         </tbody>
       </table>
       <Pagination className="pagination justify-content-center">
-        <Pagination.First onClick={() => handlePageClick(1)}/>
-        <Pagination.Prev onClick={handlePreviousPage} />
+        <Pagination.Prev onClick={() => handlePreviousPage('travelmate')} />
         {pageNumbers2.map((number) => (
           <Pagination.Item
             key={number}
-            active={number === currentPage}
-            onClick={()=>handlePageClick(number)}
+            active={number === currentPageTravelmate}
+            onClick={() => handlePageClick(number, 'travelmate')}
           >
             {number}
           </Pagination.Item>
         ))}
-        <Pagination.Next onClick={handleNextPage} />
-        <Pagination.Last onClick={() => handlePageClick(pageNumbers2.length)}/>
+        <Pagination.Next onClick={() => handleNextPage('travelmate', Math.ceil(totalItems2 / itemsPerPage))} />
       </Pagination>
       </>
     ) : (<div className="no_data">
@@ -238,6 +260,7 @@ function BoardList() {
         <FaExclamationCircle />
       </div>
       <h3>여행 메이트 활동 내역이 없습니다.</h3>
+      <p>함께할 여행 메이트를 찾아보세요!</p>
       </div>)}
     </>
   );
