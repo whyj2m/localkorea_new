@@ -36,14 +36,14 @@ function Section2Swiper({
         pagination={{ type: "bullets", clickable: true }}
       >
         {festivalData.slice(0, 5).map((festival, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={festival.festivalNo}>
             <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
               <div
                 className="section2-slider-item"
                 onClick={() => handlePlaceUpdate(festival, localNo)}
               >
                 <img
-                  src={`/assets/festival/${localNo}/${index + 1}.jpg`}
+                  src={`/assets/festival/${localNo}/${festival.festivalNo}.jpg`}
                   alt=""
                 />
                 <div className="section2-slider-text">
@@ -80,11 +80,7 @@ function Section3Swiper({ foods, localNo, slidesPerView }) {
     >
       {foods && foods.length > 0 ? (
         foods.map((food, index) => (
-          <SwiperSlide
-            key={index}
-            // 여긴 클릭이벤트가 필요없다.. 그냥 정보만 보여준다
-            // onClick={() => handlePlaceUpdate(food, localNo)}
-          >
+          <SwiperSlide key={food.foodNo}>
             <div className="section3-slider-item">
               <img
                 src={`/assets/regionfood/${localNo}/${index + 1}.jpg`}
@@ -171,10 +167,10 @@ function Section4Swiper() {
           return acc;
         }, [])
         .map((pair, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={pair[0].bno}>
             <ul className="tourisspotList">
               {pair.slice(0, 4).map((item, subIndex) => (
-                <li className="swiper-slide" key={subIndex}>
+                <li className="swiper-slide" key={item.bno}>
                   {item?.bno !== undefined ? (
                     <Link to={`/board/tourisSpotView/${item.bno}`}>
                       <div className="thumb-wrap">
@@ -464,8 +460,8 @@ function Main() {
               <div className="CompanyList">
                 <ul>
                   {filteredCompanyBoardListData.slice(0, 5).map((boardItem) => (
-                    <li key={boardItem.id}>
-                      <Link>
+                    <li key={boardItem.bno}>
+                      <Link to={`/board/CompanyView/${boardItem.bno}`}>
                         <p>{boardItem.title}</p>
                       </Link>
                     </li>
