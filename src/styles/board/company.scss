@@ -1,6 +1,32 @@
-.write-btn{
-    margin-bottom: 30px;
+@import '/src/reset.scss';
+
+.company-nav{
+    margin-bottom: 20px;
+    
+    .write-btn{
+        // margin-bottom: 30px;
+        width: 219.99px;
+    }
+
+    // 총 _건, 조회수, 좋아요 
+    .place-total {
+        // padding-bottom: 30px;
+        font-weight: 700;
+        font-size: 25px;
+    }
+
+    .place-total{
+        .total{
+           span{
+            padding: 0 2px;
+            color: #0a97cd;
+            font-weight: bold;
+            font-size: 24px;
+           }
+        }
+    }
 }
+
 
 .pepole-icon{
     width: 40px;
@@ -9,68 +35,93 @@
 }
 
 // 카드 내부
-.Company-card{
-    // width: 350px;
-    height: 400px;
-    // margin-bottom: 30px;
-    padding: 0 15px;
+.company-card{
+    height: 350px;
+    padding: 0 20px 20px 20px;
     box-shadow: 4px 12px 40px 6px rgba(0, 0, 0, 0.09);
 
     // &:hover {
     //     width: 700px; 
     // }
 
-    .body-header{
+    .body-section1{
         display: flex;
         justify-content: space-between;
         margin-bottom: 10px;
 
         .body-location{
+            display: flex;
+            background: #D2E0FB;
 
-             display: flex;
-             background: #D2E0FB;
-             
-            //  margin: 0;
-            // width: 30px;
-            // height: 40px;
-            // background: pink;
-    
             .body-location-name{
-            font-size: 25px;
+            font-size: 20px;
             font-weight: bold;
             color: #939090;
             padding: 0;
             margin: 10px;
-            
             }
         }
 
+        .body-viewCnt {
+            display: flex;
+            align-items: center;
         
-    }
-    .body-title{
-        font-size: 20px;
-    }
-}
-
-.apply-btn{
-    width: 120px;
-    height: 40px;
-    border: 1px solid #F9F3CC;
-    border-radius: 20px;
-    background-color: #F9F3CC;
-    color: #000000;
-    transition: background-color 0.3s, color 0.3s;
-
-    .ariPlane-btn {
-        padding-left: 3px;
-        width: 20px;
-        height: 20px;
-        color: #000000;
+            .eye-icon {
+                font-size: 1.5em;
+                margin: 0 7px 0 0; 
+                color: #939090;
+            }
+        
+           
+        }
+          
     }
 
-    &:hover {
-        background-color: #D2E0FB; 
-        color: #000000;
-    }
-}
+    .body-section2{
+        // height: 200px;
 
+        .body-title{
+            font-size: 18px;
+            font-weight: bold;
+            margin: 7px 0 7px 0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            @media (min-width: 771px) and (max-width: 1195px) {
+                .body-title {
+                  max-width: 100px; 
+                }
+              }
+        }
+
+    }
+
+    .body-section3{
+        height: 130px;
+        background: rgba(220, 220, 220, 0.142);
+        // border: 1px dashed #9a999968;
+        border: 1px solid #9494949f;
+        border-radius: 10px; 
+        margin-top: 7px;
+        padding: 10px;
+    }
+        .more-btn{
+            width: 100%;
+            margin-top: 15px;
+            display: block;
+            margin-left: auto; 
+            margin-right: auto; 
+            // background: $test4;
+            background:  rgba(152, 141, 141, 0.212);
+            color: #1c1c1c;
+            border: none;
+            
+            &:active {
+                outline: none;
+                background: $test4;
+                // background: rgba(103, 103, 103, 0.226);
+              
+            }
+        }
+    }

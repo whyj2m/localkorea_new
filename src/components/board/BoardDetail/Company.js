@@ -1,12 +1,12 @@
 // react
 import { useEffect, useState } from "react";
+import React from "react";
 
 // css
 import '../../../styles/board/company.scss';
-import { Card, Col, Row, Container, Button } from 'react-bootstrap';
+import { Card, Col, Row, Container, Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { BsPeopleFill } from "react-icons/bs"; // 아이콘
-import { CiHeart } from "react-icons/ci";
+import { IoEyeSharp } from "react-icons/io5"; // 조회수
 
 // 시간
 import moment from 'moment';
@@ -19,17 +19,18 @@ import BoardNav from '../BoardNav';
 
 
 function Company() {
+    const [visibleItems, setVisibleItems] = useState(9); // 처음 페이지에 9개만 보이도록
+
     // 글 작성 페이지로 이동
     const navigate = useNavigate();
     const handleButtonClick = () => {
-        navigate('/board/boardWrite'); // 절대 경로 '/board/boardWrite'로 이동
+        navigate('/board/boardWrite'); 
     };
 
     // 상세 페이지로 이동
     const handleButtonView = (bno) => {
         navigate(`/board/CompanyView/${bno}`);
     };
-
 
     // 여행메이트 게시판 글 가져오기
     const [CompanyBoardListData, setCompanyBoardListData] = useState([]);
@@ -50,50 +51,120 @@ function Company() {
         fetchCompanyBoardListData();
     }, []);
 
+    // 카테고리 필터링
+    const [selectedLocation, setSelectedLocation] = useState(null); // 선택한 지역 값을 state로 관리
 
+    const handleLocationChange = (event) => {
+        const selectedValue = event.target.value;
+        setSelectedLocation(selectedValue); // 선택한 지역 값 업데이트
+    };
+
+    const filterItemsByLocation = () => {
+        if (!selectedLocation || selectedLocation === 'all') {
+            // 선택하지 않으면 전체
+            return CompanyBoardListData;
+        } else {
+            return CompanyBoardListData.filter(item => item.location === selectedLocation);
+        }
+    };
+    // 필터링 끝
+
+    // 선택된 지역에 따라 카테고리 색 변경 
+    const filteredItems = filterItemsByLocation();
+
+    const locationColors = {
+        서울: "#D2E0FB",
+        인천: "#f9f3cc",
+        대전: "#d7e5ca",
+        부산: "#dba3db70",
+        경기: "#a6d0ea",
+        충청: "#daa0a0",
+        강원: "#e2cab1",
+        전라: "#b56a9957",
+        경상: "#20b2aa",
+    };
+
+//  인피니티 스크롤 
+const handleScroll = () => {
+    const footer = document.querySelector(".footer .info");
+
+    if (footer) {
+      const scrolledToFooter =
+        window.innerHeight + window.scrollY >= footer.offsetTop;
+
+      if (scrolledToFooter) {
+        setVisibleItems((prevItems) => prevItems + 6); // 6개 추가
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [handleScroll]);
 
     return (
         <>
             <BoardNav />
 
             <Container>
-                <Row className='justify-content-end'>
-                    <Col md={1} >
-                        <Button className='write-btn' as="input" type="submit" value="글작성" onClick={handleButtonClick} />
+                <Row className='align-items-center company-nav'>
+                    {/* 총건수 확인 */}
+                    <Col md={8} className="place-total d-flex align-items-center">
+                        <div className="total">
+                            총<span>{filteredItems.length}</span>건
+                        </div>
+                    </Col>
+                    <Col xs={6} md={2} className="d-flex align-items-center">
+                        <Form.Select aria-label="지역을 선택하세요" onChange={handleLocationChange}>
+                            <option value="all">전체 지역</option>
+                            <option value="서울">서울</option>
+                            <option value="인천">인천</option>
+                            <option value="대전">대전</option>
+                            <option value="부산">부산</option>
+                            <option value="경기">경기</option>
+                            <option value="충청">충청</option>
+                            <option value="강원">강원</option>
+                            <option value="전라">전라</option>
+                            <option value="경상">경상</option>
+                        </Form.Select>
+                    </Col>
+                    <Col xs={6} md={2} className="d-flex justify-content-end align-items-center">
+                        <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
                     </Col>
                 </Row>
 
                 {/* 여행메이트 카드 */}
-                <Row xs={1} md={3} className="g-4">
-                    {/* 여행메이트 카드 */}
-                    {CompanyBoardListData.map(item => (
+                <Row xs={1} md={2} lg={3}className="g-4">
+                    {CompanyBoardListData.slice(0, visibleItems).map(item => (
                         <Col key={item.bno}>
-                            <Card className='Company-card'>
+                            <Card className='company-card'>
                                 <Row className="g-0 align-items-center">
-                                    <Col xs={12} md={12}>
-                                        <div className="body-header">
-                                            <div className="body-location">
+                                    <Col xs={12}  md={12}>
+
+                                        <div className="body-section1">
+                                            <div className="body-location" style={{ background: locationColors[item.location] || "#D2E0FB" }}>
                                                 <p className="body-location-name">{item.location}</p>
                                             </div>
-                                            {/* <div className="heartIcon"> */}
-                                            <CiHeart style={{ fontSize: '2em', marginTop: '15px' }} />
-                                            {/* </div> */}
+                                            <div className="body-viewCnt">
+                                                <IoEyeSharp className="eye-icon" />
+                                                <span className="view-count">{item.viewCnt}</span>
+                                            </div>
+                                        </div>
+                                        <div className="body-section2">
+                                            <div className="body-title ">{item.title}</div>
+                                            <div className="body-name">{item.id.name}</div>
+                                            <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
+                                        </div>
+                                        <div className="body-section3">
+                                            <p>{item.content}</p>
                                         </div>
 
-                                        <div className="body-title">{item.title}</div>
-
-                                        <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
-                                        <Button className='write-btn' as="input" type="submit" value="자세히 보기" onClick={() => handleButtonView(item.bno)} />
-
-
+                                        <Button className='more-btn' as="input" type="submit" value="자세히 보기" onClick={() => handleButtonView(item.bno)} />
                                     </Col>
-                                    {/* <Col xs={3} md={3}>
-                                        <div className="d-flex flex-column align-items-center">
-                                            <BsPeopleFill className='pepole-icon' />
-                                            <Card.Text>1/4</Card.Text>
-                                            <Button className='write-btn' as="input" type="submit" value="자세히 보기" onClick={() => handleButtonView(item.bno)} />
-                                        </div>
-                                    </Col> */}
                                 </Row>
                             </Card>
                         </Col>
