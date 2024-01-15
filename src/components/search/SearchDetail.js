@@ -1,5 +1,5 @@
 import Button from "react-bootstrap/Button";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container, Row, Col, Nav } from "react-bootstrap";
 import "../../styles/Search.scss";
 import { FaAngleRight } from "react-icons/fa6";
 import { BsEye } from "react-icons/bs";
@@ -21,6 +21,11 @@ function SearchDetail() {
   // 검색어를 저장할 state
   const [searchTerm, setSearchTerm] = useState("");
 
+  // 각각 데이터
+  const [searchPlaces, setFilteredPlaces] = useState([]);
+  const [searchFesticals, setFilteredFestivals] = useState([]);
+  const [searchFoods, setFilteredFoods] = useState([]);
+
   // 검색어 업데이트 핸들러
   const handleSearch = (searchTerm) => {
     setSearchTerm(searchTerm);
@@ -41,6 +46,21 @@ function SearchDetail() {
       setFestivals(festivalsResponse.data);
       setFoods(foodsResponse.data);
       setPlaces(placesResponse.data);
+
+      // 검색 결과에 대한 필터링 로직 추가
+      const searchPlaces = placesResponse.data.filter((place) =>
+        place.name.toLowerCase().includes(term.toLowerCase())
+      );
+      const searchFesticals = festivalsResponse.data.filter((festival) =>
+        festival.name.toLowerCase().includes(term.toLowerCase())
+      );
+      const searchFoods = foodsResponse.data.filter((food) =>
+        food.name.toLowerCase().includes(term.toLowerCase())
+      );
+
+      setFilteredPlaces(searchPlaces);
+      setFilteredFestivals(searchFesticals);
+      setFilteredFoods(searchFoods);
     } catch (error) {
       console.error("데이터 가져오기 중 오류 발생:", error);
     }
@@ -108,11 +128,49 @@ function SearchDetail() {
         onSearch={handleSearch}
         onSearchSubmit={handleSearchSubmit}
         displayedTotalLength={totalLength}
-        placelength={placelength}
-        festivallength={festivallength}
-        foodlength={foodlength}
       />
       <Container>
+        <div className="result_gnb">
+          <Nav
+            variant="underline"
+            className="justify-content-center"
+            defaultActiveKey="/search/whole"
+          >
+            <Nav.Item>
+              <Nav.Link href="/search/whole" className="mx-3">
+                전체 ({totalLength}건)
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Link to="/search/local" className="nav-link mx-3">
+                관광지 ({placelength}건)
+              </Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link href="/search/festival" className="mx-3">
+                축제 ({festivallength}건)
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link href="/search/specialties" className="mx-3">
+                특산물 ({foodlength}건)
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
+        </div>
+        <div className="sort" style={{ paddingBottom: "30px" }}>
+          <Nav className="justify-content-end" activeKey="/home">
+            <Nav.Item>
+              <Nav.Link href="#!">관련도순</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link href="#!">최신순</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link href="#!">인기순</Nav.Link>
+            </Nav.Item>
+          </Nav>
+        </div>
         <div className="search_local">
           <div className="sub_title">
             <h3 className="title">

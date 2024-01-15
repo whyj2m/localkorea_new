@@ -20,9 +20,12 @@ function Signup() {
     id:'', password:'', confirmPassword: '', name:'', phoneNum:'', email:'', vc:''
   });
 
+  const [duplicateValid, setDuplicateValid] = useState(false);
+  const [vcSent, setVcSent] = useState(false);
+
   // 이메일로 발송된 코드
   const [codeFromEmail, setCodeFromEmail] = useState("");
-  const [vcSuccess, setVcSuccess] = useState(null);
+  const [vcSuccess, setVcSuccess] = useState(false);
 
   // 휴대폰번호 입력 형식
   const formatPhoneNumber = (inputNumber) => {
@@ -38,7 +41,7 @@ function Signup() {
       if (response.data) {
         setErrorMsg({ ...errorMsg, id: "이미 존재하는 ID입니다." });
       } else {
-        // setErrorMsg({ ...errorMsg, id: "사용 가능한 ID입니다." });
+        setDuplicateValid(true);
         setErrorMsg({ ...errorMsg, id: "" });
       }
     } catch (error) {
@@ -110,14 +113,13 @@ function Signup() {
     // 추가된 부분
     if (e.target.name === "vc") {
       console.log("현재 입력된 인증번호:", e.target.value);
+      setVcSuccess(false);
     }
   }
 
   const verifyCode = async () => {
     try {
       if (!formData.vc) {
-        // vc가 비어 있다면 클라이언트에서 validation을 실패한 경우로 간주할 수 있습니다.
-        setErrorMsg({ ...errorMsg, vc: "인증번호를 입력해주세요." });
         return;
       }
 
@@ -132,11 +134,13 @@ function Signup() {
       } else {
         // 서버 응답이 실패한 경우
         setErrorMsg({ ...errorMsg, vc: "인증 실패" });
+        setVcSuccess(false);
       }
     } catch (error) {
       // 예외 처리
       console.error("인증번호 확인 에러:", error);
       setErrorMsg({ ...errorMsg, vc: "인증 실패" });
+      setVcSuccess(false);
     }
   };
   
@@ -204,7 +208,8 @@ function Signup() {
   const handleSendVC = async () => {
     try {
       await sendEmail();
-      setVcSuccess(null); // 인증번호 재발송 시 초기화
+      setVcSuccess(false); // 인증번호 재발송 시 초기화
+      setVcSent(true); // 인증번호 발송 완료
       alert("인증번호가 발송되었습니다.");
     } catch (error) {
       console.error("인증번호 발송 에러:", error);
@@ -215,6 +220,12 @@ function Signup() {
   useEffect(() => {
     console.log("Code from Email:", codeFromEmail);
   }, [codeFromEmail]);
+
+  useEffect(() => {
+    if (vcSuccess === true) {
+      console.log("vcSuccess:", vcSuccess);
+    }
+  }, [vcSuccess]);
 
   return (
     <div className="signup">
@@ -227,7 +238,7 @@ function Signup() {
               <InputGroup>
                 <Form.Control
                   id="inputID" required 
-                  placeholder="Enter your ID"
+                  placeholder="아이디를 입력해주세요."
                   aria-label="Recipient's username"
                   aria-describedby="basic-addon2"
                   name="id" onBlur={() => handleBlur("id")}
@@ -238,8 +249,12 @@ function Signup() {
               </InputGroup>
               <Form.Control.Feedback type="invalid" className="d-block">
                 {errorMsg.id}
-                {/* {duplicateError} */}
               </Form.Control.Feedback>
+              {duplicateValid && (
+                <div className="success">
+                  사용 가능한 아이디입니다.
+                </div>
+              )}
             </Form.Group>
             <Form.Group className="grp">
               <Form.Label htmlFor="inputPW">Password</Form.Label>
@@ -247,7 +262,7 @@ function Signup() {
                 type="password"
                 id="inputPW" required 
                 aria-describedby="passwordHelpBlock"
-                placeholder="Enter your Password"
+                placeholder="비밀번호를 입력해주세요."
                 name="password" onBlur={() => handleBlur("password")}
                 onChange={handleChange} value={formData.password}
                 isInvalid={!!errorMsg.password}
@@ -262,7 +277,7 @@ function Signup() {
                 type="password"
                 id="inputPW2" required 
                 aria-describedby="passwordHelpBlock"
-                placeholder="Enter your Password"
+                placeholder="비밀번호 재입력"
                 name="confirmPassword" onBlur={() => handleBlur("confirmPassword")}
                 onChange={handleChange} value={formData.confirmPassword}
                 isInvalid={!!errorMsg.confirmPassword}
@@ -276,7 +291,7 @@ function Signup() {
               <Form.Control
                 type="text"
                 id="inputName" required 
-                placeholder="Enter your Name"
+                placeholder="이름을 입력해주세요."
                 name="name" onBlur={() => handleBlur("name")}
                 onChange={handleChange} value={formData.name}
                 isInvalid={!!errorMsg.name}
@@ -290,7 +305,7 @@ function Signup() {
               <Form.Control
                 type="text"
                 id="inputPH" required 
-                placeholder="Enter your Phone Number"
+                placeholder="휴대폰 번호를 -없이 입력해주세요."
                 name="phoneNum" onBlur={() => handleBlur("phoneNum")}
                 onChange={(e) => {
                   const formattedNumber = formatPhoneNumber(e.target.value);
@@ -309,7 +324,7 @@ function Signup() {
               <InputGroup>
                 <Form.Control
                   id="inputEmail" required 
-                  placeholder="Enter your Email"
+                  placeholder="email@example.com"
                   aria-label="Recipient's username"
                   aria-describedby="basic-addon2"
                   name="email" onBlur={() => handleBlur("email")}
@@ -327,21 +342,20 @@ function Signup() {
               <Form.Control
                 type="text"
                 id="inputVC" required 
-                placeholder="Enter verification code"
+                placeholder="메일로 발송된 인증번호를 입력해주세요."
                 name="vc" onBlur={() => handleBlur("vc")}
                 onChange={handleChange} value={formData.vc}
                 isInvalid={!!errorMsg.vc}
+                disabled={!vcSent} // 발송 전에는 비활성화
               />
               <Form.Control.Feedback type="invalid">
                 {errorMsg.vc}
               </Form.Control.Feedback>
-              <Form.Control.Feedback type="valid">
-                {vcSuccess && (
-                  <div className="verification-success-message">
-                    인증에 성공했습니다.
-                  </div>
-                )}
-              </Form.Control.Feedback>
+              {vcSuccess === true && (
+                <div className="success">
+                  인증에 성공했습니다.
+                </div>
+              )}
             </Form.Group>
             <Form.Check // prettier-ignore
               type="checkbox"
@@ -370,7 +384,7 @@ function Signup() {
           </div>
           <div className="help">
             <h4>
-              Have an account? <a href="/login"><span>Login</span></a>
+              이미 계정이 있으신가요? <a href="/login"><span>Login</span></a>
             </h4>
           </div>
         </div>
