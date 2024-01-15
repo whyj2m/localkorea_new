@@ -17,14 +17,23 @@ import { getCompanyBaordList } from '../../../api/BoardApi';
 // component
 import BoardNav from '../BoardNav';
 
+// 토큰
+import { jwtDecode } from "jwt-decode";
+
 
 function Company() {
     const [visibleItems, setVisibleItems] = useState(9); // 처음 페이지에 9개만 보이도록
 
+        // 로그인 상태 확인(로그인시 더보기버튼)
+        const isLoggedIn = !!localStorage.getItem('ACCESS_TOKEN');
+        const accessToken = localStorage.getItem('ACCESS_TOKEN');
+        const decodedToken = typeof accessToken === 'string' ? jwtDecode(accessToken) : null;
+        const customerId = decodedToken?.id;
+
     // 글 작성 페이지로 이동
     const navigate = useNavigate();
     const handleButtonClick = () => {
-        navigate('/board/boardWrite'); 
+        navigate('/board/boardWrite');
     };
 
     // 상세 페이지로 이동
@@ -84,27 +93,27 @@ function Company() {
         경상: "#20b2aa",
     };
 
-//  인피니티 스크롤 
-const handleScroll = () => {
-    const footer = document.querySelector(".footer .info");
+    //  인피니티 스크롤 
+    const handleScroll = () => {
+        const footer = document.querySelector(".footer .info");
 
-    if (footer) {
-      const scrolledToFooter =
-        window.innerHeight + window.scrollY >= footer.offsetTop;
+        if (footer) {
+            const scrolledToFooter =
+                window.innerHeight + window.scrollY >= footer.offsetTop;
 
-      if (scrolledToFooter) {
-        setVisibleItems((prevItems) => prevItems + 6); // 6개 추가
-      }
-    }
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
+            if (scrolledToFooter) {
+                setVisibleItems((prevItems) => prevItems + 6); // 6개 추가
+            }
+        }
     };
-  }, [handleScroll]);
+
+    useEffect(() => {
+        window.addEventListener("scroll", handleScroll);
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [handleScroll]);
 
     return (
         <>
@@ -117,6 +126,11 @@ const handleScroll = () => {
                         <div className="total">
                             총<span>{filteredItems.length}</span>건
                         </div>
+                    </Col>
+                    <Col xs={6} md={2} className="d-flex justify-content-end align-items-center">
+                        {isLoggedIn && (
+                            <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
+                        )}
                     </Col>
                     <Col xs={6} md={2} className="d-flex align-items-center">
                         <Form.Select aria-label="지역을 선택하세요" onChange={handleLocationChange}>
@@ -132,18 +146,15 @@ const handleScroll = () => {
                             <option value="경상">경상</option>
                         </Form.Select>
                     </Col>
-                    <Col xs={6} md={2} className="d-flex justify-content-end align-items-center">
-                        <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
-                    </Col>
                 </Row>
 
                 {/* 여행메이트 카드 */}
-                <Row xs={1} md={2} lg={3}className="g-4">
+                <Row xs={1} md={2} lg={3} className="g-4">
                     {CompanyBoardListData.slice(0, visibleItems).map(item => (
                         <Col key={item.bno}>
                             <Card className='company-card'>
                                 <Row className="g-0 align-items-center">
-                                    <Col xs={12}  md={12}>
+                                    <Col xs={12} md={12}>
 
                                         <div className="body-section1">
                                             <div className="body-location" style={{ background: locationColors[item.location] || "#D2E0FB" }}>

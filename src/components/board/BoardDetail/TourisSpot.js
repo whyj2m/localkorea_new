@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Form, Button, Card, Col, Row, Pagination } from 'react-bootstrap';
 
 // 시간
-import moment from 'moment'; 
+import moment from 'moment';
 
 // API
 import { getTourBaordList } from '../../../api/BoardApi';
@@ -17,6 +17,9 @@ import BoardNav from '../BoardNav';
 import '../../../styles/board/board.scss';
 import '../../../styles/board/tourisSpot.scss';
 
+// 토큰
+import { jwtDecode } from "jwt-decode";
+
 function TourisSpot() {
     const navigate = useNavigate();
     const { bno } = useParams();
@@ -24,6 +27,13 @@ function TourisSpot() {
     const [imageSrcMap, setImageSrcMap] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
     const itemsPerPage = 5; // 한 페이지당 보여질 아이템 수
+
+    // 로그인 상태 확인(로그인시 더보기버튼)
+    const isLoggedIn = !!localStorage.getItem('ACCESS_TOKEN');
+    const accessToken = localStorage.getItem('ACCESS_TOKEN');
+    const decodedToken = typeof accessToken === 'string' ? jwtDecode(accessToken) : null;
+    const customerId = decodedToken?.id;
+
 
     // 글작성 버튼 입력시 boardWrite 페이지로 이동
     const handleButtonClick = () => {
@@ -140,7 +150,7 @@ function TourisSpot() {
                                 ...prevImageSrcMap,
                                 [item.bno]: imageUrl,
                             }));
-                        } 
+                        }
                         else {
                             // console.error(`이미지가 없습니다 : ${item.bno}`);
                             return;
@@ -158,7 +168,7 @@ function TourisSpot() {
         if (currentItems.length > 0) {
             fetchImages();
         }
-        
+
     }, [currentItems, imageSrcMap]);
 
     return (
@@ -178,8 +188,13 @@ function TourisSpot() {
                                 총<span>{filteredItems.length}</span>건
                             </div>
                         </Col>
+                        <Col xs={6} md={2} className="d-flex justify-content-end">
+                            {isLoggedIn && (
+                                <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
+                            )}
+                        </Col>
                         {/* 필터링 */}
-                        <Col xs={9} md={2}>
+                        <Col xs={6} md={2}>
                             <Form.Select aria-label="지역을 선택하세요" onChange={handleLocationChange}>
                                 <option value="all">전체 지역</option>
                                 <option value="서울">서울</option>
@@ -193,9 +208,7 @@ function TourisSpot() {
                                 <option value="경상">경상</option>
                             </Form.Select>
                         </Col>
-                        <Col xs={9} md={2} className="d-flex justify-content-end">
-                            <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
-                        </Col>
+
                     </Row>
                     {/* 필터링된 결과를 출력 */}
                     {currentItems.map((item) => (
@@ -215,8 +228,8 @@ function TourisSpot() {
                                                 />
                                             ) : (
                                                 // <div>등록된 이미지가 없습니다!</div>
-                                                <img src="../../assets/test/noImg.png" alt="No Image" 
-                                                style={{width:230}}
+                                                <img src="../../assets/test/noImg.png" alt="No Image"
+                                                    style={{ width: 230 }}
                                                 />
                                             )}
                                         </div>
