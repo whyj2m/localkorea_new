@@ -151,7 +151,7 @@ export const getMyTourspotList = async () => {
     }
 }
 
-// mypage - boardlist - tourspot
+// mypage - boardlist - travelmate
 export const getMyTravelmateList = async () => {
     try {
         if(ACCESS_TOKEN) {
@@ -172,6 +172,20 @@ export const getMyLikeList = async () => {
             const decodedToken = jwtDecode(ACCESS_TOKEN);
             const userId = decodedToken.id;
             const response = await axiosInstance.get(`hearts/details/${userId}`)
+            return response
+        } 
+    } catch (error) {
+        throw error
+    }
+}
+
+// mypage - replylist
+export const getMyReplyList = async () => {
+    try {
+        if(ACCESS_TOKEN) {
+            const decodedToken = jwtDecode(ACCESS_TOKEN);
+            const userId = decodedToken.id;
+            const response = await axiosInstance.get(`mypage/replylist/${userId}`)
             return response
         } 
     } catch (error) {

@@ -19,7 +19,7 @@ function ChangePw(props) {
       }
 
       setPwMatch(true);
-      alert("기존 비밀번호가 일치합니다.");
+      alert("기존 비밀번호와 일치합니다.");
     } catch (error) {
       console.error("Error checking password match:", error);
       // 에러 처리 로직 추가
