@@ -20,18 +20,22 @@ export const postLogin = async (data)=> {
     try {
         const response = await axiosInstance.post("/login", data)
         const token = response.data.token;
+        // 로그인 성공 시 메인 페이지로 이동
+        window.location.href="/"
         if(token) {
             localStorage.setItem("ACCESS_TOKEN", token)
         }
     } catch (error) {
         // 비밀번호가 틀렸을 때의 에러 메시지 확인
         if (error.response && error.response.data.message === "Incorrect password.") {
-            console.error("비밀번호가 일치하지 않습니다. error : ", error);
-            
-            // 사용자에게 알림 표시 또는 다른 처리 수행
-            alert("비밀번호가 올바르지 않습니다.");
+            // console.error("비밀번호가 일치하지 않습니다. error : ", error);
+            alert("비밀번호가 일치하지 않습니다.");
+            return;
+        } else {
+            // console.error("로그인 에러 : ", error);
+            alert("아이디와 비밀번호를 다시 확인해주세요.")
+            return;
         }
-        // console.error("로그인 에러 : ", error);
     }
 }
 
