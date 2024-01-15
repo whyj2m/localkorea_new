@@ -188,10 +188,11 @@
   }
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1200px) {
   #pageline {
     display: none;
   }
+
   #mobile-toggle {
     margin-right: 15px;
   }

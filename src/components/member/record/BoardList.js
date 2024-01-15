@@ -2,7 +2,7 @@ import { Pagination } from "react-bootstrap";
 import { BsEye } from "react-icons/bs";
 import { FaExclamationCircle } from "react-icons/fa";
 import { useEffect, useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 import { getMyTourspotList, getMyTravelmateList } from "../../../api/MemberApi";
 
 function BoardList() {
@@ -38,7 +38,7 @@ function BoardList() {
     };
 
     fetchTourspotData();
-    fetchTravelmateData(); 
+    fetchTravelmateData();
   }, []);
 
   // 관광지 소개 게시판의 페이지 번호를 계산하는 함수
@@ -53,22 +53,22 @@ function BoardList() {
     let endPage = (currentPageIndex + 1) * maxPagesToShow; // 끝 페이지
 
     if (startPage < 1) {
-        startPage = 1;
+      startPage = 1;
     }
 
     if (endPage > totalPages) {
-        endPage = totalPages;
+      endPage = totalPages;
     }
 
     for (let i = startPage; i <= endPage; i++) {
-        pageNumbers.push(i);
+      pageNumbers.push(i);
     }
 
     return pageNumbers;
   };
 
   // 여행 메이트 게시판의 페이지 번호를 계산하는 함수
-  const calculateTravelmatePageNumbers  = () => {
+  const calculateTravelmatePageNumbers = () => {
     const pageNumbers2 = [];
     const maxPagesToShow = 5; // 표시할 최대 페이지 수
 
@@ -79,15 +79,15 @@ function BoardList() {
     let endPage = (currentPageIndex + 1) * maxPagesToShow; // 끝 페이지
 
     if (startPage < 1) {
-        startPage = 1;
+      startPage = 1;
     }
 
     if (endPage > totalPages) {
-        endPage = totalPages;
+      endPage = totalPages;
     }
 
     for (let i = startPage; i <= endPage; i++) {
-        pageNumbers2.push(i);
+      pageNumbers2.push(i);
     }
 
     return pageNumbers2;
@@ -95,26 +95,25 @@ function BoardList() {
 
   // 페이지 번호를 클릭할 때 호출되는 핸들러
   const handlePageClick = (pageNumber, section) => {
-    if (section === 'tourspot') {
+    if (section === "tourspot") {
       setCurrentPage(pageNumber);
-    } else if (section === 'travelmate') {
+    } else if (section === "travelmate") {
       setCurrentPageTravelmate(pageNumber);
     }
   };
 
   // 이전 페이지로 이동하는 핸들러
   const handlePreviousPage = (section) => {
-    if (section === 'tourspot') {
+    if (section === "tourspot") {
       if (currentPage > 1) {
         setCurrentPage(currentPage - 1);
       }
-    } else if (section === 'travelmate') {
+    } else if (section === "travelmate") {
       if (currentPageTravelmate > 1) {
         setCurrentPageTravelmate(currentPageTravelmate - 1);
       }
     }
   };
-
 
   // 다음 페이지로 이동하는 핸들러
   // const handleNextPage = () => {
@@ -124,11 +123,11 @@ function BoardList() {
   //   }
   // };
   const handleNextPage = (section, totalPages) => {
-    if (section === 'tourspot') {
+    if (section === "tourspot") {
       if (currentPage < totalPages) {
         setCurrentPage(currentPage + 1);
       }
-    } else if (section === 'travelmate') {
+    } else if (section === "travelmate") {
       if (currentPageTravelmate < totalPages) {
         setCurrentPageTravelmate(currentPageTravelmate + 1);
       }
@@ -151,117 +150,132 @@ function BoardList() {
   return (
     <>
       <h3 className="title">나의 활동 - 게시글</h3>
-      
+
       <h4 className="title">관광지 추천</h4>
       {totalItems > 0 ? (
-      <>
-      <table className="boardlist recommendAttraction">
-        <thead>
-          <tr>
-            <th>지역</th>
-            <th>제목</th>
-            <th>조회수</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems.map((tourspot) => (
-            <tr key={tourspot.bno}>
-               <td>
-                <Link to={`/board/tourisSpotView/${tourspot.bno}`}>
-                  {tourspot.location}
-                </Link>
-              </td>
-              <td>
-                <Link to={`/board/tourisSpotView/${tourspot.bno}`}>
-                  {tourspot.title}
-                </Link>
-              </td>
-              <td>
-                <Link to={`/board/tourisSpotView/${tourspot.bno}`}>
-                  <BsEye />
-                  {tourspot.viewCnt}
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination className="pagination justify-content-center">
-        <Pagination.Prev onClick={() => handlePreviousPage('tourspot')} />
-        {pageNumbers.map((number) => (
-          <Pagination.Item
-            key={number}
-            active={number === currentPage}
-            onClick={()=>handlePageClick(number, 'tourspot')}
-          >
-            {number}
-          </Pagination.Item>
-        ))}
-        <Pagination.Next onClick={() => handleNextPage('tourspot', Math.ceil(totalItems / itemsPerPage))} />
-      </Pagination>
-      </>
-      ): (<div className="no_data">
-      <div className="emptyIcon">
-        <FaExclamationCircle />
-      </div>
-      <h3>관광지 추천 활동 내역이 없습니다.</h3>
-      <p>새하마노의 누리꾼에게 당신의 관광지를 추천해주세요!</p>
-      </div>)}
+        <>
+          <table className="boardlist recommendAttraction">
+            <thead>
+              <tr>
+                <th>지역</th>
+                <th>제목</th>
+                <th>조회수</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems.map((tourspot) => (
+                <tr key={tourspot.bno}>
+                  <td>
+                    <Link to={`/board/tourisSpotView/${tourspot.bno}`}>
+                      {tourspot.location}
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/board/tourisSpotView/${tourspot.bno}`}>
+                      {tourspot.title}
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/board/tourisSpotView/${tourspot.bno}`}>
+                      <BsEye />
+                      {tourspot.viewCnt || 0}
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Pagination className="pagination justify-content-center">
+            <Pagination.Prev onClick={() => handlePreviousPage("tourspot")} />
+            {pageNumbers.map((number) => (
+              <Pagination.Item
+                key={number}
+                active={number === currentPage}
+                onClick={() => handlePageClick(number, "tourspot")}
+              >
+                {number}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next
+              onClick={() =>
+                handleNextPage("tourspot", Math.ceil(totalItems / itemsPerPage))
+              }
+            />
+          </Pagination>
+        </>
+      ) : (
+        <div className="no_data">
+          <div className="emptyIcon">
+            <FaExclamationCircle />
+          </div>
+          <h3>관광지 추천 활동 내역이 없습니다.</h3>
+          <p>새하마노의 누리꾼에게 당신의 관광지를 추천해주세요!</p>
+        </div>
+      )}
       <h4 className="title">여행 메이트</h4>
       {totalItems2 > 0 ? (
-      <>
-      <table className="boardlist travel_mate">
-        <thead>
-          <tr>
-            <th>지역</th>
-            <th>제목</th>
-            <th>조회수</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentItems2.map((tourspot) => (
-            <tr key={tourspot.bno}>
-              <td>
-                <Link to={`/board/CompanyView/${tourspot.bno}`}>
-                  {tourspot.location}
-                </Link>
-              </td>
-              <td>
-                <Link to={`/board/CompanyView/${tourspot.bno}`}>
-                  {tourspot.title}
-                </Link>
-              </td>
-              <td>
-                <Link to={`/board/CompanyView/${tourspot.bno}`}>
-                  <BsEye />
-                  {tourspot.viewCnt}
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <Pagination className="pagination justify-content-center">
-        <Pagination.Prev onClick={() => handlePreviousPage('travelmate')} />
-        {pageNumbers2.map((number) => (
-          <Pagination.Item
-            key={number}
-            active={number === currentPageTravelmate}
-            onClick={() => handlePageClick(number, 'travelmate')}
-          >
-            {number}
-          </Pagination.Item>
-        ))}
-        <Pagination.Next onClick={() => handleNextPage('travelmate', Math.ceil(totalItems2 / itemsPerPage))} />
-      </Pagination>
-      </>
-    ) : (<div className="no_data">
-      <div className="emptyIcon">
-        <FaExclamationCircle />
-      </div>
-      <h3>여행 메이트 활동 내역이 없습니다.</h3>
-      <p>함께할 여행 메이트를 찾아보세요!</p>
-      </div>)}
+        <>
+          <table className="boardlist travel_mate">
+            <thead>
+              <tr>
+                <th>지역</th>
+                <th>제목</th>
+                <th>조회수</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentItems2.map((tourspot) => (
+                <tr key={tourspot.bno}>
+                  <td>
+                    <Link to={`/board/CompanyView/${tourspot.bno}`}>
+                      {tourspot.location}
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/board/CompanyView/${tourspot.bno}`}>
+                      {tourspot.title}
+                    </Link>
+                  </td>
+                  <td>
+                    <Link to={`/board/CompanyView/${tourspot.bno}`}>
+                      <BsEye />
+                      {tourspot.viewCnt}
+                    </Link>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <Pagination className="pagination justify-content-center">
+            <Pagination.Prev onClick={() => handlePreviousPage("travelmate")} />
+            {pageNumbers2.map((number) => (
+              <Pagination.Item
+                key={number}
+                active={number === currentPageTravelmate}
+                onClick={() => handlePageClick(number, "travelmate")}
+              >
+                {number}
+              </Pagination.Item>
+            ))}
+            <Pagination.Next
+              onClick={() =>
+                handleNextPage(
+                  "travelmate",
+                  Math.ceil(totalItems2 / itemsPerPage)
+                )
+              }
+            />
+          </Pagination>
+        </>
+      ) : (
+        <div className="no_data">
+          <div className="emptyIcon">
+            <FaExclamationCircle />
+          </div>
+          <h3>여행 메이트 활동 내역이 없습니다.</h3>
+          <p>함께할 여행 메이트를 찾아보세요!</p>
+        </div>
+      )}
     </>
   );
 }
