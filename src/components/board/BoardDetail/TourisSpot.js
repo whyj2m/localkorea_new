@@ -143,7 +143,7 @@ function TourisSpot() {
                 const promises = currentItems.map(async (item) => {
                     if (!imageSrcMap[item.bno]) {
                         const response = await fetch(`http://localhost:8081/api/images/${item.bno}`);
-                        if (response.ok) {
+                        if (response.ok ) {
                             const blob = await response.blob();
                             const imageUrl = URL.createObjectURL(blob);
                             setImageSrcMap((prevImageSrcMap) => ({
@@ -152,9 +152,8 @@ function TourisSpot() {
                             }));
                         }
                         else {
-                            // console.error(`이미지가 없습니다 : ${item.bno}`);
+                            setImageSrc('../../assets/test/noImg.png'); // 대체이미지
                             return;
-
                         }
                     }
                 });
@@ -211,46 +210,46 @@ function TourisSpot() {
 
                     </Row>
                     {/* 필터링된 결과를 출력 */}
-                    {currentItems.map((item) => (
-                        <Link to={`/board/tourisSpotView/${item.bno}`} key={item.bno} className="tour-board-link">
-                            <Card className='TourisSpot-Card'>
-                                <Row>
-                                    <Col xs={9} md={3}>
-                                        {/* <img className='TourisSpot-Img' variant="top" src={item.imageSrc} alt="대표이미지" /> */}
-                                        <div>
-                                            {imageSrcMap[item.bno] ? (
-                                                <img
-                                                    className='TourisSpot-Img'
-                                                    variant="top"
-                                                    src={imageSrcMap[item.bno]}
-                                                    alt={`Image ${item.bno}`}
-                                                    style={{ objectFit: 'cover' }}
-                                                />
-                                            ) : (
-                                                // <div>등록된 이미지가 없습니다!</div>
-                                                <img src="../../assets/test/noImg.png" alt="No Image"
-                                                    style={{ width: 230 }}
-                                                />
-                                            )}
-                                        </div>
+                   {currentItems.map((item) => (
+    <Link to={`/board/tourisSpotView/${item.bno}`} key={item.bno} className="tour-board-link">
+        <Card className='TourisSpot-Card'>
+            <Row>
+                <Col xs={12} md={3}>
+                    <div>
+                        {imageSrcMap[item.bno] ? (
+                            <img
+                                className='TourisSpot-Img'
+                                variant="top"
+                                src={imageSrcMap[item.bno]}
+                                alt={`Image ${item.bno}`}
+                                style={{ objectFit: 'cover', width: '100%' }}
+                            />
+                        ) : (
+                            <img
+                                src="../../assets/test/noImg.png"
+                                alt="No Image"
+                                style={{ width: '100%' }}
+                            />
+                        )}
+                    </div>
+                </Col>
+                <Col xs={12} md={9} className="each">
+                    <Row className="justify-content-between align-items-center">
+                        <Col xs={9} md={10} className="content-location">[{item.location}]</Col>
+                        <Col xs={3} md={2} className="content-viewCnt"><p>조회 {item.viewCnt || 0}</p></Col>
+                    </Row>
+                    <Col className="content-title" xs={6} md={4}>{item.title}</Col>
+                    <Row className="justify-content-end nickAndDate">
+                        <Col xs={8} md={2}  className="content-name"><p>작성자: {item.id?.name}</p></Col>
+                        <Col xs={4} md={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
+                    </Row>
+                </Col>
+            </Row>
+            <div className="underline" />
+        </Card>
+    </Link>
+))}
 
-                                    </Col>
-                                    <Col xs={9} md={9}>
-                                        <Row className="justify-content-between align-items-center">
-                                            <Col xs={10} md={10} className="content-location">[{item.location}]</Col>
-                                            <Col xs={3} md={2}><p>조회 {item.viewCnt || 0}</p></Col>
-                                        </Row>
-                                        <Col className="content-title" xs={7} md={4}>{item.title}</Col>
-                                        <Row className="justify-content-end nickAndDate">
-                                            <Col xs={6} md={2}><p>작성자:{item.id?.name}</p></Col>
-                                            <Col xs={6} md={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
-                                        </Row>
-                                    </Col>
-                                </Row>
-                                <div className="underline" />
-                            </Card>
-                        </Link>
-                    ))}
                 </div>
                 {/* 페이징 */}
                 <Pagination style={{ justifyContent: "center", display: "flex", alignItems: "center" }}>
