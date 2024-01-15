@@ -254,7 +254,13 @@ function Header() {
           >
             <IoPeople />
           </Nav>
-          <FaHeart style={{ fontSize: "26px" }} />
+          {/* <Nav
+            as={Link}
+            to={isLoggedIn ? "/mypage" : "/login"}
+            onClick={() => handleMyPageClick("heart")}
+          >
+            <FaHeart style={{ fontSize: "26px" }} />
+          </Nav> */}
           <Nav as={Link} to="/search/whole">
             <FaSearch style={{ fontSize: "26px" }} />
           </Nav>

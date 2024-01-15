@@ -148,7 +148,6 @@ function Section4Swiper() {
   return (
     <Swiper
       style={{
-        height: "100%",
         width: "100%", // 변경된 부분
         position: "relative",
         backgroundColor: "white",
@@ -187,8 +186,8 @@ function Section4Swiper() {
                       </div>
                       <div className="text-wrap">
                         <span> {item.location} </span>
-                        <strong> {item.id.name} </strong>
                         <h3>{item.title}</h3>
+                        <strong> {item.id.name} </strong>
                         <p style={{ marginTop: "45px" }}>{item.content}</p>
                         <span className="viewcnt">
                           <IoEyeSharp /> <p>{item.viewCnt || 0}</p>
@@ -329,16 +328,16 @@ function Main() {
           </h3>
         </div>
 
-        <div className="place-locations">
-          {locationData.length > 0 && locationData[0].location}
-        </div>
         {/* 여기 구분선 */}
         <hr style={{ marginBottom: "25px", marginTop: "0" }} />
         <div className="section1 section">
           <div className="section1-item1">
             <div className="section1-place">
               <strong>Tourist attraction</strong>
-              <h3> 요즘 뜨는 관광지</h3>
+              <h3 className="place-locations">
+                <p> {locationData.length > 0 && locationData[0].location}</p>{" "}
+                <span>의 다채로운 관광지</span>
+              </h3>
             </div>
             <ul className="section-place-info">
               {locationData.map((place, index) => {
@@ -365,7 +364,9 @@ function Main() {
               })}
             </ul>
             <Link to={`/place/${localNo}`}>
-              <button className="section-place-more">더보기</button>
+              <button className="section-place-more">
+                <span> 더보기 </span>
+              </button>
             </Link>
           </div>
           <div className="section1-item2">
@@ -387,7 +388,11 @@ function Main() {
         <div className="section2 section">
           {/* 로케이션데이터에 지역정보가 있어서 [0]번 베열 이용해서 지역이름 설정 */}
           <strong>Festival</strong>
-          <h3> 축제/행사 정보모음 </h3>
+          <h3 className="place-locations">
+            {" "}
+            <p> {locationData.length > 0 && locationData[0].location}</p>{" "}
+            축제/행사 정보모음{" "}
+          </h3>
 
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
           <div>
@@ -406,7 +411,12 @@ function Main() {
         <hr />
         <div className="section3 section">
           <strong> 지역특산물 </strong>
-          <h3> "방방곡곡! 각 지역별 대표 특산물을 소개합니다." </h3>
+          <h3 className="place-locations">
+            {" "}
+            "방방곡곡!
+            <p> {locationData.length > 0 && locationData[0].location}</p> 의
+            특산물을 소개합니다."{" "}
+          </h3>
           <img src="/assets/etc/line.png" alt="line" id="pageline" />
           <div>
             <Section3Swiper
@@ -417,7 +427,9 @@ function Main() {
             />
           </div>
           <Link to={`/localfoods/${localNo}`}>
-            <button className="section-localfood-more">더보기</button>
+            <button className="section-localfood-more">
+              <span> 더보기 </span>
+            </button>
           </Link>
           <hr style={{ marginTop: "0" }} />
         </div>
