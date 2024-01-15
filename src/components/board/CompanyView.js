@@ -145,7 +145,8 @@ function CompanyView() {
             <div className="row">
               <div className="area-left col-md-6">
                 <div className="info-left">
-                  <h2 className="main-title">{item.title}</h2>
+                  <h2>#{item.bno}</h2>
+                  <h3 className="main-title">{item.title}</h3>
                   <div className="nav">
                     <div>
                       <p className='nav-location'><MdOutlineLocationOn className='nav-location-icon' />{item.location}</p>
@@ -215,6 +216,7 @@ function CompanyView() {
           </div>
         </div>
       ))}
+      <div>목록</div>
     </>
   );
 }
