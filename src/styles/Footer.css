@@ -18,12 +18,12 @@
 
 .inner-service {
   width: 100%;
-  display: flex;
+  display: flex; justify-content: space-between;
 }
 
-.wrap-service {
+/* .wrap-service {
   width: 100%;
-}
+} */
 
 .tit_service {
   display: block;
@@ -33,9 +33,9 @@
 /* 하단 푸터 이름 */
 .tit_service_name {
   display: block;
-  width: 100%;
-  font-size: 22px;
+  font-size: 25px;
   margin-bottom: 25px;
+  margin-right: 20px;
 }
 
 .list_service {
@@ -44,7 +44,7 @@
 
 .list_service_item {
   width: 100%;
-  margin-bottom: 14px;
+  margin-bottom: 5px;
   font-size: 14px;
 }
 
@@ -144,6 +144,7 @@
   .wrap-footer .service {
     padding: 50px;
   }
+  .title {display: flex;}
 }
 
 @media (max-width: 760px) {
@@ -172,4 +173,25 @@
     margin: 0 auto;
     margin-bottom: 20px;
   }
+  .inner-service {display: block;}
+  .links {margin-top: 20px;}
+  .title .contents_link {display: none;}
+}
+
+
+/*  백혜윤 - 푸터 디자인 수정 */
+.links {font-size: 25px; color: #797979;}
+.links a {margin: 15px;}
+
+.contents_link {font-size: 18px; color: #797979; margin-bottom: 20px; display: flex;}
+.contents_link a {align-items: center; padding: 0 5px;}
+
+@media (min-width: 1000px)  {
+  /* 761px 이상 */
+  .title {display: flex;}
+}
+
+@media (min-width: 761px) and (max-width: 1000px) {
+  /* 761px부터 1000px까지의 화면 크기에 대한 스타일 */
+  .title {display: block;}
 }

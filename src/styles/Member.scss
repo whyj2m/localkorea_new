@@ -231,7 +231,7 @@
       .btn {
         background: #292f36;
         border: 1px solid #292f36;
-        font-size: 11px;
+        font-size: 12px;
         border-radius: 20px;
       }
 
@@ -339,7 +339,7 @@
   box-shadow: 5px 5px 15px #d3d3d3;
   .card-body {
     display: flex;
-    .card-img {width: 20%; object-fit: cover;}
+    .card-img {width: 20%; object-fit: cover; height: 90px;}
     .content {
       width: 75%;
       margin-left: 20px;
