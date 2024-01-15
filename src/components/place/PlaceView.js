@@ -84,16 +84,16 @@ function PlaceView() {
       const decodedToken = jwtDecode(accessToken);
       const userId = decodedToken.id;
 
-      let alertMessage = ""; // 알림 메시지 변수 추가
+      // let alertMessage = ""; // 알림 메시지 변수 추가
 
       if (isHearted) {
         // 좋아요 취소 - deleteHeart 함수 호출
         await deleteHeart(userId, placeNo);
-        alertMessage = "좋아요가 취소되었습니다.";
+        // alertMessage = "좋아요가 취소되었습니다.";
       } else {
         // 좋아요 - postHeart 함수 호출
         await postHeart({ id: userId, placeNo });
-        alertMessage = "좋아요가 등록되었습니다.";
+        // alertMessage = "좋아요가 등록되었습니다.";
       }
 
       // 조회수를 다시 가져오지 않고, 하트 수만 업데이트
@@ -108,7 +108,7 @@ function PlaceView() {
       setIsHearted(!isHearted);
 
       // 알림 메시지 출력
-      alert(alertMessage);
+      // alert(alertMessage);
     } catch (error) {
       console.error("하트 클릭 오류:", error);
     }

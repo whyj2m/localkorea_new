@@ -1,5 +1,5 @@
 hr {
-  margin: 5rem 0;
+  margin: 3rem 0;
   color: inherit;
   border: 0;
   border-top: var(--bs-border-width) solid;
@@ -44,6 +44,18 @@ hr {
   /* 제목,지역 가운데 정렬 */
 }
 /* 지역에 따라 이름 변경되는 부분 서울-부산등등  */
+.section1-place > strong {
+  font-size: 20px;
+  font-weight: 800;
+  color: #ea5639;
+  margin-top: 30px;
+  margin-bottom: 30px;
+}
+.section1-place > h3 {
+  font-size: 35px;
+  font-weight: bold;
+  padding-bottom: 20px;
+}
 .section1-headname {
   position: relative;
   margin: 0 auto;
@@ -56,13 +68,6 @@ hr {
 }
 .section1-headname h3 > strong {
   font-weight: bold;
-}
-.section1-place > h3 {
-  font-size: 30px;
-  font-weight: 400;
-  line-height: 1;
-  margin-bottom: 40px;
-  text-align: left;
 }
 
 .section-place-info {
@@ -159,7 +164,7 @@ hr {
 }
 .place-locations {
   text-align: center;
-  font-size: 30px;
+  font-size: 35px;
   font-weight: bold;
   color: #8eaccd;
   margin-bottom: 10px;
@@ -283,7 +288,7 @@ hr {
   text-align: center;
 }
 .section3 strong {
-  font-size: 30px;
+  font-size: 20px;
   font-weight: 800;
   color: #ea5639;
   margin-top: 30px;
@@ -380,6 +385,7 @@ hr {
   width: 50%;
   padding-right: 50px;
   border-right: 1px solid rgba(0, 0, 0, 0.1);
+  position: relative;
 }
 .board-Company .title {
   margin-bottom: 30px;
@@ -387,7 +393,7 @@ hr {
 }
 .board-Company .title p {
   font-weight: 600;
-  font-size: 45px;
+  font-size: 35px;
   color: #333;
 }
 .board-Company .tab-list {
@@ -406,8 +412,8 @@ hr {
 
 .tab-list span.active,
 .tab-list span:hover {
-  color: #00f; /* 선택된 지역 및 hover 시 글자 색상 변경 */
-  border-bottom: 2px solid #00f; /* 선택된 지역 및 hover 시 밑줄 추가 및 색상 변경 */
+  color: #5686e0; /* 선택된 지역 및 hover 시 글자 색상 변경 */
+  border-bottom: 2px solid #5686e0; /* 선택된 지역 및 hover 시 밑줄 추가 및 색상 변경 */
   padding-bottom: 0px; /* 밑줄과 텍스트 간격 조절 */
 }
 .CompanyList {
@@ -450,6 +456,10 @@ hr {
   border-radius: 5px; /* 둥근 테두리 */
   transition: background-color 0.3s; /* 배경색 변경 시 부드러운 효과 */
   padding: 0 15px;
+
+  position: absolute;
+  right: 50px;
+  bottom: 10px;
 }
 
 .btn.more:hover {
@@ -468,7 +478,7 @@ hr {
 }
 .board-Tourisspot .title p {
   font-weight: 600;
-  font-size: 45px;
+  font-size: 35px;
   color: #333;
 }
 /* 여기부턴 관광지 추천 스와이퍼 CSS */
@@ -476,15 +486,13 @@ hr {
   flex-wrap: wrap;
   display: flex;
   position: relative;
-  height: 100%;
 }
 ul.tourisspotList {
   padding-left: 0;
 }
 .tourisspotList li {
-  height: 44%;
-  width: 44%;
   margin-right: 100px;
+  padding: 15px 0;
 }
 .tourisspotList li:first-child {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
@@ -530,7 +538,7 @@ ul.tourisspotList {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 5; /* 표시할 줄 수 */
+  -webkit-line-clamp: 3; /* 표시할 줄 수 */
   -webkit-box-orient: vertical;
 }
 
@@ -548,13 +556,23 @@ ul.tourisspotList {
 .board-Tourisspot .swiper-pagination {
   position: absolute;
   bottom: 0;
-  width: 57%;
+  width: 100%;
   padding: 0;
+  height: 17%;
 }
 /* -------------------------------------------------------------section4 부분 끝 ------------------------------------------------------------------------------ */
 @media (min-width: 770px) and (max-width: 1400px) {
+  .text-wrap > h3 {
+    font-size: 15px;
+    font-weight: bold;
+    padding-bottom: 0px;
+  }
   .section2-slider-item {
     border-radius: 15px;
+  }
+  .btn.more {
+    position: relative;
+    right: 0;
   }
 }
 @media screen and (max-width: 768px) {
@@ -628,6 +646,13 @@ ul.tourisspotList {
   .swiper-slide {
     width: 100%;
   }
+  .btn.more {
+    position: relative;
+    right: 0;
+  }
+  .tourisspotList li a .text-wrap {
+    padding-left: 12px;
+  }
 }
 
 /*  여기부터 버튼이벤트 (사용 : 메인페이지 - 축제정보 (더보기 버튼)  )  : */
@@ -681,16 +706,13 @@ ul.tourisspotList {
   }
 }
 
-/* 여기가 하단에 그 게시판쪽  */
-@media (max-width: 1200px) {
-  .section4 h3 {
-    padding-bottom: 50px;
-  }
-}
-
 @media (max-width: 1000px) {
-  .section4 h3 {
-    display: none;
+  .text-wrap > h3 {
+    font-size: 15px;
+    font-weight: bold;
+    padding-bottom: 0px;
+  }
+  .section4 > h3 {
     padding-bottom: 50px;
   }
   .board-section {
@@ -718,9 +740,9 @@ ul.tourisspotList {
   }
 }
 
-@media (max-width: 730px) {
+@media (max-width: 768px) {
   .tourisspotList li a {
-    width: 90%;
+    width: 100%;
   }
   .text-wrap .viewcnt {
     display: flex;
@@ -731,9 +753,25 @@ ul.tourisspotList {
   }
   .board-Tourisspot .swiper-pagination {
     position: relative;
-    width: 39%;
+    width: 100%;
   }
   .text-wrap p {
     padding-right: 20px;
+  }
+  .section2 > h3 {
+    font-size: 20px;
+  }
+  .section3 > h3 {
+    font-size: 18px;
+    padding-bottom: 25px;
+  }
+  .section4 > h3 {
+    font-size: 20px;
+    padding-bottom: 50px;
+  }
+  .text-wrap h3 {
+    font-size: 15px;
+    font-weight: bold;
+    padding-bottom: 0px;
   }
 }
