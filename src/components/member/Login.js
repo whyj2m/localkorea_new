@@ -1,10 +1,20 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { googleLogin, postLogin } from "../../api/MemberApi";
 import "../../styles/Member.scss";
 import { Form, Button } from "react-bootstrap";
+import FindId from "./modal/FindId";
+import FindPw from "./modal/FindPw";
 
 function Login() {
-  const navigate = useNavigate();
+  const [showFindIdModal, setShowFindIdModal] = useState(false);
+  const [showFindPwModal, setShowFindPwModal] = useState(false);
+
+  const openFindIdModal = () => {
+    setShowFindIdModal(true);
+  };
+  const openFindPwModal = () => {
+    setShowFindPwModal(true);
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -15,7 +25,6 @@ function Login() {
     try {
       await postLogin({id:userId, password:password})
       // 로그인 성공 시 메인 페이지로 이동
-      // navigate("/");
       window.location.href="/"
     } catch (error) {
       if (error.response && error.response.data.message === "Incorrect password.") {
@@ -78,21 +87,23 @@ function Login() {
           </div>
           <div className="help">
             <h4>
-              Don't have an account?{" "}
+              새하마노의 회원이 아닌가요?{" "}
               <a href="/signup">
-                <span>Sign Up</span>
+                <span>회원가입</span>
               </a>
             </h4>
             <h4>
-              Forgot{" "}
-              <span>
-                <a href="#!">ID</a> / <a href="#!">Password</a>
-              </span>
+              <span onClick={openFindIdModal}>ID</span>
+              {" "}/{" "}
+              <span onClick={openFindPwModal}>Password</span>
+              {" "}찾기
             </h4>
           </div>
         </div>
       </div>
       <div className="bgimage d-none d-lg-block"></div>
+      <FindId show={showFindIdModal} onHide={() => setShowFindIdModal(false)} />
+      <FindPw show={showFindPwModal} onHide={() => setShowFindPwModal(false)} />
     </div>
   );
 }
