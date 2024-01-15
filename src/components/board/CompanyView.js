@@ -148,6 +148,7 @@ const handleDeleteReply = async (rno) => {
                     <div className='nav-date'>
                     <MdDateRange/>
                       <p className="nave-date-regDate">{moment(item.regDate).format('YYYY/MM/DD')}</p>
+                      
                     </div>
                     <div>
                       <p className='nav-writer'><IoPersonCircleOutline className="nav-person-icno" />{item.id.name}</p>
@@ -195,11 +196,8 @@ const handleDeleteReply = async (rno) => {
                         <div className="reply-section2"> 
                           <div className="reply-content">{reply.content}</div>
                           <LuDelete className="delete-icon" onClick={() => handleDeleteReply(reply.rno)}/>
-
                         </div>
-                          {/* <div className="time">{reply.regDate}</div> */}
-                          {/* <div className="time">{ moment(reply.regDate).format('MMMM Do YYYY, h:mm:ss a')}</div> */}
-                          <div className="time"> {  moment(reply.regDate).format('L')}</div>
+                          <span  className="time">{moment(reply.regDate).fromNow()}</span>
                       </div>
                     </div>
                   ))}
