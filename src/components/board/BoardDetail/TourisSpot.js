@@ -66,6 +66,7 @@ function TourisSpot() {
             return TourBoardListData.filter(item => item.location === selectedLocation);
         }
     };
+    // 필터링 끝
 
     // 선택된 지역에 따라 필터링된 아이템을 계산
     const filteredItems = filterItemsByLocation();
@@ -228,7 +229,7 @@ function TourisSpot() {
                                         </Row>
                                         <Col className="content-title" xs={7} md={4}>{item.title}</Col>
                                         <Row className="justify-content-end nickAndDate">
-                                            <Col xs={6} md={2}><p>작성자:{item.id?.username}</p></Col>
+                                            <Col xs={6} md={2}><p>작성자:{item.id?.name}</p></Col>
                                             <Col xs={6} md={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
                                         </Row>
                                     </Col>

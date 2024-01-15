@@ -143,10 +143,10 @@ function TourisSpotView() {
     // }, [bno]);
 
     useEffect(() => {
-        // axios로 변경
         const fetchImage = async () => {
             try {
                 const response = await axios.get(`http://localhost:8081/api/images/${bno}`, { responseType: 'blob' });
+                // const response = await getImg;
     
                 if (response.status === 200) {
                     const imageUrl = URL.createObjectURL(response.data); // blob URL 생성
@@ -190,7 +190,7 @@ function TourisSpotView() {
                                     <div className='date'>{moment(item.regDate).format('L')}</div>
                                 </div>
                                 <div className='board-detail-writer'>
-                                    <div className='writer'>{item.id.id}</div>
+                                    <div className='writer'>{item.id.name}</div>
                                 </div>
                                 <div className='board-detail-view'>
                                     <div className='view'>{item.viewCnt}</div>

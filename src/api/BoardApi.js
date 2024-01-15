@@ -118,7 +118,7 @@ export const putBoard = async (bno, updateDate, location) => {
     }
 }
 
-// put 게시글 삭제
+// delete 게시글 삭제
 export const deleteBoard = async (bno) => {
     try {
         const response = await axiosInstance.delete(`/board/delete/${bno}`)
@@ -144,6 +144,16 @@ export const getReply = async (bno) => {
     try {
         // console.log("bno 테스트: ", bno)
         const response = await axiosInstance.get(`/board/companyView/reply/${bno}`)
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// 댓글 삭제
+export const deleteReply = async (rno) => {
+    try {
+        const response = await axiosInstance.delete(`board/companyView/reply/delete/${rno}`)
         return response;
     } catch (error) {
         throw error;
