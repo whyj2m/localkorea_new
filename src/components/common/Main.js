@@ -25,44 +25,39 @@ function Section2Swiper({
   slidesPerView,
 }) {
   return (
-    <Swiper
-      style={{
-        height: "100%",
-        width: "100%",
-        position: "relative",
-        backgroundColor: "white",
-        paddingTop: "50px",
-      }}
-      modules={[Autoplay, Pagination]}
-      spaceBetween={50}
-      slidesPerView={slidesPerView}
-      autoplay={{ delay: 3003330 }}
-      loop={true}
-      pagination={{ type: "bullets", clickable: true }}
-    >
-      {festivalData.slice(0, 5).map((festival, index) => (
-        <SwiperSlide key={index}>
-          <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
-            {/* Link를 사용하여 클릭 시 라우팅 경로 설정 */}
-            <div
-              className="section2-slider-item"
-              onClick={() => handlePlaceUpdate(festival, localNo)}
-            >
-              <img
-                src={`/assets/festival/${localNo}/${index + 1}.jpg`}
-                alt=""
-              />
-              <div className="section2-slider-text">
-                <strong>{festival.name}</strong>
-                <p>{`날짜: ${festival.schedule}`}</p>
-                <p>{`위치: ${festival.location}`}</p>
-                <span>{`정보: ${festival.content}`}</span>
+    <div className="swiper-container">
+      <Swiper
+        className="swiper-wrapper"
+        modules={[Autoplay, Pagination]}
+        spaceBetween={50}
+        slidesPerView={slidesPerView}
+        autoplay={{ delay: 3000 }}
+        loop={true}
+        pagination={{ type: "bullets", clickable: true }}
+      >
+        {festivalData.slice(0, 5).map((festival, index) => (
+          <SwiperSlide key={index}>
+            <Link to={`/festival/${localNo}/${festival.festivalNo}`}>
+              <div
+                className="section2-slider-item"
+                onClick={() => handlePlaceUpdate(festival, localNo)}
+              >
+                <img
+                  src={`/assets/festival/${localNo}/${index + 1}.jpg`}
+                  alt=""
+                />
+                <div className="section2-slider-text">
+                  <strong>{festival.name}</strong>
+                  <p>{`날짜: ${festival.schedule}`}</p>
+                  <p>{`위치: ${festival.location}`}</p>
+                  <span>{`정보: ${festival.content}`}</span>
+                </div>
               </div>
-            </div>
-          </Link>
-        </SwiperSlide>
-      ))}
-    </Swiper>
+            </Link>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
   );
 }
 
@@ -158,13 +153,13 @@ function Section4Swiper() {
     <Swiper
       style={{
         height: "100%",
-        width: "1200px",
+        width: "100%", // 변경된 부분
         position: "relative",
         backgroundColor: "white",
       }}
       modules={[Pagination]}
       pagination={{ clickable: true }}
-      spaceBetween={0}
+      spaceBetween={20} // 필요에 따라 조절
       slidesPerView={1}
     >
       {tourBoardListData
@@ -177,51 +172,44 @@ function Section4Swiper() {
         }, [])
         .map((pair, index) => (
           <SwiperSlide key={index}>
-            {/* 여기에서 이미지 URL을 사용하여 이미지 표시 */}
             <ul className="tourisspotList">
-              {pair.slice(0, 4).map(
-                (
-                  item,
-                  subIndex // Render only the first 4 items
-                ) => (
-                  <li className="swiper-slide" key={subIndex}>
-                    {item?.bno !== undefined ? (
-                      <Link to={`/board/tourisSpotView/${item.bno}`}>
-                        <div className="thumb-wrap">
-                          {item.imageUrl ? (
-                            <img
-                              src={item.imageUrl}
-                              alt={`Tourisspot ${index + subIndex + 1}`}
-                            />
-                          ) : (
-                            <img
-                              src={`${process.env.PUBLIC_URL}/assets/etc/noImg.png`}
-                            />
-                          )}
-                        </div>
-                        <div className="text-wrap">
-                          <span> 서울 </span>
-                          <strong> 작성자 </strong>
-                          <h3>{item.title}</h3>
-                          <p>{item.content}</p>
-                          <span className="viewcnt">
-                            <IoEyeSharp /> <p>{item.viewCnt || 0}</p>
-                          </span>
-                        </div>
-                      </Link>
-                    ) : (
-                      <p>BNO is undefined</p>
-                    )}
-                  </li>
-                )
-              )}
+              {pair.slice(0, 4).map((item, subIndex) => (
+                <li className="swiper-slide" key={subIndex}>
+                  {item?.bno !== undefined ? (
+                    <Link to={`/board/tourisSpotView/${item.bno}`}>
+                      <div className="thumb-wrap">
+                        {item.imageUrl ? (
+                          <img
+                            src={item.imageUrl}
+                            alt={`Tourisspot ${index + subIndex + 1}`}
+                          />
+                        ) : (
+                          <img
+                            src={`${process.env.PUBLIC_URL}/assets/etc/noImg.png`}
+                          />
+                        )}
+                      </div>
+                      <div className="text-wrap">
+                        <span> {item.location} </span>
+                        <strong> {item.id.name} </strong>
+                        <h3>{item.title}</h3>
+                        <p style={{ marginTop: "45px" }}>{item.content}</p>
+                        <span className="viewcnt">
+                          <IoEyeSharp /> <p>{item.viewCnt || 0}</p>
+                        </span>
+                      </div>
+                    </Link>
+                  ) : (
+                    <p>BNO is undefined</p>
+                  )}
+                </li>
+              ))}
             </ul>
           </SwiperSlide>
         ))}
     </Swiper>
   );
 }
-
 function Main() {
   const location = useLocation();
   const [locationData, setLocationData] = useState([]);
@@ -339,13 +327,6 @@ function Main() {
     <div>
       <Video />
       <div className="mainpage container">
-        <img
-          src="/assets/etc/line.png"
-          alt="line"
-          id="pageline"
-          style={{ paddingTop: "50px" }}
-        />
-
         <div className="section1-headname">
           <h3>
             <strong> 새하마노 방방곡곡 </strong>
@@ -360,10 +341,8 @@ function Main() {
         <div className="section1 section">
           <div className="section1-item1">
             <div className="section1-place">
-              <h3>
-                {/* 지역 나타내는 곳 */}
-                요즘뜨는 관광지
-              </h3>
+              <strong>Tourist attraction</strong>
+              <h3> 요즘 뜨는 관광지</h3>
             </div>
             <ul className="section-place-info">
               {locationData.map((place, index) => {
@@ -467,22 +446,24 @@ function Main() {
                   "강원",
                   "전라",
                   "경상",
-                ].map((location, index) => (
+                ].map((locations, index) => (
                   <span
                     key={index}
-                    className={`location ${
-                      selectedCompanyLocationFilter === location ? "active" : ""
+                    className={`locations ${
+                      selectedCompanyLocationFilter === locations
+                        ? "active"
+                        : ""
                     }`}
-                    onClick={() => handleLocationChange(location)}
+                    onClick={() => handleLocationChange(locations)}
                   >
-                    {location}
+                    {locations}
                   </span>
                 ))}
               </div>
 
               <div className="CompanyList">
                 <ul>
-                  {filteredCompanyBoardListData.map((boardItem) => (
+                  {filteredCompanyBoardListData.slice(0, 5).map((boardItem) => (
                     <li key={boardItem.id}>
                       <Link>
                         <p>{boardItem.title}</p>
