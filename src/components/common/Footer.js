@@ -2,6 +2,9 @@ import { Link, useLocation } from "react-router-dom";
 import "../../styles/Footer.css";
 
 import { LuExternalLink } from "react-icons/lu";
+import { FaGithub } from "react-icons/fa";
+import { SiNotion } from "react-icons/si";
+import { IoLogoYoutube } from "react-icons/io";
 
 function Footer() {
   const location = useLocation();
@@ -17,88 +20,60 @@ function Footer() {
     <div className={`footer ${getFooterVisibility()}`}>
       <div className="wrap-footer">
         <hr />
-        <div className="service">
+        <div className="service container">
           <h2 className="screen-out">하단 메뉴</h2>
           <ul className="inner-service">
             <li className="wrap-service">
-              <strong className="tit_service_name">새하마노 방방곡곡</strong>
-              <ul className="list_service">
-                <li className="list_service_item">
-                  <a href="#"> 대표자 : 백혜윤 백승현 윤주민</a>
-                </li>
-                <li className="list_service_item">
-                  <a href="#">
-                    주소 : 서울 구로구 디지털로 306 대륭포스트타워 2차 206호
-                  </a>
-                </li>
-                <li className="list_service_item">
-                  <a href="#">
-                    운영시간 : 09:30 ~ 18:20 (점심시간: 13:20 ~ 14:30)
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li className="wrap-service2" style={{ width: "170px" }}>
-              <strong className="tit_service">
-                <a href="#">고객센터</a>
-              </strong>
-              <ul className="list_service">
-                <li className="list_service_item">
-                  <a href="#">
-                    방방곡곡 고객센터<span></span>
-                    <LuExternalLink />
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li
-              className="wrap-service3"
-              style={{ width: "150px", paddingLeft: "50px" }}
-            >
-              <ul className="list_service">
-                <li className="list_service_item">
-                  <Link as={Link} to="/local/1">
+              <div className="title">
+                <strong className="tit_service_name">새하마노 방방곡곡</strong>
+                <div className="contents_link" style={{ alignItems: "center" }}>
+                  <Link as={Link} to="/local/1" className="">
                     <span> 지역 </span>
-                    <LuExternalLink />
-                  </Link>
-                </li>
-                <li className="list_service_item">
-                  <Link as={Link} to="/place/1">
+                  </Link> |
+                  <Link as={Link} to="/place/1" className="">
                     <span> 관광지 </span>
-                    <LuExternalLink />
-                  </Link>
-                </li>
-                <li className="list_service_item">
-                  <Link as={Link} to="/festival/1">
+                  </Link> |
+                  <Link as={Link} to="/festival/1" className="">
                     <span> 축제 </span>
-                    <LuExternalLink />
-                  </Link>
-                </li>
-                <li className="list_service_item">
-                  <Link as={Link} to="/localFoods/1">
+                  </Link> |
+                  <Link as={Link} to="/localFoods/1" className="">
                     <span> 특산물 </span>
-                    <LuExternalLink />
+                  </Link> |
+                  <Link as={Link} to="/board/company" className="">
+                    <span> 게시판 </span>
                   </Link>
+                </div>
+              </div>
+              <ul className="list_service">
+                <li className="list_service_item">
+                  <a href="https://github.com/whyj2m"> 윤주민 </a>
+                  <a href="https://github.com/seunghyeon-Baek"> 백승현 </a>
+                  <a href="https://github.com/100ke"> 백혜윤 </a>
                 </li>
                 <li className="list_service_item">
-                  <Link as={Link} to="/board/company">
-                    <span> 게시판 </span>
-                    <LuExternalLink />
-                  </Link>
+                  주소 : 서울 구로구 디지털로 306 대륭포스트타워 2차 206호
+                </li>
+                <li className="list_service_item">
+                  운영시간 : 09:30 ~ 18:20 (점심시간: 13:20 ~ 14:30)
                 </li>
               </ul>
             </li>
+            <div className="links">
+              <a href="https://github.com/whyj2m/localkorea_new"><FaGithub /></a>
+              <a href="https://psychedelic-periodical-6e5.notion.site/AWS-6-79ddbb50ddca4f1098207f306ccee341"><SiNotion /></a>
+              <a href="https://youtube.com/@localkorea20s"><IoLogoYoutube /></a>
+            </div>
           </ul>
-        </div>
-        <div className="info">
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
-            <a className="topup-button" href="#">
-              <img src="/assets/etc/ico_arrow_top.png" className="arrow_icon" />
-            </a>
+          <div className="info">
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+              <a className="topup-button" href="#">
+                <img src="/assets/etc/ico_arrow_top.png" className="arrow_icon" />
+              </a>
+            </div>
+            <small className="txt_copyright">
+            Copyright ⓒ localkorea Corp. All rights reserved.
+            </small>
           </div>
-          <small className="txt_copyright">
-            © <a href="/">localkorea Corp.</a> All rights reserved.
-          </small>
         </div>
       </div>
     </div>
