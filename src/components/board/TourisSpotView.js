@@ -39,6 +39,7 @@ function EditAndDeleteBtn() {
             try {
                 const response = await getTourBaordDetail(bno);
                 const data = response.data;
+                console.log(data)
                 setTourBaordDetailData(Array.isArray(data) ? data : [data]); // 배열로 감싸기
                 setLoadingData(false);
             } catch (error) {
@@ -93,7 +94,7 @@ function EditAndDeleteBtn() {
             return null;
         }
     }
-    
+
     return null; // item이나 item.id가 없는 경우 null 반환
 }
 
@@ -142,15 +143,18 @@ function TourisSpotView() {
     //     fetchImage();
     // }, [bno]);
 
+    // 이미지
     useEffect(() => {
         const fetchImage = async () => {
             try {
                 const response = await axios.get(`http://localhost:8081/api/images/${bno}`, { responseType: 'blob' });
-                // const response = await getImg;
-    
+                // const response = await getImg(bno);
+
                 if (response.status === 200) {
                     const imageUrl = URL.createObjectURL(response.data); // blob URL 생성
                     setImageSrc(imageUrl); // 이미지 주소를 state에 저장
+
+
                 } else {
                     setImageSrc('../../assets/test/noImg.png'); // 대체이미지
                 }
@@ -158,10 +162,9 @@ function TourisSpotView() {
                 console.error('Error fetching image:', error);
             }
         };
-    
+
         fetchImage();
     }, [bno]);
-    
 
     return (
         <div>
@@ -200,6 +203,22 @@ function TourisSpotView() {
 
                             {/* 내용 */}
                             <Row>
+                                <div className='attachment ms-auto'>
+                                    {imageSrc ? (
+                                        <img
+                                            className='imgs'
+                                            src={imageSrc}
+                                            alt={`Image ${bno}`}
+                                            width={500}
+                                            height={300}
+                                            style={{ objectFit: 'cover' }}
+                                        />
+                                    ) : (
+                                        // 대체이미지
+                                        <img src="../../assets/test/noImg.png" alt="이미지가 없습니다" />
+                                    )}
+                                </div>
+
                                 <Col xs={8} md={12} className='BoardContent'>
                                     <div className='board-content'>{item.content}</div>
                                 </Col>
@@ -207,29 +226,17 @@ function TourisSpotView() {
                             </Row>
 
                             {/* 사진 */}
-                            <Row>
-                                <Col xs={8} md={2} className='fileName'>
+                            <Row className='file'>
+                                <Col xs={8} md={2} className='file-title'>
                                     <p>첨부파일</p>
                                 </Col>
-                                <Col xs={8} md={10} className='imgFile'>
-                                    <div className='ms-auto'>
-                                        {imageSrc ? (
-                                            <img
-                                                className='imgs'
-                                                src={imageSrc}
-                                                alt={`Image ${bno}`}
-                                                width={280}
-                                                height={200}
-                                                style={{ objectFit: 'cover' }}
-                                            />
-                                        ) : (
-                                            // 대체이미지
-                                            <img src="../../assets/test/noImg.png" alt="No Image" />
-                                        )}
+                                <Col xs={8} md={10} className='file-imgFile'>
+                                    <div className='file-imgFile-uuid'>
+                                        {item.imageInfo[0].uuid}
                                     </div>
                                 </Col>
                             </Row>
-                            
+
                             <div className="line-bold" />
                             {/* 버튼 */}
                             <Row className='justify-content-end'>
@@ -241,7 +248,7 @@ function TourisSpotView() {
                                 </Col>
                             </Row>
                         </Row>
-                   ))}
+                    ))}
                 </div>
             </div>
         </div>

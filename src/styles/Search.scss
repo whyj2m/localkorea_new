@@ -140,9 +140,33 @@
   font-weight: bold;
   margin-left: 3px;
 }
+
+// 카테고리
+
+.nav-item button {
+  background-color: transparent;
+  border: none;
+  color: #333;
+  cursor: pointer;
+  font-size: 18px;
+  padding: 10px 15px;
+  transition: color 0.3s ease;
+  padding: 0 20px;
+  font-weight: bold;
+}
+
+/* 활성 버튼 스타일 */
+button.active {
+  color: $test4; /* 활성 상태일 때의 색상 */
+}
+
+/* 버튼에 호버 효과 추가 */
+button:hover {
+  color: $test1; /* 호버 시의 색상 */
+}
 // 이미지 처리
 .search_result .img img {
-  width: 100%;
+  width: 400px;
   height: 200px;
   object-fit: cover;
 }
@@ -157,4 +181,13 @@
   font-size: 18px;
   font-weight: bold;
   float: right;
+}
+
+@media (max-width: 1400px) {
+  // 이미지 처리
+  .search_result .img img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
 }

@@ -36,17 +36,16 @@
   align-items: center;
 }
 .header-category .active {
-  border-radius: 10px;
-  border: 1px dotted transparent; /* 초기에 투명한 점선으로 설정 */
-  background-color: #d2e0fb;
-  display: inline-block;
+  color: #333; /* 텍스트 색상 변경 */
+  position: relative;
+  border-bottom: 2px solid #8eaccd;
 }
 
-.header-category .active:hover {
-  border-color: #3498db; /* 마우스 오버 시 색상 변경 */
-  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3); /* 그림자 강화 */
+.header-category a:hover {
+  color: #333; /* 텍스트 색상 변경 */
+  position: relative;
+  border-bottom: 2px solid;
 }
-
 .header-main-icon {
   font-size: 30px;
   margin-right: 80px;
@@ -97,11 +96,6 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.dropdown-item:hover {
-  background-color: #d2e0fb;
-  color: black;
-}
-
 /* Hide dropdown arrow */
 .dropdown-toggle::after {
   display: none;
@@ -109,16 +103,10 @@
 
 .header-category a {
   transition: background-color 0.6s ease, color 0.6s ease, font-size 0.6s ease;
-  padding: 15px;
+  padding: 10px;
   display: block;
 }
 
-.header-category a:hover {
-  color: #333; /* 텍스트 색상 변경 */
-  position: relative;
-  border-bottom: 2px solid;
-  transition: 1s;
-}
 /* 로그인상태 css 부분 */
 .header-main-icon span {
   font-size: 20px;
@@ -198,10 +186,11 @@
   }
 }
 
-@media (max-width: 1300px) {
+@media (max-width: 1200px) {
   #pageline {
     display: none;
   }
+
   #mobile-toggle {
     margin-right: 15px;
   }

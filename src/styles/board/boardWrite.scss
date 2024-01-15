@@ -1,56 +1,61 @@
-.instructions{
-    padding: 50px 0 0 100px;
-    width: 700px;
-    height: 200px;
+.boardWrite{
 
-    .instructions-explanation{
+    margin: 50px;
 
-        font-size: 25px;
-        // margin-bottom: 30px;
-        padding-top: 10px;
-        padding-bottom: 22px;
-        font-family: "S-Core Dream";
-        font-weight: bold;
-        letter-spacing: -1.7px;
-        color: #333;
-
-        .instructions-content{
-            padding-bottom: 10px;
-            font-size: 18px;
-            overflow: hidden;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-
-            @media (max-width: 767px) {
-                .instructions-content {
-                  max-width: 60ch; /* 최대 60글자까지 표시 */
-                  white-space: normal; /* 줄 바꿈 허용 */
-                  overflow: visible; /* 내용이 넘칠 때 오버플로우 허용 */
-                  text-overflow: unset; /* 생략 부호 제거 */
-                }
+    .instructions{
+        // padding: 50px 0 0 100px;
+        width: 700px;
+        height: 200px;
+    
+          @media (max-width: 576px) {
+                padding: 30;
+                width:100%;
+                  }
+    
+        .instructions-explanation{
+    
+            font-size: 25px;
+            // margin-bottom: 30px;
+            padding-top: 10px;
+            padding-bottom: 22px;
+            font-family: "S-Core Dream";
+            font-weight: bold;
+            letter-spacing: -1.7px;
+            color: #333;
+    
+            .instructions-content{
+                padding-bottom: 10px;
+                font-size: 18px;
+                // overflow: hidden;
+                // white-space: nowrap;
+                // text-overflow: ellipsis;
+    
+              
             }
         }
     }
-}
-
-.write{
-    padding: 50px 0 0 100px;
-
     
-}
-
-#btn-save{
-    margin-top: 20px;
-}
-
-.underline{
-    margin: 30px 0 30px 0;
-    color: #ede7e7d2;
-    // width: 1096px;
-    width: 100%;
-    
-    @media (max-width: 768px) {
-        height: 1px; /* 화면 크기가 작을 때 더 얇은 밑줄로 변경 */
+    #btn-save{
+        margin-top: 20px;
     }
-
+    
+    // 밑줄
+    .underline{
+        margin: 7px 0 7px 0;
+        color: #ede7e746;
+        // width: 1096px;
+        width: 100%;
+        
+        @media (max-width: 768px) {
+            height: 1px; /* 화면 크기가 작을 때 더 얇은 밑줄로 변경 */
+            margin: 5px;
+        }
+    }
+    
+    #cate{
+    
+        @media (max-width: 768px) {
+            margin-bottom: 20px;
+        }
+    }
 }

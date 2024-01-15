@@ -72,25 +72,18 @@ export const getCompanyDetail = async (bno) => {
 export const getImg = async (bno) => {
     try {
         const response = await axiosInstance.get(`/api/images/${bno}`);
+        console.log(response);
         return [response.data]; // 이미지 데이터를 배열로 감싸서 반환
+        
     } catch (error) {
         if (error.response && error.response.status === 404) {
+           
             // 이미지가 없는 경우, 빈 배열로 처리
             return []; // 빈 배열 반환
         }
         throw error; // 다른 오류는 그대로 throw
     }
 }
-
-// export const getImg = async (bno) => {
-//     try {
-//         const response = await axiosInstance.get(`/api/images/${bno}`);
-//         return response;
-//     } catch (error) {
-//         throw error;
-//     }
-// }
-
 
 // 게시글 작성
 export const postBoardWrite = async (formData) => {
