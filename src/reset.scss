@@ -187,3 +187,10 @@ $test4: #8eaccd;
 .class4 {
   background: $test4;
 }
+
+.active > .page-link,
+.page-link.active {
+  background-color: $test1;
+  border-color: $test1;
+  color: black;
+}

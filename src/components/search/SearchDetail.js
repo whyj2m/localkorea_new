@@ -4,7 +4,7 @@ import "../../styles/Search.scss";
 import { FaAngleRight } from "react-icons/fa6";
 import { BsEye } from "react-icons/bs";
 import Search from "./Search";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { getLocalFestivals } from "../../api/LocalFestivalApi";
 import { getLocalFoods } from "../../api/LocalFoodsApi";
@@ -26,6 +26,26 @@ function SearchDetail() {
   const [searchFesticals, setFilteredFestivals] = useState([]);
   const [searchFoods, setFilteredFoods] = useState([]);
 
+  // 스크롤 핧 Y축 데이터
+  const placesRef = useRef(null);
+  const festivalsRef = useRef(null);
+  const foodsRef = useRef(null);
+
+  // 활성 버튼을 추적하는 상태
+  const [activeButton, setActiveButton] = useState(null);
+
+  // 스크롤 이벤트 함수
+  const scrollToRef = (ref) => {
+    const headerHeight = 170; // 헤더의 높이를 설정하세요
+    const yOffset = ref.current.getBoundingClientRect().top - headerHeight;
+    window.scrollBy({ top: yOffset, left: 0, behavior: "smooth" });
+  };
+
+  // 버튼 클릭을 처리하는 함수
+  const handleButtonClick = (ref, buttonName) => {
+    scrollToRef(ref);
+    setActiveButton(buttonName);
+  };
   // 검색어 업데이트 핸들러
   const handleSearch = (searchTerm) => {
     setSearchTerm(searchTerm);
@@ -134,31 +154,41 @@ function SearchDetail() {
           <Nav
             variant="underline"
             className="justify-content-center"
-            defaultActiveKey="/search/whole"
+            // defaultActiveKey="/search/whole"
           >
             <Nav.Item>
-              <Nav.Link href="/search/whole" className="mx-3">
+              {/* <Nav.Link href="/search/whole" className="mx-3">
                 전체 ({totalLength}건)
-              </Nav.Link>
+              </Nav.Link> */}
             </Nav.Item>
             <Nav.Item>
-              <Link to="/search/local" className="nav-link mx-3">
+              <button
+                className={activeButton === "places" ? "active" : ""}
+                onClick={() => handleButtonClick(placesRef, "places")}
+              >
                 관광지 ({placelength}건)
-              </Link>
+              </button>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link href="/search/festival" className="mx-3">
+              <button
+                className={activeButton === "festivals" ? "active" : ""}
+                onClick={() => handleButtonClick(festivalsRef, "festivals")}
+              >
                 축제 ({festivallength}건)
-              </Nav.Link>
+              </button>
             </Nav.Item>
             <Nav.Item>
-              <Nav.Link href="/search/specialties" className="mx-3">
+              <button
+                className={activeButton === "foods" ? "active" : ""}
+                onClick={() => handleButtonClick(foodsRef, "foods")}
+              >
                 특산물 ({foodlength}건)
-              </Nav.Link>
+              </button>
             </Nav.Item>
           </Nav>
         </div>
-        <div className="sort" style={{ paddingBottom: "30px" }}>
+        {/* 미구현으로 인하여 주석 */}
+        {/* <div className="sort" style={{ paddingBottom: "30px" }}>
           <Nav className="justify-content-end" activeKey="/home">
             <Nav.Item>
               <Nav.Link href="#!">관련도순</Nav.Link>
@@ -170,16 +200,16 @@ function SearchDetail() {
               <Nav.Link href="#!">인기순</Nav.Link>
             </Nav.Item>
           </Nav>
-        </div>
-        <div className="search_local">
+        </div> */}
+        <div className="search_local" ref={placesRef}>
           <div className="sub_title">
             <h3 className="title">
               관광지 (<span>{filteredPlaces.length}</span>건)
             </h3>
-            <Button className="btn" variant="light" href="/search/local">
+            {/* <Button className="btn" variant="light" href="/search/local">
               검색결과 더 보기
               <FaAngleRight className="icon" />
-            </Button>
+            </Button> */}
           </div>
           <hr className="contour" />
           {filteredPlaces.map((place, index) => (
@@ -220,15 +250,15 @@ function SearchDetail() {
         </div>
 
         {/* 축제 섹션 */}
-        <div className="search_fest">
+        <div className="search_fest" ref={festivalsRef}>
           <div className="sub_title">
             <h3 className="title">
               축제 (<span>{filteredFestivals.length}</span>건)
             </h3>
-            <Button className="btn" variant="light" href="/search/festival">
+            {/* <Button className="btn" variant="light" href="/search/festival">
               검색결과 더 보기
               <FaAngleRight className="icon" />
-            </Button>
+            </Button> */}
           </div>
           <hr className="contour" />
           {filteredFestivals.map((festival, index) => (
@@ -264,15 +294,15 @@ function SearchDetail() {
         </div>
 
         {/* 특산물 섹션 */}
-        <div className="search_specialties">
+        <div className="search_specialties" ref={foodsRef}>
           <div className="sub_title">
             <h3 className="title">
               특산물 (<span>{filteredFoods.length}</span>건)
             </h3>
-            <Button className="btn" variant="light" href="/search/specialties">
+            {/* <Button className="btn" variant="light" href="/search/specialties">
               검색결과 더 보기
               <FaAngleRight className="icon" />
-            </Button>
+            </Button> */}
           </div>
           <hr className="contour" />
           <Row className="search_result">
