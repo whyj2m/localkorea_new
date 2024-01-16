@@ -2,7 +2,7 @@ import axios from "axios";
 import "../../styles/Member.scss";
 import { Form, Button, InputGroup } from "react-bootstrap";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 // ID 유효성 검사 함수 (전역 선언)
@@ -231,6 +231,7 @@ function Signup() {
     <div className="signup">
       <div className="loginform">
         <div className="inside">
+        <div className="logo"><Link to={"/"}><img src="../../../assets/etc/logo.png"/></Link></div>
           <h3 className="title">Sign Up</h3>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="grp">

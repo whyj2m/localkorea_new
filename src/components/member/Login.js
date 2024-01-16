@@ -4,6 +4,7 @@ import "../../styles/Member.scss";
 import { Form, Button } from "react-bootstrap";
 import FindId from "./modal/FindId";
 import FindPw from "./modal/FindPw";
+import { Link } from "react-router-dom";
 
 function Login() {
   const [showFindIdModal, setShowFindIdModal] = useState(false);
@@ -38,6 +39,7 @@ function Login() {
     <div className="login">
       <div className="loginform">
         <div className="inside">
+          <div className="logo"><Link to={"/"}><img src="../../../assets/etc/logo.png"/></Link></div>
           <h3 className="title">Login</h3>
           <Form onSubmit={handleSubmit}>
             <Form.Group className="grp">
