@@ -10,7 +10,6 @@ function ChangeInfo(props) {
   })
   
   const [codeFromEmail, setCodeFromEmail] = useState(""); // 이메일로 발송된 코드
-  const [vcSuccess, setVcSuccess] = useState(null); // 인증상태
   const [verificationCode, setVerificationCode] = useState(""); // 입력한 인증번호
   const [vcValid, setVcValid] = useState(true); // 인증번호 유효성
 
@@ -34,7 +33,6 @@ function ChangeInfo(props) {
         return;
       }
       
-      // 이메일 인증 코드를 확인하고 검증합니다.
       if (!verificationCode) {
         alert("인증번호를 입력해주세요.");
         return;
@@ -45,31 +43,21 @@ function ChangeInfo(props) {
       );
 
       if (response.data === "인증 성공") {
-        setVcSuccess(true);
-      } else {
-        alert("인증 실패");
-        return;
-      }
-
-      // vcSuccess가 true일 때에만 회원정보 수정 가능
-      if (vcSuccess) {
         const changeInfoResponse = await chgInfo();
-        // 응답 처리
         alert(changeInfoResponse.data);
+        setVerificationCode("")
         props.onHide();
       } else {
-        alert("인증에 실패하여 회원정보 변경이 불가능합니다.");
+        alert("인증 실패");
       }
     } catch (error) {
       console.error("Error changing member info:", error);
-      // 에러 처리 로직 추가
       alert("회원정보 변경 실패");
     }
   }
 
   const handleCancel = async () => {
     setVerificationCode("");
-    setVcSuccess(null);
     // 다시 유저 데이터를 불러옴
     try {
       const response = await getMember();
@@ -88,12 +76,9 @@ function ChangeInfo(props) {
         }
       );
 
-      // 응답 로그를 출력하고 코드를 상태에 저장합니다.
-      console.log(response);
       setCodeFromEmail(response.data);
       setVcValid(true); // 인증번호를 발송하면 기존 메시지를 초기화
     } catch (error) {
-      // 오류 처리
       console.error("이메일 전송 에러:", error);
       alert("인증번호 전송 실패");
     }
@@ -103,7 +88,6 @@ function ChangeInfo(props) {
   const handleSendVC = async () => {
     try {
       await sendVerificationCode();
-      setVcSuccess(null); // 인증번호 재발송 시 초기화
       alert("인증번호가 발송되었습니다.");
     } catch (error) {
       console.error("인증번호 발송 에러:", error);
@@ -115,7 +99,7 @@ function ChangeInfo(props) {
     const inputVerificationCode = e.target.value;
 
     // 입력된 인증번호와 저장된 코드 비교
-    if (inputVerificationCode === codeFromEmail) {
+    if (inputVerificationCode === codeFromEmail.toString()) {
       setVcValid(true);
     } else {
       setVcValid(false);
@@ -173,6 +157,7 @@ function ChangeInfo(props) {
                   id="chgEmail"
                   placeholder="Enter your Email"
                   value={memberInfo.email}
+                  onChange={(e) => setMemberInfo({ ...memberInfo, email: e.target.value })}
                   aria-label="Recipient's username"
                   aria-describedby="basic-addon2"
                 />
