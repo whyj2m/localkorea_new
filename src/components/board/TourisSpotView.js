@@ -211,7 +211,7 @@ function TourisSpotView() {
                                             src={imageSrc}
                                             alt={`Image ${bno}`}
                                             width={500}
-                                            height={300}
+                                            height={450}
                                             style={{ objectFit: 'cover' }}
                                         />
                                     ) : (

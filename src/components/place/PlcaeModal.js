@@ -37,13 +37,12 @@ function PlaceModal({ shareUrl }) {
         <Modal.Header>
           <Modal.Title>공유하기</Modal.Title>
         </Modal.Header>
-        <hr style={{ marginTop: "10px", marginBottom: "10px" }} />
         <Modal.Body className="modal-body">{shareUrl}</Modal.Body>
         <Modal.Footer>
           <Button
             className="btn_copy"
-            variant="primary"
             onClick={copyToClipboard}
+            style={{ backgroundColor: "#afc7f7", color: "white" }}
           >
             <FaCopy /> 복사하기
           </Button>
