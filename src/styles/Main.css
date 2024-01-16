@@ -532,12 +532,12 @@ ul.tourisspotList {
   align-items: center;
   width: 50%;
   height: 100%;
-  object-fit: cover;
 }
 .tourisspotList li a .thumb-wrap img {
   width: 100%;
   height: 100%;
   transition: transform 0.5s;
+  object-fit: cover;
 }
 
 .tourisspotList li a .text-wrap {
@@ -594,7 +594,7 @@ ul.tourisspotList {
 .section4-background {
   position: absolute;
   width: 1920px;
-  height: 119.5%;
+  height: 120.5%;
   left: -300px;
   top: -60px;
   background-color: rgba(215, 229, 202, 0.3); /* rgba로 색상과 투명도 설정 */
@@ -620,12 +620,13 @@ ul.tourisspotList {
 }
 @media (min-width: 1000px) and (max-width: 1200px) {
   .section4-background {
-    height: 121%;
+    height: 122%;
   }
 }
+
 @media (min-width: 1200px) and (max-width: 1400px) {
   .section4-background {
-    height: 118.5%;
+    height: 119.5%;
   }
 }
 @media (max-width: 1000px) {
@@ -673,7 +674,7 @@ ul.tourisspotList {
     font-size: 25px;
   }
   .section4-background {
-    height: 112%;
+    height: 114.5%;
   }
 }
 
@@ -795,7 +796,10 @@ ul.tourisspotList {
     padding-left: 12px;
   }
   .section4-background {
-    height: 112%;
+    height: 114.5%;
+  }
+  .section1-headname h3 > strong {
+    font-size: 20px;
   }
 }
 
