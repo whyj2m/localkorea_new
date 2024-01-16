@@ -49,9 +49,11 @@ function Company() {
             try {
                 const response = await getCompanyBaordList();
                 const data = response.data
-                console.log("CompanyBoardListData: ", response.data);
+                // console.log("CompanyBoardListData: ", response.data);
                 data.sort((a, b) => new Date(b.regDate) - new Date(a.regDate)); // 최근 등록댓글이 상단으로
+               
                 setCompanyBoardListData(data);
+                filterItemsByLocation(selectedLocation);
             } catch (error) {
                 console.error("Error fetching local data:", error);
             }
@@ -150,7 +152,8 @@ function Company() {
 
                 {/* 여행메이트 카드 */}
                 <Row xs={1} md={2} lg={3} className="g-4">
-                    {CompanyBoardListData.slice(0, visibleItems).map(item => (
+                    {/* {CompanyBoardListData.slice(0, visibleItems).map(item => ( */}
+                    {filteredItems.slice(0, visibleItems).map(item => ( 
                         <Col key={item.bno}>
                             <Card className='company-card'>
                                 <Row className="g-0 align-items-center">

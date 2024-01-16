@@ -1,10 +1,9 @@
 // react
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 // css
-// import { Button } from 'react-bootstrap';
 import '../../styles/board/companyView.scss';
 
 // 토큰
@@ -15,7 +14,6 @@ import { MdOutlineLocationOn, MdDateRange } from "react-icons/md";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { BsSend } from "react-icons/bs";
 import { LuDelete } from "react-icons/lu";
-import { HiOutlineDotsVertical } from "react-icons/hi";
 
 // API
 import { getCompanyDetail, postReply } from "../../api/BoardApi";
@@ -197,11 +195,9 @@ function CompanyView() {
                       <div  >
                         <div className="reply-section1">
                           <div className="nick-name">{reply.name}</div>
-                          {/* <CiHeart /> */}
                         </div>
                         <div className="reply-section2">
                           <div className="reply-content">{reply.content}</div>
-                          {/* <LuDelete className="delete-icon" onClick={() => handleDeleteReply(reply.rno)}/> */}
                           {shouldShowDeleteButton(reply) && (
                             <LuDelete className="delete-icon" onClick={() => handleDeleteReply(reply.rno)} />
                           )}
@@ -213,10 +209,12 @@ function CompanyView() {
                 </div>
               </div>
             </div>
+            <div className="companyList">
+              <Link to="/board/company">다른 여행 메이트 찾기</Link>
+            </div>
           </div>
         </div>
       ))}
-      <div>목록</div>
     </>
   );
 }

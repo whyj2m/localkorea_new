@@ -6,6 +6,11 @@
     .write-btn{
         // margin-bottom: 30px;
         width: 219.99px;
+        &:hover {
+            background-color: $test4; // 호버 시 배경 색상 변경
+            color: #fff; // 호버 시 텍스트 색상 변경
+            border-color: $test4;
+        }
     }
 
     // 총 _건, 조회수, 좋아요 
@@ -121,7 +126,12 @@
                 outline: none;
                 background: $test4;
                 // background: rgba(103, 103, 103, 0.226);
-              
             }
+            &:hover {
+                background-color: $test3; // 호버 시 배경 색상 변경
+                color: #262626; // 호버 시 텍스트 색상 변경
+                border-color: $test2;
+            }
+
         }
     }

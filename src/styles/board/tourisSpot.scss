@@ -4,10 +4,6 @@
 .touriSpot-cotent{
     padding: 0 80px 0 80px;
 
-    // .tour-board-link{
-        
-    // }
-
 // 총 _건, 조회수, 좋아요 
     .place-total {
         padding-bottom: 30px;
@@ -37,16 +33,31 @@
         }
     }
 
+    .write-btn{
+        &:hover {
+            background-color: $test4; // 호버 시 배경 색상 변경
+            color: #fff; // 호버 시 텍스트 색상 변경
+            border-color: $test4;
+        }
+    }
+
     .TourisSpot-Card{
         border: none;
         padding: 0px;
 
-        .TourisSpot-Img{
+        .TourisSpot-Img {
             width: 230px;
             height: 150px;
             border-radius: 10px;
-        }
-
+          
+            @media (max-width: 767px) {
+              width: 100px;
+              height: 170px;
+              margin: 10px 0 10px 0;
+              object-fit: cover;
+            }
+          }
+          
         .content-location{
             font-size: 20px;
             font-weight: bold;
@@ -59,7 +70,18 @@
         .content-title{
             font-size: 15px;
             margin-bottom: 50px;
+
+            // @media (max-width: 767px) {
+            //     // width: 100px;
+            //     // height: 170px;
+            //     width: 100px;
+            //     background: pink;
+            //     margin: 10px 0 10px 0;
+            //     object-fit: cover;
+            //   }
         }
+
+        
         
     }
 }
