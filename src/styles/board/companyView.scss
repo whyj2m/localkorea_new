@@ -1,162 +1,156 @@
 @import '/src/reset.scss';
 
-.companyView{
-
+.companyView {
   margin-top: 180px;
   width: 1000px;
-  height: 430px;
+  height: auto;
   background: #dfdede50;
   border-radius: 30px;
   padding: 15px;
 
-  .info-left{
-    h2{
+  @media (max-width: 1044px) {
+    width: 80%; /* 더 작은 화면에 대한 넓이 조정 */
+  }
+
+  .info-left {
+    h2 {
       padding-left: 9px;
     }
   }
 
-  .main-title{
+  .main-title {
     padding: 0px 0 10px 10px;
     margin: 0px;
     font-weight: bold;
   }
 
-  // nav 시작
-    .nav{
+  .nav {
+    display: flex;
+    flex-direction: column;
+
+    .nav-location {
+      margin: 0 3px 0;
+      font-size: 15px;
+
+      .nav-location-icon {
+        width: 28px;
+        height: 28px;
+        color: #e48f8ef0;
+      }
+    }
+
+    .nav-date {
+      margin: 0 5px;
+      font-size: 15px;
       display: flex;
-      flex-direction: column;
-      
-       // 장소
-      .nav-location{
-        margin: 0 3px 0 ;
-        font-size: 15px;
+      align-items: center;
 
-        .nav-location-icon{
-          width: 28px;
-          height: 28px;
-          color: #e48f8ef0;
-        } 
+      .nav-date-icon {
+        font-size: 25px;
+        margin-right: 5px;
+        color: #e4b78ef0;
       }
 
-      // 날짜
-      .nav-date{
-          margin: 0 5px;
-          font-size: 15px;
-          display: flex;
-          align-items: center;
-
-        .nav-date-icon{
-          // width: 28px;
-          // height: 28px;
-          font-size: 25px;
-          margin-right: 5px;
-          color: #e4b78ef0;
-        }
-
-        .nave-date-regDate {
-          margin: 0; // 상하 여백제거
-        }
-      }
-
-      // 작성자
-      .nav-writer{
-        font-size: 15px;
-        margin: 0 5px 10px 5px;
-
-        .nav-person-icno{
-            width: 25px;
-            height: 25px;
-            margin-right: 5px;
-            color: #bbe589f0;
-        }
-        
-      }
-    }
-    // nav 끝
-
-    .body-section1{
-      margin: 8px;
-      padding: 10px 10px 10px 0;
-      height: 180px;
-      // background: #98b3ce5b;
-      border: 1px dashed #9a999968;
-      height: 100px;
-    }
-
-    // 입력
-    .reply_div{
-      border-top: 1px solid #ddd;
-      padding-top: 10px;
-      margin-top: 20px;
-
-      p{
-        margin-bottom: 3px;
-      }
-
-      .reply_write{
-        display: flex;
-        align-items: center;
-        // margin-bottom: 10px;
-        width: 480px;
-        // height: 80px;
-
-        // 입력창
-        textarea {
-          flex: 1;
-          height: 100px;
-          padding: 10px;
-          font-size: 16px;
-          border: 1px solid #ddd;
-          border-radius: 5px;
-          resize: none;
-          height: 70px;
-        }
-
-        // 입력 버튼
-        #reply_submit_button {
-          margin-left: 10px;
-          height: 100px;
-          padding: 10px 20px;
-          font-size: 16px;
-          border: 1px solid #ccc;
-          border-radius: 5px;
-          background-color: #f9f9f9;
-          cursor: pointer;
-          height: 70px;
-        }
+      .nave-date-regDate {
+        margin: 0;
       }
     }
 
-    // 댓글목록
-    .reply-list{
-      // width: 400px;
-      // height: 80px;
-      // background: pink;
-      margin: 10px;
+    .nav-writer {
+      font-size: 15px;
+      margin: 0 5px 10px 5px;
 
-      .reply-single{
-        margin-bottom: 15px;
-        
-      }
-
-      // .reply-section1 {
-      //   display: flex;
-      //   align-items: center; 
-      
-      //   .nick-name {
-      //     margin-right: 8px; 
-      //   }
-      // }
-
-      .reply-section2{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-
-        .delete-icon{
-          font-size: 20px;
-          color: #6e6e6ef0;
-        }
+      .nav-person-icno {
+        width: 25px;
+        height: 25px;
+        margin-right: 5px;
+        color: #bbe589f0;
       }
     }
+  }
+
+  .body-section1 {
+    margin: 8px;
+    padding: 10px 10px 10px 0;
+    border: 1px dashed #9a999968;
+    min-height: 100px;
+  }
+
+  .reply_div {
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+    margin-top: 20px;
+
+    p {
+      margin-bottom: 3px;
+    }
+
+    .reply_write {
+      display: flex;
+      align-items: center;
+      width: 100%;
+
+      textarea {
+        flex: 1;
+        height: 70px;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        resize: none;
+      }
+
+      #reply_submit_button {
+        margin-left: 10px;
+        height: 70px;
+        padding: 10px 20px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .reply-list {
+    margin: 10px;
+    min-height: 200px;
+
+    .reply-single {
+      margin-bottom: 15px;
+    }
+
+    .reply-section1 {
+      .nick-name {
+        font-weight: bold;
+      }
+    }
+
+    .reply-section2 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .reply-content {
+        font-size: 16px;
+        margin: 2px 0 2px 0;
+      }
+
+      .delete-icon {
+        font-size: 20px;
+        color: #6e6e6ef0;
+      }
+
+      .time {
+        color: #ccc;
+      }
+    }
+  }
 }
+.companyList {
+  text-align: right;
+  color: #a3a2a2;
+}
+
+

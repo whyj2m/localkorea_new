@@ -150,7 +150,6 @@ function Section4Swiper() {
       style={{
         width: "100%", // 변경된 부분
         position: "relative",
-        backgroundColor: "white",
       }}
       modules={[Pagination]}
       pagination={{ clickable: true }}
@@ -195,7 +194,7 @@ function Section4Swiper() {
                       </div>
                     </Link>
                   ) : (
-                    <p>BNO is undefined</p>
+                    <p> 게시글 없음 </p>
                   )}
                 </li>
               ))}
@@ -324,7 +323,7 @@ function Main() {
       <div className="mainpage container">
         <div className="section1-headname">
           <h3>
-            <strong> 새하마노 방방곡곡 </strong>
+            <strong> 새로운 발견과 함께하는 여행 - 새하마노 방방곡곡 </strong>
           </h3>
         </div>
 
@@ -336,7 +335,7 @@ function Main() {
               <strong>Tourist attraction</strong>
               <h3 className="place-locations">
                 <p> {locationData.length > 0 && locationData[0].location}</p>{" "}
-                <span>의 방방곡곡 관광지</span>
+                <span>의 요즘 뜨는 관광</span>
               </h3>
             </div>
             <ul className="section-place-info">
@@ -390,7 +389,7 @@ function Main() {
           <strong>Festival</strong>
           <h3 className="place-locations">
             {" "}
-            <p> {locationData.length > 0 && locationData[0].location}</p>{" "}
+            <p> {locationData.length > 0 && locationData[0].location}</p> 의
             축제/행사 정보모음{" "}
           </h3>
 
@@ -431,10 +430,10 @@ function Main() {
               <span> 더보기 </span>
             </button>
           </Link>
-          <hr style={{ marginTop: "0" }} />
         </div>
 
         <div className="section4 section">
+          <div className="section4-background"></div>
           <strong className="board-title"> Board </strong>
           <h3> 새하마노의 누리꾼 소식을 만나보세요! </h3>
           <img src="/assets/etc/line.png" alt="line" id="pageline" />

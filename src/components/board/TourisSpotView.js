@@ -67,7 +67,7 @@ function EditAndDeleteBtn() {
         return <div>Loading...</div>;
     }
 
-    // 배열의 첫 번째 요소를 가져오도록 수정
+    // 배열의 첫 번째 요소
     const item = TourBaordDetailData[0];
 
     if (item && item.id && item.id.id) {
@@ -77,12 +77,12 @@ function EditAndDeleteBtn() {
             // 토큰이 있고, 작성자의 ID와 토큰의 ID가 일치하는 경우
             return (
                 <React.Fragment key={item.bno}>
-                    <Col xs={1} md={1} className='boardView-btn'>
+                    <Col xs={3} md={3} lg={1} className='boardView-btn'>
                         <Link to={`/board/edit/${item.bno}`}>
-                            <Button variant="link">수정</Button>
+                            <Button variant="link" className='btn'>수정</Button>
                         </Link>
                     </Col>
-                    <Col xs={1} md={1} className='boardView-btn'>
+                    <Col xs={3} md={3} lg={1} className='boardView-btn'>
                         <Button variant="link" disabled={loading} onClick={handleDelete}>
                             삭제
                         </Button>
@@ -95,7 +95,7 @@ function EditAndDeleteBtn() {
         }
     }
 
-    return null; // item이나 item.id가 없는 경우 null 반환
+    return null;
 }
 
 
@@ -148,23 +148,24 @@ function TourisSpotView() {
         const fetchImage = async () => {
             try {
                 const response = await axios.get(`http://localhost:8081/api/images/${bno}`, { responseType: 'blob' });
-                // const response = await getImg(bno);
 
-                if (response.status === 200) {
-                    const imageUrl = URL.createObjectURL(response.data); // blob URL 생성
-                    setImageSrc(imageUrl); // 이미지 주소를 state에 저장
-
-
+                if (response.status === 200 && response.data.size > 0) {
+                    const imageUrl = URL.createObjectURL(response.data);
+                    setImageSrc(imageUrl);
                 } else {
-                    setImageSrc('../../assets/test/noImg.png'); // 대체이미지
+                    // 이미지 불러오기 실패 시 대체이미지로 설정
+                    setImageSrc('../../assets/test/noImg.png'); // 대체이미지 경로
                 }
             } catch (error) {
+                // 이미지 불러오기 실패 시 대체이미지로 설정
+                setImageSrc('../../assets/test/noImg.png'); // 대체이미지 경로
                 console.error('Error fetching image:', error);
             }
         };
 
         fetchImage();
     }, [bno]);
+
 
     return (
         <div>
@@ -227,21 +228,22 @@ function TourisSpotView() {
 
                             {/* 사진 */}
                             <Row className='file'>
-                                <Col xs={8} md={2} className='file-title'>
+                                <Col xs={12} md={2} className='file-title'>
                                     <p>첨부파일</p>
                                 </Col>
-                                <Col xs={8} md={10} className='file-imgFile'>
+                                <Col xs={12} md={10} className='file-imgFile'>
                                     <div className='file-imgFile-uuid'>
-                                        {item.imageInfo[0].uuid}
+                                        {item.imageInfo?.[0]?.uuid || 'UUID를 찾을 수 없습니다'} {/* uuid를 사용할 수 없는 경우 기본값 사용 */}
                                     </div>
                                 </Col>
                             </Row>
+
 
                             <div className="line-bold" />
                             {/* 버튼 */}
                             <Row className='justify-content-end'>
                                 <EditAndDeleteBtn />
-                                <Col xs={1} md={1} className='boardView-btn'>
+                                <Col  xs={3} md={3} lg={1} className='boardView-btn'>
                                     <Link to="/board/tourisSpot">
                                         <Button variant="link">목록</Button>
                                     </Link>
