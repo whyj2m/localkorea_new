@@ -335,7 +335,7 @@ function Main() {
               <strong>Tourist attraction</strong>
               <h3 className="place-locations">
                 <p> {locationData.length > 0 && locationData[0].location}</p>{" "}
-                <span>의 요즘 뜨는 관광</span>
+                <span>의 요즘 뜨는 관광지</span>
               </h3>
             </div>
             <ul className="section-place-info">
