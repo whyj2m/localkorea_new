@@ -7,6 +7,10 @@
     height: 100vh;
     position: relative;
     .inside {
+      .logo {
+        text-align: center;
+        img {width: 100px; margin-bottom: 20px;}
+      }
       h3 {
         margin-bottom: 30px;
       }
@@ -87,6 +91,10 @@
     flex: 6;
     position: relative;
     .inside {
+      .logo {
+        text-align: center;
+        img {width: 100px; margin-bottom: 20px;}
+      }
       h3 {
         margin-bottom: 30px;
       }

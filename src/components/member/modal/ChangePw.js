@@ -118,7 +118,7 @@ function ChangePw(props) {
               )}
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label htmlFor="chkPW">비밀번호 다시 입력</Form.Label>
+              <Form.Label htmlFor="chkPW">비밀번호 재입력</Form.Label>
               <Form.Control
                 type="password"
                 id="chkPW"
