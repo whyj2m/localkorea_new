@@ -1,21 +1,21 @@
-
 // react
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link, useNavigate } from 'react-router-dom';
+
+// css
 import { Form, Button, Card, Col, Row, Pagination } from 'react-bootstrap';
+import '../../styles/board/board.scss';
+import '../../styles/board/tourisSpot.scss';
+
+// API
+import { getTourBaordList } from '../../api/BoardApi';
+
+// component
+import BoardCate from './BoardCate';
 
 // 시간
 import moment from 'moment';
-
-// API
-import { getTourBaordList } from '../../../api/BoardApi';
-// import { getImg } from "../../../api/BoardApi";
-import BoardNav from '../BoardNav';
-
-// css
-import '../../../styles/board/board.scss';
-import '../../../styles/board/tourisSpot.scss';
 
 // 토큰
 import { jwtDecode } from "jwt-decode";
@@ -34,7 +34,6 @@ function TourisSpot() {
     const decodedToken = typeof accessToken === 'string' ? jwtDecode(accessToken) : null;
     const customerId = decodedToken?.id;
 
-
     // 글작성 버튼 입력시 boardWrite 페이지로 이동
     const handleButtonClick = () => {
         navigate('/board/boardWrite');
@@ -49,11 +48,9 @@ function TourisSpot() {
                 const response = await getTourBaordList();
                 const data = response.data
                 setImageSrc('../../assets/test/noImg.png');
-                // console.log("TourBoardListData: ", response.data);
                 setTourBoardListData(data);
             } catch (error) {
                 setImageSrc('../../assets/test/noImg.png');
-                // console.error("Error fetching local data:", error);
             }
         };
 
@@ -143,7 +140,7 @@ function TourisSpot() {
                 const promises = currentItems.map(async (item) => {
                     if (!imageSrcMap[item.bno]) {
                         const response = await fetch(`http://localhost:8081/api/images/${item.bno}`);
-                        if (response.ok ) {
+                        if (response.ok) {
                             const blob = await response.blob();
                             const imageUrl = URL.createObjectURL(blob);
                             setImageSrcMap((prevImageSrcMap) => ({
@@ -160,7 +157,6 @@ function TourisSpot() {
 
                 await Promise.all(promises);
             } catch (error) {
-                console.error('TouriaSpot.js images 오류 :', error);
             }
         };
 
@@ -172,14 +168,12 @@ function TourisSpot() {
 
     return (
         <>
-            <BoardNav />
-
-            {/* 검색창 */}
-            {/* <SearchForm /> */}
+            <BoardCate />
 
             {/* 관광지 카드 */}
             <div className="container">
                 <div className="touriSpot-cotent">
+
                     <Row className='align-items-center'>
                         {/* 총건수 확인 */}
                         <Col md={8} className="place-total d-flex align-items-center">
@@ -207,48 +201,45 @@ function TourisSpot() {
                                 <option value="경상">경상</option>
                             </Form.Select>
                         </Col>
+                    </Row>
 
-                    </Row>
                     {/* 필터링된 결과를 출력 */}
-                   {currentItems.map((item) => (
-    <Link to={`/board/tourisSpotView/${item.bno}`} key={item.bno} className="tour-board-link">
-        <Card className='TourisSpot-Card'>
-            <Row>
-                <Col xs={12} md={3}>
-                    <div>
-                        {imageSrcMap[item.bno] ? (
-                            <img
-                                className='TourisSpot-Img'
-                                variant="top"
-                                src={imageSrcMap[item.bno]}
-                                alt={`Image ${item.bno}`}
-                                style={{ objectFit: 'cover', width: '100%' }}
-                            />
-                        ) : (
-                            <img
-                                src="../../assets/test/noImg.png"
-                                alt="No Image"
-                                style={{ width: '100%' }}
-                            />
-                        )}
-                    </div>
-                </Col>
-                <Col xs={12} md={9} className="each">
-                    <Row className="justify-content-between align-items-center">
-                        <Col xs={9} md={10} className="content-location">[{item.location}]</Col>
-                        <Col xs={3} md={2} className="content-viewCnt"><p>조회 {item.viewCnt || 0}</p></Col>
-                    </Row>
-                    <Col className="content-title" xs={6} md={4}>{item.title}</Col>
-                    <Row className="justify-content-end nickAndDate">
-                        <Col xs={8} md={2}  className="content-name"><p>작성자: {item.id?.name}</p></Col>
-                        <Col xs={4} md={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
-                    </Row>
-                </Col>
-            </Row>
-            <div className="underline" />
-        </Card>
-    </Link>
-))}
+                    {currentItems.map((item) => (
+                        <Link to={`/board/tourisSpotView/${item.bno}`} key={item.bno} className="tour-board-link">
+                            <Card className='TourisSpot-Card'>
+                                <Row>
+                                    <Col md={3} className="TourisSpot-Imgs">
+                                        {imageSrcMap[item.bno] ? (
+                                            <img
+                                                className="TourisSpot-Img"
+                                                variant="top"
+                                                src={imageSrcMap[item.bno]}
+                                                alt={`Image ${item.bno}`}
+                                            />
+                                        ) : (
+                                            <img
+                                                src="../../assets/test/noImg.png"
+                                                alt="이미지가 없습니다."
+                                                style={{ width: '100%' }}
+                                            />
+                                        )}
+                                    </Col>
+                                    <Col xs={12} md={9} className="each">
+                                        <Row className="justify-content-between align-items-center">
+                                            <Col xs={9} md={10} className="content-location">[{item.location}]</Col>
+                                            <Col xs={3} md={2} className="content-viewCnt"><p>조회 {item.viewCnt || 0}</p></Col>
+                                        </Row>
+                                        <Col className="content-title" xs={12}>{item.title}</Col>
+                                        <Row className="nickAndDate justify-content-end">
+                                            <Col xs={8} md={3} xl={2} className="content-name"><p>작성자: {item.id?.name}</p></Col>
+                                            <Col xs={4} md={3} xl={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                                <div className="underline" />
+                            </Card>
+                        </Link>
+                    ))}
 
                 </div>
                 {/* 페이징 */}

@@ -21,13 +21,13 @@
 
     .boardView-title{
         font-size: 18px;
-        margin: 10px 30px;
+        padding: 10px 0 10px 0;
     }
 
     .boardView-detail{
-        margin: 10px 30px;
-        // border-bottom: 1px solid #d1d1d1;
-        color : #878383;
+        padding-top: 5px;
+        padding-bottom: 5px;
+        color : #555;
         display: flex;
 
         .date{
@@ -43,11 +43,16 @@
         padding: 30px 30px;
         font-size: 20px;
         white-space: pre-line; // 줄바꿈
+
+        @media (max-width: 768px) {
+                padding: 0 0 5px 0;
+              }
     }
 
     .file{
-        
-        
+
+        display: flex;
+        align-items: stretch;
 
         .file-title {
             display: flex;
@@ -59,23 +64,37 @@
             color: #444;
             height: 60px;
           
-            p{
+            p {
                 font-weight: bold;
             }
         }
         
         .file-imgFile{
-    
+
+            display: flex;
+            align-items: center;
+            
             .file-imgFile-uuid {
               object-fit: cover;
               border-radius: 10px;
-              margin: 10px;
               justify-content: center;
               align-items: center;
               font-weight: bold; 
               color: #565454;
+
+              @media (max-width: 768px) {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                padding: 10px;
+              }
             }
+            @media (max-width: 768px) {
+                justify-content: center;
+                align-items: center;
+              }
         }
+        
     }
 
     // 구분선
@@ -84,7 +103,7 @@
         width: 100%;
 
         @media (max-width: 768px) {
-            height: 1px;
+            height: 1px;    
         }
     }
 
@@ -99,13 +118,15 @@
         justify-content: center;
         align-items: center;
         margin-top: 30px;
+        padding: 0;
     
-        @media (max-width: 767px) {
+        @media (max-width: 768px) {
             .imgs {
                 width: 300px;
                 height: 200px;
                 object-fit: cover;
             }
+            margin: 10px 0 10px 0 ;
         }
     }
  /* 스타일 수정 */
@@ -115,7 +136,7 @@
     align-items: center;
     margin-top: 10px;
 
-    @media (min-width: 990px) {
+    @media (min-width: 992px) {
         flex-direction: row; 
     }
 
@@ -128,7 +149,9 @@
     }
 }
 
-    
+    @media (max-width: 992px) {
+        padding: 10px;
+    }
     
 }
 

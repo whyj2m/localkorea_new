@@ -7,11 +7,11 @@ import { Button, Form, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/board/boardWrite.scss';
 
-// component
-import BoardNav from './BoardNav';
-
 // API
 import { postBoardWrite } from '../../api/BoardApi';
+
+// component
+import BoardCate from './BoardCate';
 
 // 토큰
 import { jwtDecode } from "jwt-decode";
@@ -147,19 +147,16 @@ function BoardWrite() {
             // API 요청 시에 헤더를 함께 전송할 필요 없음
             const response = await postBoardWrite(formData);
 
-            console.log("성공 : ", response);
             alert('게시글 작성 성공');
             navigate('/board/tourisSpot'); // useNavigate 사용하여 경로 변경
         } catch (error) {
-            console.log("게시글 작성 실패");
             alert('게시글 작성 실패');
         }
     };
 
-
     return (
         <>
-            <BoardNav />
+            <BoardCate />
 
             <div className="container">
                 <div className="boardWrite">
@@ -167,11 +164,11 @@ function BoardWrite() {
                         <img src='../../assets/etc/pointbar.png' alt='pointbar' />
                         <Row>
                             <Col xs={12} md={12} className='instructions-explanation'>작성 안내</Col>
-                                <Col xs={12} md={12}  className='instructions-content '>
-                                    새하마노 방방곡곡은 대한민국의 문화와 자연을 사랑하는 이들에게 맞춤형 여행을 제공하고,
-                                    지역 문화와 자연환경을 소개합니다. 저희는 새로운 장소와 경험을 찾고, 좋은 곳을 알리며,
-                                    관심과 사랑으로 대한민국의 다양한 매력을 세계에 알리고자 합니다. 여러분의 많은 관심과 참여를 부탁드립니다.
-                                </Col>
+                            <Col xs={12} md={12} className='instructions-content '>
+                                새하마노 방방곡곡은 대한민국의 문화와 자연을 사랑하는 이들에게 맞춤형 여행을 제공하고,
+                                지역 문화와 자연환경을 소개합니다. 저희는 새로운 장소와 경험을 찾고, 좋은 곳을 알리며,
+                                관심과 사랑으로 대한민국의 다양한 매력을 세계에 알리고자 합니다. 여러분의 많은 관심과 참여를 부탁드립니다.
+                            </Col>
                         </Row>
                     </div>
                     <div className='write'>
@@ -241,37 +238,35 @@ function BoardWrite() {
                             </Row>
                             <div className='underline' />
                             <Row>
-    <Col md={6} className='d-flex justify-content-end'>
-        <div className="input-group mb-3">
-            <input
-                accept="image/*"
-                multiple
-                type="file"
-                onChange={(e) => handleFileChange(e.target.files)}
-                className="form-control"
-                id="file"
-                disabled={isFileUploadDisabled}
-            />
-            <label className="input-group-text" htmlFor="inputGroupFile02">
-                업로드
-            </label>
-        </div>
-    </Col>
+                                <Col md={6} className='d-flex justify-content-end'>
+                                    <div className="input-group mb-3">
+                                        <input
+                                            accept="image/*"
+                                            multiple
+                                            type="file"
+                                            onChange={(e) => handleFileChange(e.target.files)}
+                                            className="form-control"
+                                            id="file"
+                                            disabled={isFileUploadDisabled}
+                                        />
+                                        <label className="input-group-text" htmlFor="inputGroupFile02">
+                                            업로드
+                                        </label>
+                                    </div>
+                                </Col>
 
-    {/* 업로드된 이미지 미리보기 */}
-    <Col md={12}>
-        <div className="d-flex flex-wrap">
-            {uploadedFiles.map((fileObject, index) => (
-                <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '10px', marginRight: '10px' }}>
-                    <img src={fileObject.src} alt='FileUpload' style={{ width: '200px', height: '200px', objectFit: 'cover', marginBottom: '5px' }} />
-                    <p>{fileObject.name}</p>
-                </div>
-            ))}
-        </div>
-    </Col>
-</Row>
-
-
+                                {/* 업로드된 이미지 미리보기 */}
+                                <Col md={12}>
+                                    <div className="d-flex flex-wrap">
+                                        {uploadedFiles.map((fileObject, index) => (
+                                            <div key={index} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '10px', marginRight: '10px' }}>
+                                                <img src={fileObject.src} alt='FileUpload' style={{ width: '200px', height: '200px', objectFit: 'cover', marginBottom: '5px' }} />
+                                                <p>{fileObject.name}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </Col>
+                            </Row>
                             <div className='underline' />
                             <Form.Group id="content">
                                 <Form.Label>내용</Form.Label>
