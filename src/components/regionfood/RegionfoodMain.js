@@ -17,7 +17,23 @@ import Location2 from "../common/Location2";
 import { useParams } from "react-router-dom";
 import { getLocation } from "../../api/locationApi";
 
-function RegionfoodRandom({ localFoods, localNo, slidesPerView }) {
+// 랜덤으로 셔플하는 함수
+function shuffleArray(array) {
+  const shuffledArray = array.slice(); // 기존 배열을 변경하지 않기 위해 복제
+  for (let i = shuffledArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledArray[i], shuffledArray[j]] = [shuffledArray[j], shuffledArray[i]];
+  }
+  return shuffledArray;
+}
+
+function RegionfoodRandom({ localFoodsAll, slidesPerView }) {
+  // localFoodsAll 배열을 랜덤하게 섞음
+  const shuffledLocalFoods = shuffleArray(localFoodsAll);
+  // 처음 8개의 요소만 추출
+  const slicedLocalFoods = shuffledLocalFoods.slice(0, 8);
+  // 로그로 랜덤하게 섞인 데이터 확인
+  // console.log("랜덤 데이터:", slicedLocalFoods);
   return (
     <Swiper
       style={{
@@ -33,11 +49,11 @@ function RegionfoodRandom({ localFoods, localNo, slidesPerView }) {
       autoplay={{ delay: 3000 }}
       loop={true}
     >
-      {localFoods.map((food, index) => (
+      {slicedLocalFoods.map((food, index) => (
         <SwiperSlide key={index}>
           <div className="regionfood-slider-item">
             <img
-              src={`/assets/regionfood/${localNo}/${index + 1}.jpg`}
+              src={`/assets/regionfood/${food.localNo.localNo}/${food.foodNo}.jpg`}
               alt={food.name}
             />
             <div className="regionfood-slider-text">
@@ -55,17 +71,15 @@ function RegionfoodMain() {
   const { localNo } = useParams();
   const [localFoods, setLocalFoods] = useState([]);
   const [localName, setLocalName] = useState(""); // 현재 지역 이름을 나타내는 상태
-
+  const [localFoodsAll, setLocalFoodsAll] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 6; // 한 페이지당 보여질 아이템 수
 
   // width값에 따라 슬라이더 몇개 보여줄지 정하는 코드
   const [slidesPerView, setSlidesPerView] = useState(calculateSlidesPerView);
-  // 로컬넘버 체크
-  console.log("localNo:", localNo);
 
   const handleCategoryClick = async (localNo) => {
-    console.log(`localfoods에서 ${localNo} 카테고리 클릭`);
+    // console.log(`localfoods에서 ${localNo} 카테고리 클릭`);
     try {
       if (localNo === "all") {
         // const allFoodsResponse = await getLocalFoods();
@@ -73,7 +87,7 @@ function RegionfoodMain() {
         // console.log(" 카테고리 전체 : ", allFoodsResponse);
       } else {
         const localFoodResponse = await getLocalFood(localNo);
-        console.log("카테고리 별별 :", localFoodResponse);
+        // console.log("카테고리 별별 :", localFoodResponse);
         setLocalFoods(localFoodResponse.data);
       }
     } catch (error) {
@@ -87,13 +101,11 @@ function RegionfoodMain() {
         // 선택한 지역에 따라 데이터를 불러와서 업데이트
         const localFoodResponse = await getLocalFood(localNo);
         setLocalFoods(localFoodResponse.data);
-        console.log(`특산물 ${localName} 지역:`, localFoodResponse.data);
+        // console.log(`특산물 ${localName} 지역:`, localFoodResponse.data);
 
-        // localNo가 "all"이 아닌 경우에만 실행
-        if (localNo !== "all") {
-          const localNameResponse = await getLocation(localNo);
-          setLocalName(localNameResponse.data);
-        }
+        const allLocalFoodsResponse = await getLocalFoods(); // 전체 데이터 가져오기
+        setLocalFoodsAll(allLocalFoodsResponse.data); // 전체 데이터로 설정
+        // console.log("특산물전체", allLocalFoodsResponse);
       } catch (error) {
         console.error("데이터를 가져오는 중 오류 발생:", error);
       }
@@ -153,6 +165,7 @@ function RegionfoodMain() {
       return 1;
     }
   }
+
   return (
     <>
       <div
@@ -184,21 +197,6 @@ function RegionfoodMain() {
               setExpandedStates(newExpandedStates);
             }}
           >
-            {/* 여기가 호버 이벤트 일단 주석 */}
-            {/* <div
-            key={food.foodNo}
-            className={`regionfood-item ${expandedStates[i] ? "expanded" : ""}`}
-            onMouseEnter={() => {
-              const newExpandedStates = [...expandedStates];
-              newExpandedStates[i] = true;
-              setExpandedStates(newExpandedStates);
-            }}
-            onMouseLeave={() => {
-              const newExpandedStates = [...expandedStates];
-              newExpandedStates[i] = false;
-              setExpandedStates(newExpandedStates);
-            }}
-          > */}
             <img
               src={`/assets/regionfood/${localNo}/${startIndex + i + 1}.jpg`}
               alt={food.name}
@@ -230,8 +228,7 @@ function RegionfoodMain() {
         <img src="/assets/etc/line.png" alt="line" className="pageline" />
         <div>
           <RegionfoodRandom
-            localFoods={localFoods}
-            localNo={localNo}
+            localFoodsAll={localFoodsAll}
             slidesPerView={slidesPerView}
           />
         </div>

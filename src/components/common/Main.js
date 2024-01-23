@@ -17,6 +17,7 @@ import "../../styles/Main.css";
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { getCompanyBaordList, getTourBaordList } from "../../api/BoardApi.js";
+import SocketChat from "../../SocketChat.js";
 
 function Section2Swiper({
   festivalData,
@@ -117,7 +118,6 @@ function Section4Swiper() {
           })
         );
 
-        console.log("TourBoardListData: ", newData);
         setTourBoardListData(newData.slice(0, 8)); // 데이터 8개만 짤라버림 게시글 8개.
       } catch (error) {
         console.error("Error fetching local data:", error);
@@ -137,7 +137,7 @@ function Section4Swiper() {
         type: response.headers["content-type"],
       });
       const imageUrl = URL.createObjectURL(blob);
-      console.log("Image URL:", imageUrl);
+
       return imageUrl;
     } catch (error) {
       // console.error(`에러 : ${bno}:`, error);
@@ -224,7 +224,6 @@ function Main() {
     setFestivalData(festivals);
     setFoodData(foods);
     setLocalNo(localNo);
-    console.log("Data updated. LocalNo:", localNo);
   };
 
   useEffect(() => {
@@ -252,11 +251,6 @@ function Main() {
           foodResponse.data,
           localNo
         );
-
-        console.log("로딩 지역 : ", response.data);
-        console.log("로딩 축제: ", festivalResponse.data);
-        console.log("로딩 특산물: ", foodResponse.data);
-        console.log("로컬 지역 초기값:", localNo);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -297,7 +291,7 @@ function Main() {
       try {
         const response = await getCompanyBaordList();
         const data = response.data;
-        console.log("CompanyBoardListData: ", response.data);
+
         setCompanyBoardListData(data);
       } catch (error) {
         console.error("Error fetching local data:", error);
@@ -320,6 +314,7 @@ function Main() {
   return (
     <div>
       <Video />
+      <SocketChat />
       <div className="mainpage container">
         <div className="section1-headname">
           <h3>

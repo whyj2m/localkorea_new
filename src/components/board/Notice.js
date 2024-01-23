@@ -1,9 +1,9 @@
-import '../../../styles/board/notice.scss'
+import '../../styles/board/notice.scss'
 
 import React, { useState } from 'react';
 import { Accordion, Card } from 'react-bootstrap';
 
-import BoardNav from '../BoardNav';
+import BoardCate from './BoardCate';
 
 
 function Notice() {
@@ -15,7 +15,7 @@ function Notice() {
 
     return (
         <>
-            <BoardNav />
+            <BoardCate />
 
             <div className="container">
                 <Accordion activeKey={activeKey} onSelect={handleAccordionClick}>

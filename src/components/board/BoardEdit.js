@@ -1,16 +1,19 @@
+// react
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import { Button, Form, Row, Col } from 'react-bootstrap';
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
+// css
+import { Button, Form, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/board/boardEdit.scss';
 
+// API
 import { getTourBaordDetail } from '../../api/BoardApi';
-import BoardUploadFile from './BoardFileUpload/BoardFileUpload';
 
-import BoardNav from './BoardNav';
+// component
+import BoardCate from './BoardCate';
 
 const BoardEdit = () => {
    const { bno } = useParams(); // URL에서 bno 가져오기
@@ -50,7 +53,6 @@ const BoardEdit = () => {
             const data = response.data;
             setTourBaordDetailData(Array.isArray(data) ? data : [data]);
          } catch (error) {
-            console.error("오류 : ", error);
          }
       };
       fetchTourBaordDetailData();
@@ -68,7 +70,6 @@ const BoardEdit = () => {
             locationCno: initialData.locationCno || '1',
             location: initialData.location || '서울'
          });
-         console.log("test :", initialData.title)
       }
    }, [TourBaordDetailData]);
 
@@ -76,7 +77,6 @@ const BoardEdit = () => {
    const handleChange = (e) => {
       const { name, value } = e.target;
       let newLocation = 'updateDate.location';
-      // let newLocation = '';
       
       // 문자열 시작에 공백 여러개면 제거
       const trimmedInput = (name === 'title' || name === 'content') ? value.replace(/^\s+/g, '') : value;
@@ -130,7 +130,6 @@ const BoardEdit = () => {
          setUpdateDate((prevData) => ({
            ...prevData,
            [name]: formattedValue,
-         //   [name]: value,
            location: newLocation,
          }));
        } else {
@@ -139,8 +138,6 @@ const BoardEdit = () => {
            location: newLocation,
          }));
        }
-       
-
    };
 
 
@@ -151,14 +148,13 @@ const BoardEdit = () => {
 
    return (
       <div>
-         <BoardNav />
+         <BoardCate />
 
          <div className="container">
             <div className='instructions'>
                <img src='../../assets/etc/pointbar.png' alt='pointbar' />
                <div className='instructions-explanation'>수정하기</div>
             </div>
-
             {TourBaordDetailData.map(item => (
                <div className='write' key={item.bno}>
                   <Form onSubmit={handleSubmit}  >
@@ -176,8 +172,6 @@ const BoardEdit = () => {
                               onChange={handleChange}
                            />
                         </Col>
-
-
                      </Row>
                      <div className='underline' />
                      <Row>
@@ -234,11 +228,6 @@ const BoardEdit = () => {
                         </Col>
                      </Row>
                      <div className='underline' />
-
-                     {/* <Col md={6} className='d-flex justify-content-end'>
-                        <BoardUploadFile isDisabled={isFileUploadDisabled} />
-                     </Col> */}
-
 
                      <div className='underline' />
                      <Form.Group controlId="content">

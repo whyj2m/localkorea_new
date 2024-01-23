@@ -59,9 +59,9 @@ function SearchDetail() {
       const foodsResponse = await getLocalFoods(term);
       const placesResponse = await getLocalPlaces(term);
 
-      console.log("Festivals Response:", festivalsResponse.data);
-      console.log("Foods Response:", foodsResponse.data);
-      console.log("Places Response:", placesResponse.data);
+      // console.log("Festivals Response:", festivalsResponse.data);
+      // console.log("Foods Response:", foodsResponse.data);
+      // console.log("Places Response:", placesResponse.data);
 
       setFestivals(festivalsResponse.data);
       setFoods(foodsResponse.data);
@@ -116,31 +116,31 @@ function SearchDetail() {
   const filteredPlaces = places.filter((place) =>
     place.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log("검색어 관광지 : ", filteredPlaces);
+  // console.log("검색어 관광지 : ", filteredPlaces);
 
   const filteredFestivals = festivals.filter((festival) =>
     festival.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log("검색어 축제 : ", filteredFestivals);
+  // console.log("검색어 축제 : ", filteredFestivals);
 
   const filteredFoods = foods.filter((food) =>
     food.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
-  console.log("검색어 특산물 : ", filteredFoods);
+  // console.log("검색어 특산물 : ", filteredFoods);
 
   // 검색된 데이터의 총 길이 계산
   const totalLength =
     filteredPlaces.length + filteredFestivals.length + filteredFoods.length;
-  console.log(totalLength);
+  // console.log(totalLength);
 
   const placelength = filteredPlaces.length;
-  console.log(placelength);
+  // console.log(placelength);
 
   const festivallength = filteredFestivals.length;
-  console.log(festivallength);
+  // console.log(festivallength);
 
   const foodlength = filteredFoods.length;
-  console.log(foodlength);
+  // console.log(foodlength);
 
   return (
     <div className="search">
