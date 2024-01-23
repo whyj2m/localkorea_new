@@ -15,7 +15,6 @@ function PlaceModal({ shareUrl }) {
     navigator.clipboard
       .writeText(shareUrl)
       .then(() => {
-        console.log("URL이 클립보드에 복사되었습니다.");
         handleClose(); // 복사 후 모달 닫기
       })
       .catch((err) => {

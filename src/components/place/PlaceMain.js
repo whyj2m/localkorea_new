@@ -27,7 +27,7 @@ function PlaceMain() {
           getLocation(localNo),
         ]);
 
-        console.log("관광지 지역번호 별:", placesResponse);
+        // console.log("관광지 지역번호 별:", placesResponse);
 
         // 여기서 set
         setLocalData(placesResponse.data);

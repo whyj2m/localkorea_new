@@ -94,7 +94,6 @@ function LocalmainSwiper2({ festivals, localNo, slidesPerView }) {
 function LocalMain() {
   // URL에서 localNo 파라미터를 가져옵니다.
   const { localNo } = useParams();
-  console.log("localNo:", localNo);
 
   // 지역 정보, 관광지 정보, 축제 정보를 저장할 상태 변수들을 정의합니다.
   const [localData, setLocalData] = useState(""); // 지역 정보
@@ -112,7 +111,7 @@ function LocalMain() {
         const data = response.data;
 
         // 콘솔에 지역 정보를 출력하고 상태를 업데이트합니다.
-        console.log("localData: ", data);
+        // console.log("localData: ", data);
         setLocalData(data);
       } catch (error) {
         console.error("Error fetching local data:", error);
@@ -127,7 +126,7 @@ function LocalMain() {
         const data = response.data;
 
         // 콘솔에 관광지 정보를 출력하고 상태를 업데이트합니다.
-        console.log("localPlaces: ", data);
+        // console.log("localPlaces: ", data);
         setLocalPlaces(data);
       } catch (error) {
         console.error("Error fetching local places:", error);
@@ -142,7 +141,7 @@ function LocalMain() {
         const data = response.data;
 
         // 콘솔에 축제 정보를 출력하고 상태를 업데이트합니다.
-        console.log("localFestivals: ", data);
+        // console.log("localFestivals: ", data);
         setLocalFestivals(data);
       } catch (error) {
         console.error("Error fetching local festivals:", error);
