@@ -17,15 +17,15 @@ const PlaceMain = lazy(() => import("./components/place/PlaceMain"));
 const PlcaeView = lazy(() => import("./components/place/PlaceView"));
 const FestivalMain = lazy(() => import("./components/festival/FestivalMain"));
 const FestivalView = lazy(() => import("./components/festival/FestivalView"));
-const Company = lazy(() => import("./components/board/BoardDetail/Company"));
 
 // Board
-const Notice = lazy(() => import("./components/board/BoardDetail/Notice"));
 const BoardWrite = lazy(() => import("./components/board/BoardWrite"));
-const TourisSpot = lazy(() => import("./components/board/BoardDetail/TourisSpot"));
-const TourisSpotView = lazy(() => import("./components/board/TourisSpotView"));
 const BoardEdit = lazy(() => import("./components/board/BoardEdit"));
+const TourisSpot = lazy(() => import("./components/board/TourisSpot"));
+const TourisSpotView = lazy(() => import("./components/board/TourisSpotView"));
+const Company = lazy(() => import("./components/board/Company"));
 const CompanyView = lazy(() => import("./components/board/CompanyView.js"));
+const Notice = lazy(() => import("./components/board/Notice"));
 
 // Search
 const SearchDetail = lazy(() => import("./components/search/SearchDetail"));
@@ -37,6 +37,7 @@ const SearchRegionalItem = lazy(() => import("./components/search/SearchRegional
 const Login = lazy(() => import("./components/member/Login"));
 const Signup = lazy(() => import("./components/member/Signup"));
 const Mypage = lazy(() => import("./components/member/Mypage"));
+const Unregister = lazy(() => import("./components/member/Unregister.js"));
 
 function App() {
   return (
@@ -72,6 +73,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/mypage" element={<Mypage />} />
+          <Route path="/unregister" element={<Unregister />} />
           <Route path="/oauth2/authorization/google" />
 
         </Routes>

@@ -3,23 +3,20 @@ import { useEffect, useState } from "react";
 import React from "react";
 
 // css
-import '../../../styles/board/company.scss';
 import { Card, Col, Row, Container, Button, Form } from 'react-bootstrap';
+import '../../styles/board/company.scss';
 import { useNavigate } from 'react-router-dom';
 import { IoEyeSharp } from "react-icons/io5"; // 조회수
+
+// API
+import { getCompanyBaordList } from '../../api/BoardApi';
+import BoardNav from './BoardCate';
 
 // 시간
 import moment from 'moment';
 
-// API
-import { getCompanyBaordList } from '../../../api/BoardApi';
-
-// component
-import BoardNav from '../BoardNav';
-
 // 토큰
 import { jwtDecode } from "jwt-decode";
-
 
 function Company() {
     const [visibleItems, setVisibleItems] = useState(9); // 처음 페이지에 9개만 보이도록
@@ -49,13 +46,11 @@ function Company() {
             try {
                 const response = await getCompanyBaordList();
                 const data = response.data
-                // console.log("CompanyBoardListData: ", response.data);
                 data.sort((a, b) => new Date(b.regDate) - new Date(a.regDate)); // 최근 등록댓글이 상단으로
                
                 setCompanyBoardListData(data);
                 filterItemsByLocation(selectedLocation);
             } catch (error) {
-                console.error("Error fetching local data:", error);
             }
         };
 
@@ -152,7 +147,6 @@ function Company() {
 
                 {/* 여행메이트 카드 */}
                 <Row xs={1} md={2} lg={3} className="g-4">
-                    {/* {CompanyBoardListData.slice(0, visibleItems).map(item => ( */}
                     {filteredItems.slice(0, visibleItems).map(item => ( 
                         <Col key={item.bno}>
                             <Card className='company-card'>

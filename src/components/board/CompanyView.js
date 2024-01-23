@@ -5,20 +5,18 @@ import { Link } from 'react-router-dom';
 
 // css
 import '../../styles/board/companyView.scss';
-
-// 토큰
-import { jwtDecode } from "jwt-decode";
-
-// icon
 import { MdOutlineLocationOn, MdDateRange } from "react-icons/md";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { BsSend } from "react-icons/bs";
 import { LuDelete } from "react-icons/lu";
 
 // API
-import { getCompanyDetail, postReply } from "../../api/BoardApi";
-import { getReply } from "../../api/BoardApi";
-import { deleteReply } from "../../api/BoardApi";
+import { getCompanyDetail, postReply, getReply, deleteReply } from "../../api/BoardApi";
+// import { getReply } from "../../api/BoardApi";
+// import { deleteReply } from "../../api/BoardApi";
+
+// 토큰
+import { jwtDecode } from "jwt-decode";
 
 // 시간
 import moment from 'moment';
@@ -46,13 +44,11 @@ function CompanyView() {
     try {
       const response = await getReply(bno);
       const data = response.data;
-      console.log("댓글: ", data);
 
       data.sort((a, b) => new Date(b.regDate) - new Date(a.regDate)); // 최근 등록댓글이 상단으로
 
       setReplyList(data);
     } catch (error) {
-      console.error("댓글 데이터 가져오기 오류:", error);
     }
   };
 
@@ -66,7 +62,6 @@ function CompanyView() {
         setCompanyBoardListData(Array.isArray(data) ? data : [data]);
         fetchReplyData();
       } catch (error) {
-        console.error("Error fetching local data:", error);
       }
     };
 
@@ -85,14 +80,11 @@ function CompanyView() {
       };
 
       const response = await postReply(commentData);
-      console.log(response);
-      // alert('댓글 작성 완료');
 
       setCommentContent(''); // 댓글 작성후 빈 배열로
 
       fetchReplyData();
     } catch (error) {
-      console.log("댓글 작성 실패");
       alert('댓글 작성 실패');
     }
   };
@@ -105,7 +97,7 @@ function CompanyView() {
   const deleteReplyApi = async (rno) => {
     try {
       const response = await deleteReply(rno);
-      return response;
+      fetchReplyData();
     } catch (error) {
       throw error;
     }
@@ -114,18 +106,13 @@ function CompanyView() {
   // 삭제 버튼 클릭 시 호출되는 함수
   const handleDeleteReply = async (rno) => {
     try {
-      const response = await deleteReplyApi(rno); // 함수 이름 수정
+      const response = await deleteReplyApi(rno);
 
       if (response.status === 200) {
         window.location.reload();
-        console.log('댓글이 성공적으로 삭제되었습니다.');
       } else {
-        // 실패 시 에러 처리
-        console.error('댓글 삭제 실패');
       }
     } catch (error) {
-      // 네트워크 에러 등의 예외 처리
-      console.error('댓글 삭제 중 오류 발생', error);
     }
   }
 
@@ -156,7 +143,6 @@ function CompanyView() {
                     </div>
                     <div>
                       <p className='nav-writer'><IoPersonCircleOutline className="nav-person-icno" />{item.id.name}</p>
-                      {/* <i className="bi bi-chat-dots"></i> */}
                     </div>
                   </div>
                   <div className="body-section1">
