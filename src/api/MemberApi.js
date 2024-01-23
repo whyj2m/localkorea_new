@@ -196,3 +196,5 @@ export const getMyReplyList = async () => {
         throw error
     }
 }
+
+// 회원탈퇴

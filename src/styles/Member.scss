@@ -191,6 +191,9 @@
   }
 }
 
+.modalHr {
+  margin: 15px 0;
+}
 .mypage {
   padding-top: 200px;
   .board, .reply, .like {cursor: pointer;}
@@ -207,14 +210,16 @@
     }
     .tab_inner{
       width: 30%;
+      font-size: 16px;
       .icon {font-size: 40px; margin-bottom: 10px; color: purple;}
       .icon:hover {color: #980098;}
     }
   }
 
+  
   .content {
     hr {
-      margin: 50px 0;
+      margin: 36px 0 50px 0;
     }
     .profile {
       text-align: center;
@@ -262,7 +267,11 @@
         }
       }
     }
-
+    .unregister {
+      text-align: right;
+      a {cursor: pointer; color: #7D7D7D;}
+      // a:hover {font-weight: bold;}
+    }
     .myrecord {
       table {
         border-collapse: collapse;
@@ -333,11 +342,48 @@
 
 @media screen and (max-width: 992px) {
   .mypage {
-    padding-top: 60px;
+    padding-top: 80px;
     .tab {
       justify-content: space-between;
       div {
         text-align: center;
+      }
+    }
+    .content {
+      .profile {
+        .inside {
+          .greeting {
+            font-size: 2.4vw;
+          }
+        }
+        .btn {
+          font-size: 1.6vw;
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 382px) {
+  .mypage {
+    .tab {
+      div {
+        text-align: center;
+      }
+    }
+    .content {
+      .profile {
+        .circle {
+          width: 80px; height: 80px;
+          font-size: 50px;
+        }
+        .inside {
+          .greeting {
+            font-size: 3.5vw;
+          }
+        }
+        .btn {
+          font-size: 2.5vw;
+        }
       }
     }
   }
