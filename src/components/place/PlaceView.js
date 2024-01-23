@@ -38,7 +38,7 @@ function PlaceView() {
 
         // 하트 리스트를 가져옵니다.
         const heartList = await getHeartList();
-        console.log("하트 리스트:", heartList);
+        // console.log("하트 리스트:", heartList);
 
         const currentUrl = window.location.href;
         setShareUrl(currentUrl);
@@ -52,11 +52,10 @@ function PlaceView() {
           try {
             const decodedToken = jwtDecode(accessToken);
             const userId = decodedToken.id; // userId 값 설정
-            console.log("decodedToken.id:", decodedToken.id); // 추가된 로그
 
             // 좋아요 여부 확인 함수 호출
             const isHeartedResult = await checkIfHearted(userId, placeNo); // userId 사용
-            console.log(isHeartedResult);
+            // console.log(isHeartedResult);
             setIsHearted(isHeartedResult); // 상태 업데이트
 
             // 나머지 부분 생략

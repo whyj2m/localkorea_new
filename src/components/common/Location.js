@@ -23,7 +23,7 @@ function Location() {
 
   //  카테고리 이동할 때의 클릭 이벤트
   const handleLocationClick = (location) => {
-    console.log(`선택한 지역은 ${location.name}`);
+    // console.log(`선택한 지역은 ${location.name}`);
   };
 
   return (
