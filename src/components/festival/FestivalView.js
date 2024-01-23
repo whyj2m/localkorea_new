@@ -60,7 +60,7 @@ function FestivalView() {
     const fetchFestivalData = async () => {
       try {
         const festivalResponse = await getLocalFestivalView(festivalNo);
-        console.log("축제 상세 정보:", festivalResponse);
+        // console.log("축제 상세 정보:", festivalResponse);
         setFestivalData(festivalResponse.data);
       } catch (error) {
         console.error("데이터 못가져옴:", error);
@@ -75,7 +75,7 @@ function FestivalView() {
         const data = response.data;
 
         // 콘솔에 축제 정보를 출력하고 상태를 업데이트합니다.
-        console.log("localFestivals: ", data);
+        // console.log("localFestivals: ", data);
         setLocalFestivals(data);
       } catch (error) {
         console.error("Error fetching local festivals:", error);

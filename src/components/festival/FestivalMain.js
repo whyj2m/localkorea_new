@@ -25,7 +25,7 @@ function FestivalMain() {
           getLocalFestival(localNo),
           getLocation(localNo),
         ]);
-        console.log("축제 목록 지역별 : ", festivalResponse);
+        // console.log("축제 목록 지역별 : ", festivalResponse);
         // 여기서 set
         setLocalData(festivalResponse.data);
         setLocalName(locationNameResponse.data);

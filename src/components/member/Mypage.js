@@ -1,5 +1,5 @@
 import "../../styles/Member.scss";
-import { Container, Button, Pagination } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import { IoPerson } from "react-icons/io5";
 import { useEffect, useState } from "react";
 import BoardList from "./record/BoardList";
@@ -11,10 +11,12 @@ import { BsFileRichtext } from "react-icons/bs";
 import { FaRegCommentDots } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { getMember } from "../../api/MemberApi";
+import Withdrawal from "./modal/Withdrawal";
 
 function Mypage() {
   const [showModalCP, setShowModalCP] = useState(false);
   const [showModalCI, setShowModalCI] = useState(false);
+  const [withdrawalModal, setWithdrawalModal] = useState(false);
   const [userInfo, setUserInfo] = useState({
     id: "",
     name: "",
@@ -88,6 +90,7 @@ function Mypage() {
               </div>
             </div>
           </div>
+          <div className="unregister"><a onClick={() => setWithdrawalModal(true)}>탈퇴하기</a></div>
           <hr />
           <div className="myrecord">
             {comp}
@@ -96,6 +99,7 @@ function Mypage() {
       </div>
       <ChangePw show={showModalCP} onHide={() => setShowModalCP(false)} />
       <ChangeInfo show={showModalCI} onHide={() => setShowModalCI(false)} />
+      <Withdrawal show={withdrawalModal} onHide={() => setWithdrawalModal(false)} />
     </Container>
   );
 }

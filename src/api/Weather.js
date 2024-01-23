@@ -28,7 +28,6 @@ export const getWeatherData = async () => {
     // 캐시된 데이터가 있는지 확인
     const cachedData = cache.getData();
     if (cachedData) {
-      console.log("Returning cached data:", cachedData);
       return cachedData;
     }
 
@@ -66,7 +65,7 @@ export const getWeatherData = async () => {
     // 날씨 데이터를 캐시에 저장
     cache.setData(weatherData);
 
-    console.log("Fetching new data:", weatherData);
+    // console.log("Fetching new data:", weatherData);
 
     return weatherData;
   } catch (err) {
