@@ -6,6 +6,7 @@ import { useState } from "react";
 function ChangePw(props) {
   const [pwMatch, setPwMatch] = useState(true);
   const [pwLengthValid, setPwLengthValid] = useState(true);
+  const [showErrorMessage, setShowErrorMessage] = useState(true);
 
   const checkPasswordMatch = async () => {
     try {
@@ -15,10 +16,12 @@ function ChangePw(props) {
 
       if (!isPasswordMatch) {
         setPwMatch(false);
+        setShowErrorMessage(true);
         return;
       }
 
       setPwMatch(true);
+      setShowErrorMessage(false);
       alert("기존 비밀번호와 일치합니다.");
     } catch (error) {
       console.error("Error checking password match:", error);
@@ -43,6 +46,7 @@ function ChangePw(props) {
 
       if (!isPasswordMatch) {
         setPwMatch(false);
+        setShowErrorMessage(true);
         return;
       }
 
@@ -74,6 +78,14 @@ function ChangePw(props) {
     }
   };
 
+  const handleModalClose = () => {
+    // 모달이 닫힐 때 상태값 초기화
+    setPwMatch(true);
+    setPwLengthValid(true);
+    setShowErrorMessage(false);
+    props.onHide();
+  };
+
   return (
     <Modal
       {...props}
@@ -81,6 +93,7 @@ function ChangePw(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered className="changePwModal"
       backdrop="static"
+      onHide={handleModalClose}
     >
       <Modal.Header>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -100,7 +113,7 @@ function ChangePw(props) {
                 />
                 <Button onClick={checkPasswordMatch}>비밀번호 확인</Button>
               </InputGroup>
-              {!pwMatch && (
+              {showErrorMessage && !pwMatch && (
               <div className="error">* 기존 비밀번호와 일치하지 않습니다.</div>
               )}
             </Form.Group>
@@ -129,7 +142,7 @@ function ChangePw(props) {
         </Form>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="secondary" onClick={props.onHide}>취소</Button>
+        <Button variant="secondary" onClick={handleModalClose}>취소</Button>
         <Button className="modify_btn" onClick={handlePasswordChange}>변경</Button>
       </Modal.Footer>
     </Modal>
