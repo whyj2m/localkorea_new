@@ -21,11 +21,11 @@ import { jwtDecode } from "jwt-decode";
 function Company() {
     const [visibleItems, setVisibleItems] = useState(9); // 처음 페이지에 9개만 보이도록
 
-        // 로그인 상태 확인(로그인시 더보기버튼)
-        const isLoggedIn = !!localStorage.getItem('ACCESS_TOKEN');
-        const accessToken = localStorage.getItem('ACCESS_TOKEN');
-        const decodedToken = typeof accessToken === 'string' ? jwtDecode(accessToken) : null;
-        const customerId = decodedToken?.id;
+    // 로그인 상태 확인(로그인시 더보기버튼)
+    const isLoggedIn = !!localStorage.getItem('ACCESS_TOKEN');
+    const accessToken = localStorage.getItem('ACCESS_TOKEN');
+    const decodedToken = typeof accessToken === 'string' ? jwtDecode(accessToken) : null;
+    const customerId = decodedToken?.id;
 
     // 글 작성 페이지로 이동
     const navigate = useNavigate();
@@ -47,7 +47,7 @@ function Company() {
                 const response = await getCompanyBaordList();
                 const data = response.data
                 data.sort((a, b) => new Date(b.regDate) - new Date(a.regDate)); // 최근 등록댓글이 상단으로
-               
+
                 setCompanyBoardListData(data);
                 filterItemsByLocation(selectedLocation);
             } catch (error) {
@@ -147,7 +147,7 @@ function Company() {
 
                 {/* 여행메이트 카드 */}
                 <Row xs={1} md={2} lg={3} className="g-4">
-                    {filteredItems.slice(0, visibleItems).map(item => ( 
+                    {filteredItems.slice(0, visibleItems).map(item => (
                         <Col key={item.bno}>
                             <Card className='company-card'>
                                 <Row className="g-0 align-items-center">
@@ -158,7 +158,7 @@ function Company() {
                                                 <p className="body-location-name">{item.location}</p>
                                             </div>
                                             <div className="body-viewCnt">
-                                                <IoEyeSharp className="eye-icon" />
+                                                <IoEyeSharp className="view-icon" />
                                                 <span className="view-count">{item.viewCnt}</span>
                                             </div>
                                         </div>

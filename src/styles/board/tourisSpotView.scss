@@ -10,7 +10,8 @@
 }
 
 .boardView-all {
-  padding: 50px;
+  // padding: 50px;
+  padding-top: 50px;
   font-size: 15px;
 
   .boardView-bno {
@@ -19,7 +20,7 @@
   }
 
   .boardView-title {
-    font-size: 18px;
+    font-size: 17px;
     padding: 10px 0 10px 0;
   }
 
@@ -40,18 +41,20 @@
 
   .board-content {
     padding: 30px 30px;
-    font-size: 20px;
+    font-size: 15px;
     white-space: pre-line; // 줄바꿈
 
     @media (max-width: 768px) {
-      padding: 0 0 5px 0;
+      padding: 0 0 30px 0;
     }
   }
 
   .file {
     display: flex;
     align-items: stretch;
-
+    margin: 0;
+    padding: 0;
+    
     .file-title {
       display: flex;
       justify-content: center;
@@ -64,6 +67,12 @@
 
       p {
         font-weight: bold;
+        font-size: 13px;
+
+      }
+
+      @media (max-width: 768px) {
+        height: 40px;
       }
     }
 
@@ -78,6 +87,8 @@
         align-items: center;
         font-weight: bold;
         color: #565454;
+        font-size: 13px;
+
 
         @media (max-width: 768px) {
           display: flex;
@@ -86,6 +97,7 @@
           padding: 10px;
         }
       }
+
       @media (max-width: 768px) {
         justify-content: center;
         align-items: center;
@@ -114,7 +126,7 @@
     justify-content: center;
     align-items: center;
     margin-top: 30px;
-    padding: 0;
+    // padding: 0;
 
     @media (max-width: 768px) {
       .imgs {
