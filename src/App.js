@@ -9,10 +9,13 @@ import Header from "./components/common/Header";
 import Footer from "./components/common/Footer.js";
 import Main from "./components/common/Main";
 import ScrollToTop from "./components/common/ScrolltoTop.js";
+import ChatWidget from "./components/chat/ChatWidget.js";
 
-// Main 
+// Main
 const LocalMain = lazy(() => import("./components/local/LocalMain"));
-const RegionfoodMain = lazy(() => import("./components/regionfood/RegionfoodMain"));
+const RegionfoodMain = lazy(() =>
+  import("./components/regionfood/RegionfoodMain")
+);
 const PlaceMain = lazy(() => import("./components/place/PlaceMain"));
 const PlcaeView = lazy(() => import("./components/place/PlaceView"));
 const FestivalMain = lazy(() => import("./components/festival/FestivalMain"));
@@ -31,7 +34,9 @@ const Notice = lazy(() => import("./components/board/Notice"));
 const SearchDetail = lazy(() => import("./components/search/SearchDetail"));
 const SearchLocal = lazy(() => import("./components/search/SearchLocal"));
 const SearchFestival = lazy(() => import("./components/search/SearchFestival"));
-const SearchRegionalItem = lazy(() => import("./components/search/SearchRegionalItem"));
+const SearchRegionalItem = lazy(() =>
+  import("./components/search/SearchRegionalItem")
+);
 
 // Member
 const Login = lazy(() => import("./components/member/Login"));
@@ -52,11 +57,17 @@ function App() {
           <Route path="/place/:localNo" element={<PlaceMain />} />
           <Route path="/place/:localNo/:placeNo" element={<PlcaeView />} />
           <Route path="/festival/:localNo" element={<FestivalMain />} />
-          <Route path="/festival/:localNo/:festivalNo" element={<FestivalView />}/>
+          <Route
+            path="/festival/:localNo/:festivalNo"
+            element={<FestivalView />}
+          />
 
           {/* Board */}
           <Route path="/board/tourisSpot" element={<TourisSpot />} />
-          <Route path="/board/tourisSpotView/:bno"element={<TourisSpotView />} />
+          <Route
+            path="/board/tourisSpotView/:bno"
+            element={<TourisSpotView />}
+          />
           <Route path="/board/company" element={<Company />} />
           <Route path="/board/companyView/:bno" element={<CompanyView />} />
           <Route path="/board/notice" element={<Notice />} />
@@ -75,9 +86,10 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/unregister" element={<Unregister />} />
           <Route path="/oauth2/authorization/google" />
-
         </Routes>
       </Suspense>
+      {/* 채팅위젯 */}
+      <ChatWidget />
       {/* 스크롤 탑 이동 */}
       <ScrollToTop />
       <Footer />
