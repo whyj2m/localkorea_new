@@ -17,7 +17,7 @@ import "../../styles/Main.css";
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { getCompanyBaordList, getTourBaordList } from "../../api/BoardApi.js";
-import SocketChat from "../../SocketChat.js";
+import SocketChat from "../chat/SocketChat.js";
 
 function Section2Swiper({
   festivalData,
@@ -314,7 +314,6 @@ function Main() {
   return (
     <div>
       <Video />
-      <SocketChat />
       <div className="mainpage container">
         <div className="section1-headname">
           <h3>

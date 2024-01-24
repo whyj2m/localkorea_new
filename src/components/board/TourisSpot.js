@@ -173,21 +173,18 @@ function TourisSpot() {
             {/* 관광지 카드 */}
             <div className="container">
                 <div className="touriSpot-cotent">
-
-                    <Row className='align-items-center'>
-                        {/* 총건수 확인 */}
-                        <Col md={8} className="place-total d-flex align-items-center">
+                    {/* <Row className='company-nav'>
+                        <Col xs={12} md={6} xl={8} className="company-nav-placeTotal">
                             <div className="total">
                                 총<span>{filteredItems.length}</span>건
                             </div>
                         </Col>
-                        <Col xs={6} md={2} className="d-flex justify-content-end">
+                        <Col xs={6} md={3} xl={2} className="company-nav-writeBtn">
                             {isLoggedIn && (
                                 <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
                             )}
                         </Col>
-                        {/* 필터링 */}
-                        <Col xs={6} md={2}>
+                        <Col xs={6} md={3} xl={2} className="company-nav-locationBtn">
                             <Form.Select aria-label="지역을 선택하세요" onChange={handleLocationChange}>
                                 <option value="all">전체 지역</option>
                                 <option value="서울">서울</option>
@@ -201,14 +198,41 @@ function TourisSpot() {
                                 <option value="경상">경상</option>
                             </Form.Select>
                         </Col>
-                    </Row>
+                    </Row> */}
+                     <Row className='align-items-center company-nav'>
+                    {/* 총건수 확인 */}
+                    <Col xs={12} md={6} xl={8} className="company-nav-placeTotal">
+                            <div className="total">
+                                총<span>{filteredItems.length}</span>건
+                            </div>
+                        </Col>
+                    <Col xs={6} md={2} className="d-flex justify-content-end align-items-center">
+                        {isLoggedIn && (
+                            <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
+                        )}
+                    </Col>
+                    <Col xs={6} md={2} className="d-flex align-items-center">
+                        <Form.Select aria-label="지역을 선택하세요" onChange={handleLocationChange}>
+                            <option value="all">전체 지역</option>
+                            <option value="서울">서울</option>
+                            <option value="인천">인천</option>
+                            <option value="대전">대전</option>
+                            <option value="부산">부산</option>
+                            <option value="경기">경기</option>
+                            <option value="충청">충청</option>
+                            <option value="강원">강원</option>
+                            <option value="전라">전라</option>
+                            <option value="경상">경상</option>
+                        </Form.Select>
+                    </Col>
+                </Row>
 
                     {/* 필터링된 결과를 출력 */}
                     {currentItems.map((item) => (
                         <Link to={`/board/tourisSpotView/${item.bno}`} key={item.bno} className="tour-board-link">
                             <Card className='TourisSpot-Card'>
                                 <Row>
-                                    <Col md={3} className="TourisSpot-Imgs">
+                                    <Col md={3} xl={3} className="TourisSpot-Imgs">
                                         {imageSrcMap[item.bno] ? (
                                             <img
                                                 className="TourisSpot-Img"
@@ -224,14 +248,14 @@ function TourisSpot() {
                                             />
                                         )}
                                     </Col>
-                                    <Col xs={12} md={9} className="each">
+                                    <Col xs={12} md={9} className="each mx-auto">
                                         <Row className="justify-content-between align-items-center">
-                                            <Col xs={9} md={10} className="content-location">[{item.location}]</Col>
-                                            <Col xs={3} md={2} className="content-viewCnt"><p>조회 {item.viewCnt || 0}</p></Col>
+                                            <Col xs={9} md={9} xl={10} className="content-location">[{item.location}]</Col>
+                                            <Col xs={3} md={3} xl={2} className="content-viewCnt"><p>조회 {item.viewCnt || 0}</p></Col>
                                         </Row>
                                         <Col className="content-title" xs={12}>{item.title}</Col>
                                         <Row className="nickAndDate justify-content-end">
-                                            <Col xs={8} md={3} xl={2} className="content-name"><p>작성자: {item.id?.name}</p></Col>
+                                            <Col xs={4} md={3} xl={2} className="content-name"><p>작성자: {item.id?.name}</p></Col>
                                             <Col xs={4} md={3} xl={2}><div className="time">{moment(item.regDate).format('YYYY/MM/DD')}</div></Col>
                                         </Row>
                                     </Col>
@@ -240,8 +264,8 @@ function TourisSpot() {
                             </Card>
                         </Link>
                     ))}
-
                 </div>
+
                 {/* 페이징 */}
                 <Pagination style={{ justifyContent: "center", display: "flex", alignItems: "center" }}>
                     <Pagination.Prev onClick={() => handlePageClick(currentPage - 1)} />
