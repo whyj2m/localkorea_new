@@ -4,23 +4,20 @@
     margin-bottom: 20px;
     
     .write-btn{
-        // margin-bottom: 30px;
         width: 219.99px;
+
         &:hover {
-            background-color: $test4; // 호버 시 배경 색상 변경
-            color: #fff; // 호버 시 텍스트 색상 변경
+            background-color: $test4; 
+            color: #fff; 
             border-color: $test4;
         }
     }
 
     // 총 _건, 조회수, 좋아요 
-    .place-total {
-        // padding-bottom: 30px;
+    .place-total{
         font-weight: 700;
         font-size: 25px;
-    }
 
-    .place-total{
         .total{
            span{
             padding: 0 2px;
@@ -29,9 +26,12 @@
             font-size: 24px;
            }
         }
+
+        @media (max-width: 768px) {
+            margin-bottom: 10px;
+        }
     }
 }
-
 
 .pepole-icon{
     width: 40px;
@@ -45,10 +45,6 @@
     padding: 0 20px 20px 20px;
     box-shadow: 4px 12px 40px 6px rgba(0, 0, 0, 0.09);
 
-    // &:hover {
-    //     width: 700px; 
-    // }
-
     .body-section1{
         display: flex;
         justify-content: space-between;
@@ -59,11 +55,11 @@
             background: #D2E0FB;
 
             .body-location-name{
-            font-size: 20px;
-            font-weight: bold;
-            color: #939090;
-            padding: 0;
-            margin: 10px;
+                font-size: 20px;
+                font-weight: bold;
+                color: #939090;
+                padding: 0;
+                margin: 10px;
             }
         }
 
@@ -71,19 +67,15 @@
             display: flex;
             align-items: center;
         
-            .eye-icon {
+            .view-icon {
                 font-size: 1.5em;
                 margin: 0 7px 0 0; 
                 color: #939090;
             }
-        
-           
         }
-          
     }
 
     .body-section2{
-        // height: 200px;
 
         .body-title{
             font-size: 18px;
@@ -97,15 +89,13 @@
                 .body-title {
                   max-width: 100px; 
                 }
-              }
+            }
         }
-
     }
 
     .body-section3{
         height: 130px;
         background: rgba(220, 220, 220, 0.142);
-        // border: 1px dashed #9a999968;
         border: 1px solid #9494949f;
         border-radius: 10px; 
         margin-top: 7px;
@@ -117,7 +107,6 @@
             display: block;
             margin-left: auto; 
             margin-right: auto; 
-            // background: $test4;
             background:  rgba(152, 141, 141, 0.212);
             color: #1c1c1c;
             border: none;
@@ -125,8 +114,8 @@
             &:active {
                 outline: none;
                 background: $test4;
-                // background: rgba(103, 103, 103, 0.226);
             }
+
             &:hover {
                 background-color: $test3; // 호버 시 배경 색상 변경
                 color: #262626; // 호버 시 텍스트 색상 변경
