@@ -145,12 +145,11 @@ function Company() {
                 </Row>
 
                 {/* 여행메이트 카드 */}
-                <Row className="g-4">
-                    <div >
+                <Row className="company-list">
                         {filteredItems.slice(0, visibleItems).map(item => (
-                            <Col key={item.bno} xs={10} md={6} lg={4} className="company-list">
+                            <Col key={item.bno} xs={10} md={6} lg={4} >
                                 <Card className='company-card'>
-                                    <Row className="g-0 align-items-center">
+                                    <Row className="align-items-center">
                                         <Col xs={12} md={12}>
                                             <div className="body-section1">
                                                 <div className="body-location" style={{ background: locationColors[item.location] || "#D2E0FB" }}>
@@ -176,7 +175,6 @@ function Company() {
                                 </Card>
                             </Col>
                         ))}
-                    </div>
                 </Row>
             </Container>
         </>

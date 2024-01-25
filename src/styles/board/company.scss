@@ -2,6 +2,7 @@
 
 .common-nav{
     align-items: center;
+    margin-bottom: 20px;
 
         .common-nav-placeTotal{
             font-weight: 700;
@@ -35,7 +36,7 @@
             }
 
             @media (min-width: 768px) {
-                justify-content: flex-end;
+                justify-content: end;
                 align-items: center;
                 display: flex;
             }
@@ -49,7 +50,7 @@
 
         .common-nav-locationBtn{
             @media (min-width: 768px) {
-                justify-content: flex-end;
+                justify-content: end;
                 align-items: center;
                 display: flex;
             }
@@ -70,6 +71,11 @@
 
 // 카드 내부
 .company-list{
+
+    @media (max-width: 768px) {
+        justify-content: center;
+    }
+
     .company-card{
         height: 350px;
         padding: 0 20px 20px 20px;
@@ -153,10 +159,9 @@
             }
         }
 
-        // @media (max-width: 768px) {
-        //     display: flex;
-        //     justify-content: center;
-        //     align-items: center;
-        // }
+        @media (max-width: 768px) {
+            margin-bottom: 20px;
+        }
+      
     }
 }
