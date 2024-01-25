@@ -2,12 +2,11 @@
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
 
 .touriSpot-cotent{
-    .company-nav{
-        // align-items: center;
-        // padding: 0 55px 0 55px;
+    .common-nav{
+        align-items: center;
 
         // 총 _건, 조회수, 좋아요 
-            .company-nav-placeTotal{
+            .common-nav-placeTotal{
                 font-weight: 700;
                 font-size: 25px;
                 display: flex;
@@ -24,19 +23,44 @@
         
                 @media (max-width: 768px) {
                     margin: 20px 0 20px 0;
-                    // margin-bottom: 10px;
                     justify-content: center;
                 }
             }
 
-            .company-nav-writeBtn{
-                // display: flex;
-                // justify-content: flex-end;
+            .common-nav-writeBtn {
+                .write-btn {
+                    width: 100%;
+                    &:hover {
+                        background-color: $test4;
+                        border-color: $test4;
+                        color: #fff;
+                    }
+                }
 
-                &:hover {
-                    background-color: $test4;
-                    border-color: $test4;
-                    color: #fff;
+                @media (min-width: 768px) {
+                    justify-content: flex-end;
+                    align-items: center;
+                    display: flex;
+                }
+
+                @media (max-width: 768px) {
+                   margin: 0 0 20px 70px;
+                   padding: 0px;
+                   width: 190px;
+                }
+            }
+
+            .common-nav-locationBtn{
+                @media (min-width: 768px) {
+                    justify-content: flex-end;
+                    align-items: center;
+                    display: flex;
+                }
+
+                @media (max-width: 768px) {
+                   margin: 0 0 20px 20px;
+                   padding: 0px;
+                   width: 190px;
                 }
             }
     }

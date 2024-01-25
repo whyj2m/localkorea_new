@@ -156,8 +156,6 @@ function BoardWrite() {
 
     return (
         <>
-            <BoardCate />
-
             <div className="container">
                 <div className="boardWrite">
                     <div className='instructions'>

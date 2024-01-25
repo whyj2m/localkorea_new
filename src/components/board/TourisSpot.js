@@ -173,18 +173,18 @@ function TourisSpot() {
             {/* 관광지 카드 */}
             <div className="container">
                 <div className="touriSpot-cotent">
-                    {/* <Row className='company-nav'>
-                        <Col xs={12} md={6} xl={8} className="company-nav-placeTotal">
+                    <Row className='common-nav'>
+                        <Col xs={12} md={6} xl={8} className="common-nav-placeTotal">
                             <div className="total">
                                 총<span>{filteredItems.length}</span>건
                             </div>
                         </Col>
-                        <Col xs={6} md={3} xl={2} className="company-nav-writeBtn">
+                        <Col md={3} xl={2} className="common-nav-writeBtn">
                             {isLoggedIn && (
                                 <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
                             )}
                         </Col>
-                        <Col xs={6} md={3} xl={2} className="company-nav-locationBtn">
+                        <Col md={3} xl={2} className="common-nav-locationBtn">
                             <Form.Select aria-label="지역을 선택하세요" onChange={handleLocationChange}>
                                 <option value="all">전체 지역</option>
                                 <option value="서울">서울</option>
@@ -198,35 +198,9 @@ function TourisSpot() {
                                 <option value="경상">경상</option>
                             </Form.Select>
                         </Col>
-                    </Row> */}
-                     <Row className='align-items-center company-nav'>
-                    {/* 총건수 확인 */}
-                    <Col xs={12} md={6} xl={8} className="company-nav-placeTotal">
-                            <div className="total">
-                                총<span>{filteredItems.length}</span>건
-                            </div>
-                        </Col>
-                    <Col xs={6} md={2} className="d-flex justify-content-end align-items-center">
-                        {isLoggedIn && (
-                            <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
-                        )}
-                    </Col>
-                    <Col xs={6} md={2} className="d-flex align-items-center">
-                        <Form.Select aria-label="지역을 선택하세요" onChange={handleLocationChange}>
-                            <option value="all">전체 지역</option>
-                            <option value="서울">서울</option>
-                            <option value="인천">인천</option>
-                            <option value="대전">대전</option>
-                            <option value="부산">부산</option>
-                            <option value="경기">경기</option>
-                            <option value="충청">충청</option>
-                            <option value="강원">강원</option>
-                            <option value="전라">전라</option>
-                            <option value="경상">경상</option>
-                        </Form.Select>
-                    </Col>
-                </Row>
+                    </Row>
 
+                
                     {/* 필터링된 결과를 출력 */}
                     {currentItems.map((item) => (
                         <Link to={`/board/tourisSpotView/${item.bno}`} key={item.bno} className="tour-board-link">
