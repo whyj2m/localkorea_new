@@ -11,6 +11,7 @@ import { BsFileRichtext } from "react-icons/bs";
 import { FaRegCommentDots } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa";
 import { getMember } from "../../api/MemberApi";
+import { Link } from "react-router-dom";
 
 function Mypage() {
   const [showModalCP, setShowModalCP] = useState(false);
@@ -88,7 +89,7 @@ function Mypage() {
               </div>
             </div>
           </div>
-          <div className="withdrawal"><a href="/unregister">탈퇴하기</a></div>
+          <div className="withdrawal"><Link to="/unregister">탈퇴하기</Link></div>
           <hr />
           <div className="myrecord">
             {comp}

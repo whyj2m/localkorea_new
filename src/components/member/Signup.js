@@ -35,11 +35,18 @@ function Signup() {
 
   // id 중복확인
   const handleCheckDuplicate = async () => {
+    // 아이디 유효성 검사 추가
+    if (!validateId(formData.id)) {
+      setErrorMsg({ ...errorMsg, id: "ID는 5글자 이상이어야 하며, 영문과 숫자를 모두 포함해야 합니다." });
+      setDuplicateValid(false);
+      return;
+    }
     try {
       const response = await axios.post("http://localhost:8081/signup/checkId", { id: formData.id });
   
       if (response.data) {
         setErrorMsg({ ...errorMsg, id: "이미 존재하는 ID입니다." });
+        setDuplicateValid(false);
       } else {
         setDuplicateValid(true);
         setErrorMsg({ ...errorMsg, id: "" });
@@ -48,8 +55,10 @@ function Signup() {
       console.error("중복 확인 에러:", error);
       if (error.response && error.response.status === 409) {
         setErrorMsg({ ...errorMsg, id: "이미 존재하는 ID입니다." });
+        setDuplicateValid(false);
       } else {
         setErrorMsg({ ...errorMsg, id: "중복 확인 중 오류가 발생했습니다." });
+        setDuplicateValid(false);
       }
       throw error; // 에러 발생 시 함수 종료
     }
@@ -110,10 +119,13 @@ function Signup() {
     setFormData({...formData, [e.target.name]:e.target.value})
     setErrorMsg({ ...errorMsg, [e.target.name]: "" });
 
-    // 추가된 부분
     if (e.target.name === "vc") {
       console.log("현재 입력된 인증번호:", e.target.value);
       setVcSuccess(false);
+    }
+
+    if(e.target.name === "id") {
+      setDuplicateValid(false);
     }
   }
 
@@ -207,6 +219,11 @@ function Signup() {
   // 인증번호 발송 버튼 
   const handleSendVC = async () => {
     try {
+      if (!formData.email) {
+        alert("이메일을 입력해주세요.");
+        return;
+      }
+
       await sendEmail();
       setVcSuccess(false); // 인증번호 재발송 시 초기화
       setVcSent(true); // 인증번호 발송 완료
