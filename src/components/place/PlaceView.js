@@ -3,6 +3,7 @@ import "../../styles/place/PlaceView.css";
 import { IoEyeSharp } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
 import { CiHeart } from "react-icons/ci";
+import { FaLink } from "react-icons/fa6";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import {
@@ -13,20 +14,21 @@ import {
   deleteHeart,
 } from "../../api/LocalPlaceApi";
 import Kakaomap from "../../api/Kakaomap";
-import PlaceModal from "./PlcaeModal";
 import { jwtDecode } from "jwt-decode";
+import Swal from "sweetalert2";
 
 function PlaceView() {
   const { localNo, placeNo } = useParams();
   const [placeData, setPlaceData] = useState(null);
 
   const [shareUrl, setShareUrl] = useState(""); // URL 상태 추가
-  const [modalOpen, setModalOpen] = useState(false);
 
   // 로그인 상태 확인 함수
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   // 하트 상태 함수
   const [isHearted, setIsHearted] = useState(); // 하트 상태 추가
+  // 하트 리스트
+  const [heartList, setHeartList] = useState([]);
 
   const navigate = useNavigate();
 
@@ -39,6 +41,8 @@ function PlaceView() {
         // 하트 리스트를 가져옵니다.
         const heartList = await getHeartList();
         // console.log("하트 리스트:", heartList);
+
+        setHeartList(heartList);
 
         const currentUrl = window.location.href;
         setShareUrl(currentUrl);
@@ -73,9 +77,20 @@ function PlaceView() {
 
   const handleHeartClick = async () => {
     if (!isLoggedIn) {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
-      return;
+      Swal.fire({
+        icon: "info",
+        title: "로그인이 필요합니다.",
+        text: "관광지를 목록에 담고 싶으신가요? 로그인 부탁드립니다! ",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        cancelButtonText: "취소",
+      }).then((result) => {
+        // 확인 버튼을 눌렀을 때 실행되는 함수
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
+        // 취소(No) 버튼을 눌렀을 때 아무 동작 안 함
+      });
     }
 
     try {
@@ -102,16 +117,47 @@ function PlaceView() {
           ? prevPlaceData.heartCnt - 1
           : prevPlaceData.heartCnt + 1,
       }));
-
       // 하트 상태 업데이트
       setIsHearted(!isHearted);
 
+      // 하트 리스트를 비동기적으로 업데이트
+      const updatedHeartList = await getHeartList();
+      setHeartList(updatedHeartList);
       // 알림 메시지 출력
       // alert(alertMessage);
     } catch (error) {
       console.error("하트 클릭 오류:", error);
     }
   };
+
+  const handleCopyUrlClick = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      Swal.fire({
+        icon: "success",
+        title: "URL이 복사되었습니다.",
+        text: "원하는 곳에 붙여넣기(Ctrl+V)하여 공유하세요.",
+        timer: 2000,
+        timerProgressBar: true,
+        showConfirmButton: false, // 확인 버튼을 숨깁니다.
+      });
+    } catch (error) {
+      console.error("URL 복사 오류:", error);
+      Swal.fire({
+        icon: "error",
+        title: "URL 복사 실패",
+        text: "URL을 복사하는 중에 오류가 발생했습니다.",
+      });
+    }
+  };
+
+  // placeNo에 해당하는 하트 갯수를 가져오는 함수
+  function getHeartCountForPlaceNo(placeNo) {
+    const filteredHeartList = heartList.filter(
+      (heart) => heart.placeNo === parseInt(placeNo)
+    );
+    return filteredHeartList.length;
+  }
 
   return (
     <div className="container" style={{ paddingTop: "200px" }}>
@@ -127,14 +173,11 @@ function PlaceView() {
             </span>
             <span onClick={handleHeartClick}>
               {isHearted ? <FaHeart /> : <CiHeart className="heart-icon " />}
-              <p>{placeData.heartCnt || 0}</p>
+              <p>{getHeartCountForPlaceNo(placeNo)}</p>
             </span>
-            {/*  모달에 Url값 전달 */}
-            <PlaceModal
-              show={modalOpen}
-              onHide={() => setModalOpen(false)}
-              shareUrl={shareUrl}
-            />
+            <span onClick={handleCopyUrlClick}>
+              <FaLink />
+            </span>
           </div>
           <div className="placeview-image">
             <img
