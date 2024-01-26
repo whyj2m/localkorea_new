@@ -24,8 +24,8 @@ const FestivalView = lazy(() => import("./components/festival/FestivalView"));
 // Board
 const BoardWrite = lazy(() => import("./components/board/BoardWrite"));
 const BoardEdit = lazy(() => import("./components/board/BoardEdit"));
-const TourisSpot = lazy(() => import("./components/board/TourisSpot"));
-const TourisSpotView = lazy(() => import("./components/board/TourisSpotView"));
+const TouristSpot = lazy(() => import("./components/board/TouristSpot"));
+const TouristSpotView = lazy(() => import("./components/board/TouristSpotView"));
 const Company = lazy(() => import("./components/board/Company"));
 const CompanyView = lazy(() => import("./components/board/CompanyView.js"));
 const Notice = lazy(() => import("./components/board/Notice"));
@@ -57,17 +57,12 @@ function App() {
           <Route path="/place/:localNo" element={<PlaceMain />} />
           <Route path="/place/:localNo/:placeNo" element={<PlcaeView />} />
           <Route path="/festival/:localNo" element={<FestivalMain />} />
-          <Route
-            path="/festival/:localNo/:festivalNo"
-            element={<FestivalView />}
+          <Route path="/festival/:localNo/:festivalNo" element={<FestivalView />}
           />
 
           {/* Board */}
-          <Route path="/board/tourisSpot" element={<TourisSpot />} />
-          <Route
-            path="/board/tourisSpotView/:bno"
-            element={<TourisSpotView />}
-          />
+          <Route path="/board/touristSpot" element={<TouristSpot />} />
+          <Route path="/board/touristSpotView/:bno" element={<TouristSpotView />} />
           <Route path="/board/company" element={<Company />} />
           <Route path="/board/companyView/:bno" element={<CompanyView />} />
           <Route path="/board/notice" element={<Notice />} />

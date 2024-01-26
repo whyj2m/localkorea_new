@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 // css
 import { Form, Button, Card, Col, Row, Pagination } from 'react-bootstrap';
 import '../../styles/board/board.scss';
-import '../../styles/board/tourisSpot.scss';
+import '../../styles/board/touristSpot.scss';
 
 // API
 import { getTourBaordList } from '../../api/BoardApi';
@@ -20,7 +20,7 @@ import moment from 'moment';
 // 토큰
 import { jwtDecode } from "jwt-decode";
 
-function TourisSpot() {
+function TouristSpot() {
     const navigate = useNavigate();
     const { bno } = useParams();
     const [imageSrc, setImageSrc] = useState(''); // 이미지
@@ -203,7 +203,7 @@ function TourisSpot() {
                 
                     {/* 필터링된 결과를 출력 */}
                     {currentItems.map((item) => (
-                        <Link to={`/board/tourisSpotView/${item.bno}`} key={item.bno} className="tour-board-link">
+                        <Link to={`/board/touristSpotView/${item.bno}`} key={item.bno} className="tour-board-link">
                             <Card className='TourisSpot-Card'>
                                 <Row>
                                     <Col md={3} xl={3} className="TourisSpot-Imgs">
@@ -259,4 +259,4 @@ function TourisSpot() {
     );
 }
 
-export default TourisSpot;
+export default TouristSpot;

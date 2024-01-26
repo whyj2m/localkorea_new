@@ -10,9 +10,6 @@ import '../../styles/board/boardWrite.scss';
 // API
 import { postBoardWrite } from '../../api/BoardApi';
 
-// component
-import BoardCate from './BoardCate';
-
 // 토큰
 import { jwtDecode } from "jwt-decode";
 
@@ -148,7 +145,7 @@ function BoardWrite() {
             const response = await postBoardWrite(formData);
 
             alert('게시글 작성 성공');
-            navigate('/board/tourisSpot'); // useNavigate 사용하여 경로 변경
+            navigate('/board/touristSpot'); // useNavigate 사용하여 경로 변경
         } catch (error) {
             alert('게시글 작성 실패');
         }
