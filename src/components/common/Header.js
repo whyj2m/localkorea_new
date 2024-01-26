@@ -134,7 +134,7 @@ function Header() {
       const userId = decodedToken.id; // "sub"는 사용자 ID에 대한 표준 클레임입니다
 
       // 사용자 ID를 로그에 기록하거나 필요한 대로 사용합니다
-      console.log("JWT에서 추출한 사용자 ID:", userId);
+      // console.log("JWT에서 추출한 사용자 ID:", userId);
 
       // API 호출을 위한 주소
       const apiUrl = `http://localhost:8081/members/${userId}`;
@@ -148,7 +148,7 @@ function Header() {
         })
         .then((response) => {
           // API 응답 데이터를 상태에 설정
-          console.log(response.data);
+          // console.log(response.data);
           setUserData(response.data);
         })
         .catch((error) => {
