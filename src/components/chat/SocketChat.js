@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import "../../styles/chat/SocketChat.css";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
+
+import { IoMdClose } from "react-icons/io";
+
+import "../../styles/chat/SocketChat.css";
 
 const SocketChat = ({ onClose }) => {
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [socket, setSocket] = useState(null);
   const [userName, setUserName] = useState("");
+  const [userList, setUserList] = useState([]);
 
   useEffect(() => {
     const accessToken = localStorage.getItem("ACCESS_TOKEN");
@@ -25,7 +29,7 @@ const SocketChat = ({ onClose }) => {
         })
         .then((response) => {
           const retrievedUserName = response.data.name;
-          console.log(retrievedUserName); // 올바른 값
+          // console.log(retrievedUserName); // 올바른 값
 
           setUserName(retrievedUserName);
 
@@ -103,19 +107,50 @@ const SocketChat = ({ onClose }) => {
     }
   }, [messages]);
 
+  // 유저리스트 부분
+  useEffect(() => {
+    const updateUsers = (event) => {
+      const receivedUserList = JSON.parse(event.data).userList;
+      setUserList(receivedUserList);
+    };
+
+    if (socket) {
+      socket.addEventListener("message", updateUsers);
+    }
+
+    return () => {
+      if (socket) {
+        socket.removeEventListener("message", updateUsers);
+      }
+    };
+  }, [socket]);
+
   return (
     <div className="messageBox">
       <div className="message-top">
-        <div className="userList">user1</div>
+        <div className="userList"> 접속자 {userList.length} 명 </div>
         <button onClick={closeSocket} className="close-button">
-          닫기
+          <IoMdClose />
         </button>
       </div>
       <div className="message-container">
         {messages.map((message, index) => (
-          <div key={index} className="messageSmallBox">
+          <div
+            key={index}
+            className={`messageSmallBox ${(() => {
+              // 나의 메세지 우측정렬, 다른사람 메세지  좌측정렬
+              const result =
+                message.userName === userName ? "ownMessage" : "otherMessage";
+              // console.log(
+              //   `Message: ${message.userName}, User: ${userName}, Result: ${result}`
+              // );
+              return result;
+            })()}`}
+          >
             <span className="userName">{message.userName}</span>
-            <div className="message">{message.content}</div>
+            <div className="message">
+              <p>{message.content}</p>
+            </div>
             <span className="timestamp">
               {new Date(parseInt(message.timestamp)).toLocaleTimeString()}
             </span>

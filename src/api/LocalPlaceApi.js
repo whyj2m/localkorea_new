@@ -59,18 +59,16 @@ export const checkIfHearted = async (memberId, placeNo) => {
       `/heart/check/${memberId}/${placeNo}`
     );
     const isHearted = response.data;
-    console.log(isHearted);
+    // console.log(isHearted);
 
     // isHearted를 기반으로 사용자 인터페이스 업데이트
     // 예: 버튼을 숨기거나 비활성화
     if (isHearted) {
       // 좋아요를 이미 한 상태
       console.log("이미 좋아요를 했습니다.");
-      // TODO: 사용자 인터페이스 업데이트 로직 추가
     } else {
       // 좋아요를 하지 않은 상태
       console.log("좋아요를 할 수 있습니다.");
-      // TODO: 사용자 인터페이스 업데이트 로직 추가
     }
 
     return isHearted; // 이 부분 추가
