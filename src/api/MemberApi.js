@@ -198,3 +198,23 @@ export const getMyReplyList = async () => {
 }
 
 // 회원탈퇴
+export const deleteMember = async () => {
+    try {
+        if(ACCESS_TOKEN) {
+            const decodedToken = jwtDecode(ACCESS_TOKEN);
+            const userId = decodedToken.id;
+            const response = await axiosInstance.delete(`member/${userId}`)
+            if (response.status === 200) {
+                alert("회원탈퇴가 성공적으로 이루어졌습니다.");
+                // 탈퇴 성공 시 메인 페이지로 이동
+                localStorage.removeItem("ACCESS_TOKEN");
+                window.location.href="/"
+            } else {
+                alert("회원탈퇴 실패");
+            }
+        } 
+    } catch (error) {
+        alert("회원탈퇴 중 오류가 발생했습니다.");
+        throw error;
+    }
+}
