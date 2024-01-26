@@ -151,7 +151,7 @@ function CompanyView({ replyCnt }) {
                   {item.content}
                 </div>
                 <div className='reply_div'>
-                  <p>{userName}</p>
+                  {/* <p>{userName}</p> */}
                   <div className='reply_write'>
                     <textarea
                       rows='3'

@@ -117,19 +117,18 @@ function Company() {
             <BoardNav />
 
             <Container>
-                <Row className='align-items-center company-nav'>
-                    {/* 총건수 확인 */}
-                    <Col md={8} className="place-total d-flex align-items-center">
+                <Row className='common-nav'>
+                    <Col xs={12} md={6} xl={8} className="common-nav-placeTotal">
                         <div className="total">
                             총<span>{filteredItems.length}</span>건
                         </div>
                     </Col>
-                    <Col xs={6} md={2} className="d-flex justify-content-end align-items-center">
+                    <Col md={3} xl={2} className="common-nav-writeBtn">
                         {isLoggedIn && (
                             <Button className='write-btn' as="input" type="submit" variant="outline-primary" value="글작성" onClick={handleButtonClick} />
                         )}
                     </Col>
-                    <Col xs={6} md={2} className="d-flex align-items-center">
+                    <Col md={3} xl={2} className="common-nav-locationBtn">
                         <Form.Select aria-label="지역을 선택하세요" onChange={handleLocationChange}>
                             <option value="all">전체 지역</option>
                             <option value="서울">서울</option>
@@ -146,37 +145,36 @@ function Company() {
                 </Row>
 
                 {/* 여행메이트 카드 */}
-                <Row xs={1} md={2} lg={3} className="g-4">
-                    {filteredItems.slice(0, visibleItems).map(item => (
-                        <Col key={item.bno}>
-                            <Card className='company-card'>
-                                <Row className="g-0 align-items-center">
-                                    <Col xs={12} md={12}>
-
-                                        <div className="body-section1">
-                                            <div className="body-location" style={{ background: locationColors[item.location] || "#D2E0FB" }}>
-                                                <p className="body-location-name">{item.location}</p>
+                <Row className="company-list">
+                        {filteredItems.slice(0, visibleItems).map(item => (
+                            <Col key={item.bno} xs={10} md={6} lg={4} >
+                                <Card className='company-card'>
+                                    <Row className="align-items-center">
+                                        <Col xs={12} md={12}>
+                                            <div className="body-section1">
+                                                <div className="body-location" style={{ background: locationColors[item.location] || "#D2E0FB" }}>
+                                                    <p className="body-location-name">{item.location}</p>
+                                                </div>
+                                                <div className="body-viewCnt">
+                                                    <IoEyeSharp className="view-icon" />
+                                                    <span className="view-count">{item.viewCnt}</span>
+                                                </div>
                                             </div>
-                                            <div className="body-viewCnt">
-                                                <IoEyeSharp className="view-icon" />
-                                                <span className="view-count">{item.viewCnt}</span>
+                                            <div className="body-section2">
+                                                <div className="body-title ">{item.title}</div>
+                                                <div className="body-name">{item.id.name}</div>
+                                                <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
                                             </div>
-                                        </div>
-                                        <div className="body-section2">
-                                            <div className="body-title ">{item.title}</div>
-                                            <div className="body-name">{item.id.name}</div>
-                                            <Card.Text>{moment(item.regDate).format('YYYY/MM/DD')}</Card.Text>
-                                        </div>
-                                        <div className="body-section3">
-                                            <p>{item.content}</p>
-                                        </div>
+                                            <div className="body-section3">
+                                                <p>{item.content}</p>
+                                            </div>
 
-                                        <Button className='more-btn' as="input" type="submit" value="자세히 보기" onClick={() => handleButtonView(item.bno)} />
-                                    </Col>
-                                </Row>
-                            </Card>
-                        </Col>
-                    ))}
+                                            <Button className='more-btn' as="input" type="submit" value="자세히 보기" onClick={() => handleButtonView(item.bno)} />
+                                        </Col>
+                                    </Row>
+                                </Card>
+                            </Col>
+                        ))}
                 </Row>
             </Container>
         </>

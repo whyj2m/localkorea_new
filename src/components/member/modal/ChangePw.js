@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Form, Button, Modal, InputGroup } from "react-bootstrap";
 import { checkPwMatch, chgPw } from "../../../api/MemberApi";
 import { useState } from "react";
