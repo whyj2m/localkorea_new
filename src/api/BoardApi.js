@@ -8,11 +8,11 @@ const axiosInstance = axios.create({
     }
 })
 
-// tourisSpot API 시작
-// get tourisSpot 게시글 목록조회 
+// touristSpot API 시작
+// get touristSpot 게시글 목록조회 
 export const getTourBaordList = async () => {
     try {
-        const response = await axiosInstance.get("/board/tourisSpot");
+        const response = await axiosInstance.get("/board/touristSpot");
         const reversedData = response.data.reverse(); // 데이터를 역순으로 정렬
         return response;
     } catch (error) {
@@ -20,16 +20,16 @@ export const getTourBaordList = async () => {
     }
 }
 
-// get tourisSpot 게시글 bno별 상세조회 
+// get touristSpot 게시글 bno별 상세조회 
 export const getTourBaordDetail = async (bno) => {
     try {
-        const response = await axiosInstance.get(`/board/tourisSpot/${bno}`);
+        const response = await axiosInstance.get(`/board/touristSpot/${bno}`);
         return response;
     } catch (error) {
         throw error;
     }
 }
-// tourisSpot API 끝
+// touristSpot API 끝
 
 // company API 시작
 // get company 게시글 목록조회 
@@ -53,21 +53,6 @@ export const getCompanyDetail = async (bno) => {
   };
  // company API 끝 
 
-// tourisSpot 이미지
-// 이미지 조회
-// export const getImg = async (bno) => {
-//     try {
-//         const response = await axiosInstance.get(`/api/images/${bno}`);
-//         return response.data; // 이미지 데이터 반환
-//     } catch (error) {
-//         if (error.response && error.response.status === 404) {
-//             // 이미지가 없는 경우, 빈 응답으로 처리
-//             return null; // 빈 응답 반환
-//         }
-//         throw error; // 다른 오류는 그대로 throw
-//     }
-// }
-
 // 이미지 (단일)조회
 export const getImg = async (bno) => {
     try {
@@ -84,6 +69,23 @@ export const getImg = async (bno) => {
         throw error; // 다른 오류는 그대로 throw
     }
 }
+
+// 이미지 (단일)조회
+// export const getImg = async (bno) => {
+//     try {
+//         const response = await axiosInstance.get(`/api/images/${bno}`, { responseType: "blob" });
+//         console.log(response);
+//         return [response.data]; // 이미지 데이터를 배열로 감싸서 반환
+        
+//     } catch (error) {
+//         if (error.response && error.response.status === 404) {
+           
+//             // 이미지가 없는 경우, 빈 배열로 처리
+//             return []; // 빈 배열 반환
+//         }
+//         throw error; // 다른 오류는 그대로 throw
+//     }
+// }
 
 // 게시글 작성
 export const postBoardWrite = async (formData) => {
