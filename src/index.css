@@ -23,6 +23,14 @@ code {
   font-style: normal;
 }
 
+@font-face {
+  font-family: "SejonghospitalBold";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2312-1@1.1/SejonghospitalBold.woff2")
+    format("woff2");
+  font-weight: 700;
+  font-style: normal;
+}
+
 /* Noto Sans Korean */
 @import url("https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap");
 /* font-family: 'Nanum Gothic', sans-serif; */

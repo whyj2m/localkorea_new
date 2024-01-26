@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { getLocalFestivals } from "../../api/LocalFestivalApi";
 import { getLocalFoods } from "../../api/LocalFoodsApi";
-import { getLocalPlaces } from "../../api/LocalPlaceApi";
+import { getHeartList, getLocalPlaces } from "../../api/LocalPlaceApi";
 import { CiHeart } from "react-icons/ci";
 import { Link } from "react-router-dom";
 
@@ -25,6 +25,7 @@ function SearchDetail() {
   const [searchPlaces, setFilteredPlaces] = useState([]);
   const [searchFesticals, setFilteredFestivals] = useState([]);
   const [searchFoods, setFilteredFoods] = useState([]);
+  const [heartList, setHeartList] = useState([]);
 
   // 스크롤 핧 Y축 데이터
   const placesRef = useRef(null);
@@ -94,10 +95,12 @@ function SearchDetail() {
           const festivalsResponse = await getLocalFestivals(searchTerm);
           const foodsResponse = await getLocalFoods(searchTerm);
           const placesResponse = await getLocalPlaces(searchTerm);
+          const fetchedHeartList = await getHeartList();
 
           setFestivals(festivalsResponse.data);
           setFoods(foodsResponse.data);
           setPlaces(placesResponse.data);
+          setHeartList(fetchedHeartList);
         } else {
           // 검색어가 없는 경우에는 빈 배열로 초기화
           setFestivals([]);
@@ -141,6 +144,15 @@ function SearchDetail() {
 
   const foodlength = filteredFoods.length;
   // console.log(foodlength);
+
+  // 각 관광지에 대한 하트 갯수를 가져오는 함수
+  const getHeartCountForPlaceNo = (placeNo) => {
+    const filteredHeartList = heartList.filter(
+      (heart) => heart.placeNo === parseInt(placeNo)
+    );
+    // console.log("Filtered Heart List:", filteredHeartList);
+    return filteredHeartList.length;
+  };
 
   return (
     <div className="search">
@@ -239,7 +251,7 @@ function SearchDetail() {
                         <BsEye className="view" />{" "}
                         <span>{place.viewCnt || 0}</span>
                         <CiHeart className="heart" />{" "}
-                        <span>{place.heartCnt || 0}</span>
+                        <span>{getHeartCountForPlaceNo(place.placeNo)}</span>
                       </div>
                     </Col>
                   </Row>

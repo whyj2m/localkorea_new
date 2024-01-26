@@ -8,9 +8,9 @@ import { IoPeople } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa";
 import { GrLogin } from "react-icons/gr";
 
+import Swal from "sweetalert2";
 import { getWeatherData } from "../../api/Weather";
 import { useEffect, useState } from "react";
-
 // 라우터  uselocation으로  경로에 따른 색상변경, usenavigate로 경로를 설정 Navdropdown< 원래 페이지이동 불가
 import {
   Link,
@@ -162,26 +162,45 @@ function Header() {
     }
   }, [location.pathname, userData]);
 
-  const handleLogout = () => {
-    // 로그아웃 로직 추가 (토큰 삭제 등)
-    localStorage.removeItem("ACCESS_TOKEN");
-
-    // 상태를 변경하여 리렌더링을 트리거
-    setIsLoggedIn(false);
-
-    handleCloseLogoutModal();
-    // 기타 로그아웃에 필요한 로직 수행
-    window.location.href = "/";
-  };
-
-  // 비로그인 클릭시 이동이벤트
   const handleMyPageClick = () => {
-    if (isLoggedIn) {
+    const accessToken = localStorage.getItem("ACCESS_TOKEN");
+    const atisLoggedIn = !!accessToken;
+
+    if (atisLoggedIn) {
       navigate("/mypage");
     } else {
-      alert("로그인이 필요합니다.");
-      navigate("/login");
+      Swal.fire({
+        icon: "info",
+        text: "마이페이지를 이용하고 싶으신가요?",
+        title: "로그인이 필요합니다.",
+        showCancelButton: true,
+        confirmButtonText: "확인",
+        cancelButtonText: "취소",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate("/login");
+        }
+      });
     }
+  };
+
+  // 이 부분에 있던 중복된 handleLogout 함수를 밖으로 빼주었습니다.
+  const handleLogout = () => {
+    Swal.fire({
+      icon: "question",
+      text: "로그아웃 하시겠습니까?",
+      title: "로그아웃",
+      showCancelButton: true,
+      confirmButtonText: "확인",
+      cancelButtonText: "취소",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("ACCESS_TOKEN");
+        setIsLoggedIn(false);
+        handleCloseLogoutModal();
+        window.location.href = "/";
+      }
+    });
   };
 
   return (
@@ -234,12 +253,12 @@ function Header() {
             <NavLink to="/place/1">관광지</NavLink>
             <NavLink to="/festival/1">축제</NavLink>
             <NavLink to="/localFoods/1">특산물</NavLink>
-            <NavLink to="/board/tourisSpot">게시판</NavLink>
+            <NavLink to="/board/touristSpot">게시판</NavLink>
           </Nav>
         </Navbar.Collapse>
         <div className="header-main-icon">
           {isLoggedIn ? (
-            <Nav className="logout" onClick={handleShowLogoutModal}>
+            <Nav className="logout" onClick={handleLogout}>
               <span>로그아웃</span>
             </Nav>
           ) : (
@@ -247,11 +266,7 @@ function Header() {
               <span>로그인</span>
             </Nav>
           )}
-          <Nav
-            as={Link}
-            to={isLoggedIn ? "/mypage" : "/login"}
-            onClick={handleMyPageClick}
-          >
+          <Nav onClick={handleMyPageClick}>
             <IoPeople />
           </Nav>
           {/* <Nav
@@ -266,26 +281,6 @@ function Header() {
           </Nav>
         </div>
       </Navbar>
-
-      {/* 로그아웃 확인 모달 */}
-      <Modal
-        show={showLogoutModal}
-        onHide={handleCloseLogoutModal}
-        style={{ paddingTop: "150px" }}
-      >
-        <Modal.Header closeButton>
-          <Modal.Title>로그아웃</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>로그아웃 하시겠습니까?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseLogoutModal}>
-            취소
-          </Button>
-          <Button variant="primary" onClick={handleLogout}>
-            로그아웃
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 }

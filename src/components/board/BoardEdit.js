@@ -10,7 +10,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../styles/board/boardEdit.scss';
 
 // API
-import { getTourBaordDetail } from '../../api/BoardApi';
+import { getTourBaordDetail, putBoard } from '../../api/BoardApi';
 
 // component
 import BoardCate from './BoardCate';
@@ -33,11 +33,11 @@ const BoardEdit = () => {
 
       e.preventDefault();
       try {
-         //  const response = await putBoard(bno, updateDate); // 왜그런지 모르겠지만 put은 안됨
-         const response = await axios.put(`http://localhost:8081/board/edit/${bno}`, updateDate);
+          const response = await putBoard(bno, updateDate);
+         // const response = await axios.put(`http://localhost:8081/board/edit/${bno}`, updateDate);
          if (response.status === 200) {
             alert("게시글 수정 완료");
-            navigate("/board/tourisSpot")
+            navigate("/board/touristSpot")
          } else {
             alert("게시글 수정 실패");
          }
