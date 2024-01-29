@@ -16,6 +16,7 @@ import axios from "axios";
 
 // api
 import { getTourBaordDetail, deleteBoard, getReply, postReply, deleteReply } from "../../api/BoardApi";
+import EditAndDeleteBtn from "./EditAndDeleteBtn";
 
 // 시간
 import moment from "moment";
@@ -25,84 +26,84 @@ import "moment/locale/ko"; // 시간 한글로
 import { jwtDecode } from "jwt-decode";
 
 // 수정 삭제 버튼 컴포넌트
-function EditAndDeleteBtn() {
-    const { bno } = useParams();
-    const accessToken = localStorage.getItem("ACCESS_TOKEN");
-    const decodedToken =
-        typeof accessToken === "string" ? jwtDecode(accessToken) : null;
+// function EditAndDeleteBtn() {
+//     const { bno } = useParams();
+//     const accessToken = localStorage.getItem("ACCESS_TOKEN");
+//     const decodedToken = typeof accessToken === "string" ? jwtDecode(accessToken) : null;
+//     const userId = decodedToken?.id;
 
-    const customerId = decodedToken?.id;
+//     const [loadingData, setLoadingData] = useState(true);
+//     const [TourBaordDetailData, setTourBaordDetailData] = useState([]);
+//     const navigate = useNavigate();
+//     const [loading, setLoading] = useState(false);
 
-    const [loadingData, setLoadingData] = useState(true);
-    const [TourBaordDetailData, setTourBaordDetailData] = useState([]);
-    const navigate = useNavigate();
-    const [loading, setLoading] = useState(false);
+//     useEffect(() => {
+//         const fetchTourBaordDetailData = async () => {
+//             try {
+//                 const response = await getTourBaordDetail(bno);
+//                 const data = response.data;
+//                 setTourBaordDetailData(Array.isArray(data) ? data : [data]); // 배열로 감싸기
+//                 setLoadingData(false);
+//             } catch (error) { }
+//         };
 
-    useEffect(() => {
-        const fetchTourBaordDetailData = async () => {
-            try {
-                const response = await getTourBaordDetail(bno);
-                const data = response.data;
-                setTourBaordDetailData(Array.isArray(data) ? data : [data]); // 배열로 감싸기
-                setLoadingData(false);
-            } catch (error) { }
-        };
+//         fetchTourBaordDetailData();
+//     }, [bno, userId]); // userId 의존성 배열에 추가
 
-        fetchTourBaordDetailData();
-    }, [bno, customerId]); // customerId를 의존성 배열에 추가
+//     const handleDelete = async () => {
+//         setLoading(true);
+//         try {
+//             await deleteBoard(bno);
+//             alert("삭제되었습니다.");
+//             navigate("/board/touristSpot");
+//         } catch (error) {
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
 
-    const handleDelete = async () => {
-        setLoading(true);
-        try {
-            await deleteBoard(bno);
-            alert("삭제되었습니다.");
-            navigate("/board/touristSpot");
-        } catch (error) {
-        } finally {
-            setLoading(false);
-        }
-    };
+//     if (loadingData) {
+//         return <div>로딩중...</div>;
+//     }
 
-    if (loadingData) {
-        return <div>로딩중...</div>;
-    }
+//     // 배열의 첫 번째 요소
+//     const item = TourBaordDetailData[0];
 
-    // 배열의 첫 번째 요소
-    const item = TourBaordDetailData[0];
-
-    if (item && item.id && item.id.id) {
-        if (customerId === item.id.id) {
-            // 토큰이 있고, 작성자의 ID와 토큰의 ID가 일치하는 경우
-            return (
-                <React.Fragment key={item.bno}>
-                    <Col xs={4} md={1} className="boardView-btn">
-                        <Link to={`/board/edit/${item.bno}`}>
-                            <Button variant="link" className="btn">
-                                수정
-                            </Button>
-                        </Link>
-                    </Col>
-                    <Col xs={4} md={1} className="boardView-btn">
-                        <Button variant="link" disabled={loading} onClick={handleDelete}>
-                            삭제
-                        </Button>
-                    </Col>
-                </React.Fragment>
-            );
-        } else {
-            // 토큰이 있지만, 작성자의 ID와 토큰의 ID가 일치하지 않는 경우
-            return null;
-        }
-    }
-    return null;
-}
+//     if (item && item.id && item.id.id) {
+//         if (userId === item.id.id) {
+//             // 토큰이 있고, 작성자의 ID와 토큰의 ID가 일치하는 경우
+//             return (
+//                 <React.Fragment key={item.bno}>
+//                     <Col xs={4} md={1} className="boardView-btn">
+//                         <Link to={`/board/edit/${item.bno}`}>
+//                             <Button variant="link" className="btn">
+//                                 수정
+//                             </Button>
+//                         </Link>
+//                     </Col>
+//                     <Col xs={4} md={1} className="boardView-btn">
+//                         <Button variant="link" disabled={loading} onClick={handleDelete}>
+//                             삭제
+//                         </Button>
+//                     </Col>
+//                 </React.Fragment>
+//             );
+//         } else {
+//             return null;
+//         }
+//     }
+//     return null;
+// }
 
 // 관광지 추천 게시판 상세 내용 조회
 function TouristSpotView() {
     const [TourBaordDetailData, setTourBaordDetailData] = useState([]);
     const { bno } = useParams();
     const [imageSrc, setImageSrc] = useState(""); // 이미지
-    const [commentContent, setCommentContent] = useState('');      // 댓글작성
+    const [commentContent, setCommentContent] = useState(''); // 댓글작성
+
+    const [replyList, setReplyList] = useState([]); // 댓글조회
+    const [reply, setReply] = useState(5); // 댓글 더보기
 
     // bno를 사용하여 관광지 게시글 상세정보 조회
     useEffect(() => {
@@ -131,18 +132,13 @@ function TouristSpotView() {
                     const imageUrl = URL.createObjectURL(response.data);
                     setImageSrc(imageUrl);
                 } else {
-                    setImageSrc("../../assets/test/noImg.png");
                 }
             } catch (error) {
-                setImageSrc("../../assets/test/noImg.png");
             }
         };
 
         fetchImage();
     }, [bno]);
-
-    // 댓글
-    const [replyList, setReplyList] = useState([]);
 
     // 댓글 조회
     const fetchReplyData = async () => {
@@ -154,38 +150,22 @@ function TouristSpotView() {
             data.sort((a, b) => new Date(b.regDate) - new Date(a.regDate)); // 최근 등록댓글이 상단으로
 
             setReplyList(data);
-            // con
-            // replyCnt(data.length); // 댓글 수
         } catch (error) {
             console.log("댓글없음");
         }
     };
 
+    // 더보기 클릭시 5개 추가
+    const handleLoadMore = () => {
+        setReply((prevReply) => prevReply + 5);
+    };
 
+    useEffect(() => {
+        fetchReplyData();
+    }, [bno]);
 
     const handleChange = (e) => {
         setCommentContent(e.target.value);
-    };
-
-    // 댓글 작성
-    const handleSubmit = async (e, bno) => {
-        e.preventDefault();
-
-        try {
-            const commentData = {
-                content: commentContent,
-                bno: bno,
-                id: userId
-            };
-
-            const response = await postReply(commentData);
-
-            setCommentContent(''); // 댓글 작성후 빈 배열로
-
-            fetchReplyData();
-        } catch (error) {
-            alert('댓글은 최대 80자 입력가능합니다!');
-        }
     };
 
     // 토큰 가져오기
@@ -194,34 +174,69 @@ function TouristSpotView() {
     const userId = decodedToken?.id; // 사용자id에 엑세스
     const userName = decodedToken?.name;
 
-  // 로그인한 id와 댓글단 id가 같을 때 삭제
-  const shouldShowDeleteButton = (reply) => {
-    return userId === reply.id;
-  };
+    const [isTextareaDisabled, setIsTextareaDisabled] = useState(true); // 댓글 작성 비활성화
+
+    // userId있을 경우 댓글 작성
+    useEffect(() => {
+        setIsTextareaDisabled(userId == null);
+    }, [userId]);
+
+    const handleSubmit = async (e, bno) => {
+        e.preventDefault();
+
+        if (userId == null) {
+            alert('로그인이 필요합니다. 로그인 후 다시 시도해주세요.');
+        } else {
+            console.log('userId:', userId);
+            setIsTextareaDisabled(false);
+            try {
+                console.log('Textarea enabled');
+
+                const commentData = {
+                    content: commentContent,
+                    bno: bno,
+                    id: userId
+                };
+
+                const response = await postReply(commentData);
+
+                setCommentContent('');
+
+                fetchReplyData();
+            } catch (error) {
+                alert('댓글은 최대 80자 입력 가능합니다!');
+            }
+        }
+    };
+
+    // 로그인한 id와 댓글단 id가 같을 때 삭제
+    const deleteButton = (reply) => {
+        return userId === reply.id;
+    };
 
     // 댓글 삭제
     const deleteReplyApi = async (rno) => {
         try {
-          const response = await deleteReply(rno);
-    
-          fetchReplyData();
+            const response = await deleteReply(rno);
+
+            fetchReplyData();
         } catch (error) {
-          throw error;
+            throw error;
         }
-      };
+    };
 
     // 삭제 버튼 클릭 시 호출되는 함수
     const handleDeleteReply = async (rno) => {
         try {
-          const response = await deleteReplyApi(rno);
-    
-          if (response.status === 200) {
-            window.location.reload();
-          } else {
-          }
+            const response = await deleteReplyApi(rno);
+
+            if (response.status === 200) {
+                window.location.reload();
+            } else {
+            }
         } catch (error) {
         }
-      }
+    }
 
     return (
         <>
@@ -240,17 +255,11 @@ function TouristSpotView() {
                                     </Col>
                                     <div className="line" />
                                     <div className="detail">
-                                        {/* <div className="touristSpotView-detail-date"> */}
                                         <div className="date">
                                             {moment(item.regDate).format("L")}
                                         </div>
-                                        {/* </div> */}
-                                        {/* <div className="writer"> */}
                                         <div className="writer">{item.id.name}</div>
-                                        {/* </div> */}
-                                        {/* <div className="view"> */}
                                         <div className="view">{item.viewCnt}</div>
-                                        {/* </div> */}
                                     </div>
                                     <div className="line" />
                                     {/* 내용 */}
@@ -311,6 +320,7 @@ function TouristSpotView() {
                                                 name='write_reply'
                                                 value={commentContent}
                                                 onChange={handleChange}
+                                                disabled={isTextareaDisabled}
                                             />
                                             <button
                                                 type='submit'
@@ -336,12 +346,12 @@ function TouristSpotView() {
                                     <p>{replyList.length}</p>
                                 </div>
                                 <div className="reply-container">
-                                    {replyList.map((reply) => (
+                                    {replyList.slice(0, reply).map((reply) => (
                                         <div className="reply-single" key={reply.rno}>
                                             <div className="nick-name">{reply.name}</div>
                                             <div className="reply-section">
                                                 <div className="reply-content">{reply.content}</div>
-                                                {shouldShowDeleteButton(reply) && (
+                                                {deleteButton(reply) && (
                                                     <LuDelete className="delete-icon" onClick={() => handleDeleteReply(reply.rno)} />
                                                 )}
                                             </div>
@@ -349,6 +359,9 @@ function TouristSpotView() {
                                         </div>
                                     ))}
                                 </div>
+                                {reply < replyList.length && (
+                                    <button className="moreBtn" onClick={handleLoadMore}>댓글 더보기</button>
+                                )}
                             </>
                         ) : (
                             <div className="no_data">
@@ -361,7 +374,6 @@ function TouristSpotView() {
                     </div>
                 </div>
             </div>
-            {/* </div> */}
         </>
     );
 }
