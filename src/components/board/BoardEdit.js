@@ -34,7 +34,6 @@ const BoardEdit = () => {
       e.preventDefault();
       try {
           const response = await putBoard(bno, updateDate);
-         // const response = await axios.put(`http://localhost:8081/board/edit/${bno}`, updateDate);
          if (response.status === 200) {
             alert("게시글 수정 완료");
             navigate("/board/touristSpot")
