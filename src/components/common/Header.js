@@ -266,7 +266,11 @@ function Header() {
               <span>로그인</span>
             </Nav>
           )}
-          <Nav onClick={handleMyPageClick}>
+          <Nav
+            className="mypageIcon"
+            style={{ cursor: "pointer" }}
+            onClick={handleMyPageClick}
+          >
             <IoPeople />
           </Nav>
           {/* <Nav
