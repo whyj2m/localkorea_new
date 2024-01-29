@@ -15,6 +15,9 @@ import { BiConversation } from "react-icons/bi";
 // API
 import { getCompanyDetail, postReply, getReply, deleteReply } from "../../api/BoardApi";
 
+// componet
+import EditAndDeleteBtn from "./EditAndDeleteBtn";
+
 // 토큰
 import { jwtDecode } from "jwt-decode";
 
@@ -37,7 +40,6 @@ function CompanyView({ replyCnt }) {
   const decodedToken = accessToken ? jwtDecode(accessToken) : null; // jwt 디코딩하여 페이로드에 엑세스, 토큰이있는경우만 디코딩
   const userId = decodedToken?.id; // 사용자id에 엑세스
   const userName = decodedToken?.name;
-
 
   // 댓글 조회
   const fetchReplyData = async () => {
@@ -69,24 +71,38 @@ function CompanyView({ replyCnt }) {
     fetchCompanyBoardListData();
   }, [bno]);
 
-  // 댓글 작성
+  const [isTextareaDisabled, setIsTextareaDisabled] = useState(true); // 댓글 작성 비활성화
+
+  // userId있을 경우 댓글 작성
+  useEffect(() => {
+    setIsTextareaDisabled(userId == null);
+  }, [userId]);
+
   const handleSubmit = async (e, bno) => {
     e.preventDefault();
 
-    try {
-      const commentData = {
-        content: commentContent,
-        bno: bno,
-        id: userId
-      };
+    if (userId == null) {
+      alert('로그인이 필요합니다. 로그인 후 다시 시도해주세요.');
+    } else {
+      console.log('userId:', userId);
+      setIsTextareaDisabled(false);
+      try {
+        console.log('Textarea enabled');
 
-      const response = await postReply(commentData);
+        const commentData = {
+          content: commentContent,
+          bno: bno,
+          id: userId
+        };
 
-      setCommentContent(''); // 댓글 작성후 빈 배열로
+        const response = await postReply(commentData);
 
-      fetchReplyData();
-    } catch (error) {
-      alert('댓글 작성 실패');
+        setCommentContent('');
+
+        fetchReplyData();
+      } catch (error) {
+        alert('댓글은 최대 35자 입력 가능합니다!');
+      }
     }
   };
 
@@ -150,6 +166,9 @@ function CompanyView({ replyCnt }) {
                 <div className="body-section1">
                   {item.content}
                 </div>
+                <div className="d-flex justify-content-end">
+                  <EditAndDeleteBtn />
+                </div>
                 <div className='reply_div'>
                   {/* <p>{userName}</p> */}
                   <div className='reply_write'>
@@ -158,10 +177,11 @@ function CompanyView({ replyCnt }) {
                       type="text"
                       id="write_reply"
                       placeholder='댓글을 입력하세요.'
-                      maxLength='100'
+                      maxLength='35'
                       name='write_reply'
                       value={commentContent}
                       onChange={handleChange}
+                      disabled={isTextareaDisabled}
                     />
                     <button
                       type='submit'
@@ -185,18 +205,18 @@ function CompanyView({ replyCnt }) {
                       <p>{replyList.length}</p>
                     </div>
                     <div className="reply-container">
-                    {replyList.map((reply) => (
-                      <div className="reply-single" key={reply.rno}>
-                        <div className="nick-name">{reply.name}</div>
-                        <div className="reply-section">
-                          <div className="reply-content">{reply.content}</div>
-                          {shouldShowDeleteButton(reply) && (
-                            <LuDelete className="delete-icon" onClick={() => handleDeleteReply(reply.rno)} />
-                          )}
+                      {replyList.map((reply) => (
+                        <div className="reply-single" key={reply.rno}>
+                          <div className="nick-name">{reply.name}</div>
+                          <div className="reply-section">
+                            <div className="reply-content">{reply.content}</div>
+                            {shouldShowDeleteButton(reply) && (
+                              <LuDelete className="delete-icon" onClick={() => handleDeleteReply(reply.rno)} />
+                            )}
+                          </div>
+                          <div className="time">{moment(reply.regDate).fromNow()}</div>
                         </div>
-                        <div className="time">{moment(reply.regDate).fromNow()}</div>
-                      </div>
-                    ))}
+                      ))}
                     </div>
                   </>
                 ) : (
