@@ -417,6 +417,7 @@ p {
 .board-Company .tab-list {
   margin-bottom: 20px;
   text-align: left;
+  cursor: pointer;
 }
 .tab-list span {
   display: inline-block;
@@ -610,7 +611,7 @@ ul.tourisspotList {
     border-radius: 15px;
   }
   .btn.more {
-    position: relative;
+    float: right;
     right: 0;
   }
   .section4 > h3 {
