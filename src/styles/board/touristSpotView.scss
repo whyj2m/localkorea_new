@@ -138,29 +138,29 @@
       }
     }
   
-    .boardView-btn {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-top: 10px;
+    // .boardView-btn {
+    //   display: flex;
+    //   justify-content: center;
+    //   align-items: center;
+    //   margin-top: 10px;
   
-      @media (min-width: 992px) {
-        flex-direction: row;
-      }
+    //   @media (min-width: 992px) {
+    //     flex-direction: row;
+    //   }
   
-      a,
-      button {
-        white-space: nowrap;
-      }
+    //   a,
+    //   button {
+    //     white-space: nowrap;
+    //   }
   
-      button:disabled {
-        white-space: nowrap;
-      }
-    }
+    //   button:disabled {
+    //     white-space: nowrap;
+    //   }
+    // }
   
-    @media (max-width: 992px) {
-      padding: 10px;
-    }
+    // @media (max-width: 992px) {
+    //   padding: 10px;
+    // }
   }
   
   .btn {
@@ -229,7 +229,7 @@
   .reply-list {
     margin: 10px;
     flex: 1;
-    overflow-y: auto;
+    // overflow-y: auto;
 
     .comment-count{
       display: flex;
@@ -249,7 +249,7 @@
     }
 
     .reply-single {
-      margin-bottom: 8px;
+      margin-bottom: 20px;
     }
 
     .nick-name {
@@ -262,18 +262,17 @@
       justify-content: space-between;
 
         .reply-content {
-          font-size: 16px;
+          font-size: 15px;
           margin: 2px 0 2px 0;
         }
 
         .delete-icon {
           margin-right: 10px;
           font-size: 20px;
-          color: #6e6e6ef0;
+          color: #555;
         }
 
         .time {
-          color: #ccc;
           font-size: 8px;
         }
     }
@@ -290,11 +289,12 @@
         margin-bottom: 20px;
       }
     }
-
-    .reply-container {
-      max-height: 300px;
-      overflow-y: auto; 
-    }
   }
 
+  .moreBtn{
+    margin-top: 10px;
+    padding: 10px;
+    background: $test1;
+    border-radius: 10px;
+  }
 }
