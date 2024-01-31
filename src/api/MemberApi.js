@@ -43,20 +43,36 @@ export const postLogin = async (data)=> {
 export const googleLogin = async () => {
     try {
         const response = await axiosInstance.get("/oauth/loginInfo");
-        // 로그인 정보를 콘솔에 출력하거나 필요한 처리 수행
         console.log(response.data);
         const token = new URL(window.location.href).searchParams.get("accessToken")
-        const refreshToken = new URL(window.location.href).searchParams.get("refreshToken")
         if(token) {
-            localStorage.setItem("token", token)
-            localStorage.setItem("refreshToken", refreshToken)
+            localStorage.setItem("ACCESS_TOKEN", token)
+            window.location.href="/"
         }
-        // window.location.href = "/";
     } catch (error) {
         // 에러 처리
         console.error("Google login error: ", error);
     }
 };
+
+// Kakao Login
+export const kakaoLogin = async () => {
+    try {
+        const response = await axiosInstance.get("/oauth/loginInfo");
+        // 로그인 정보를 콘솔에 출력하거나 필요한 처리 수행
+        console.log(response.data);
+        const token = new URL(window.location.href).searchParams.get("accessToken")
+        if(token) {
+            localStorage.setItem("ACCESS_TOKEN", token)
+            window.location.href="/"
+        }
+    } catch (error) {
+        // 에러 처리
+        console.error("Google login error: ", error);
+    }
+};
+
+
 
 // 회원정보
 export const getMember = async ()=> {

@@ -42,7 +42,7 @@ function Signup() {
       return;
     }
     try {
-      const response = await axios.post("http://localhost:8081/signup/checkId", { id: formData.id });
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/checkId`, { id: formData.id });
   
       if (response.data) {
         setErrorMsg({ ...errorMsg, id: "이미 존재하는 ID입니다." });
@@ -135,7 +135,7 @@ function Signup() {
         return;
       }
 
-      const response = await axios.post("http://localhost:8081/signup/verifyCode", {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/verifyCode`, {
         verificationCode: formData.vc,
       });
 
@@ -180,7 +180,7 @@ function Signup() {
       });
 
       // 회원가입 요청
-      const signupResponse = await axios.post("http://localhost:8081/signup", formData);
+      const signupResponse = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup`, formData);
 
       if (signupResponse.status === 200) {
         alert("회원 가입 완료");
@@ -201,7 +201,7 @@ function Signup() {
   // 이메일 발송 함수
   const sendEmail = async () => {
     try {
-      const response = await axios.post("http://localhost:8081/signup/sendMail", {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/sendMail`, {
         email: formData.email,
       });
   
