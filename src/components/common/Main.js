@@ -19,6 +19,14 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { getCompanyBaordList, getTourBaordList } from "../../api/BoardApi.js";
 import SocketChat from "../chat/SocketChat.js";
 
+const baseURL = process.env.REACT_APP_BASE_URL;
+const axiosInstance = axios.create({
+  baseURL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 function Section2Swiper({
   festivalData,
   localNo,
@@ -129,10 +137,9 @@ function Section4Swiper() {
 
   const fetchImage = async (bno) => {
     try {
-      const response = await axios.get(
-        `http://localhost:8081/api/images/${bno}`,
-        { responseType: "arraybuffer" }
-      );
+      const response = await axiosInstance.get(`/api/images/${bno}`, {
+        responseType: "arraybuffer",
+      });
       const blob = new Blob([response.data], {
         type: response.headers["content-type"],
       });
@@ -230,19 +237,15 @@ function Main() {
     const fetchSeoulData = async () => {
       try {
         // 기본 지역 데이터 가져오기
-        const response = await axios.get(
-          `http://localhost:8081/localPlaces/${localNo}`
-        );
+        const response = await axiosInstance.get(`/localPlaces/${localNo}`);
 
         // 축제 데이터 가져오기
-        const festivalResponse = await axios.get(
-          `http://localhost:8081/localFestivals/${localNo}`
+        const festivalResponse = await axiosInstance.get(
+          `/localFestivals/${localNo}`
         );
 
         // 특산물 데이터 가져오기
-        const foodResponse = await axios.get(
-          `http://localhost:8081/localFoods/${localNo}`
-        );
+        const foodResponse = await axiosInstance.get(`/localFoods/${localNo}`);
 
         // 데이터와 localNo를 업데이트
         handlePlaceUpdate(
@@ -256,7 +259,7 @@ function Main() {
       }
     };
 
-    fetchSeoulData(); // 초기 호출
+    fetchSeoulData(); // 초기 서울 데이터 호출
   }, [localNo]);
 
   useEffect(() => {
