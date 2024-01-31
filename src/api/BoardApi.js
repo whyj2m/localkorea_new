@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseURL = 'http://localhost:8081'
+const baseURL = process.env.REACT_APP_BASE_URL;
 const axiosInstance = axios.create({
     baseURL,
     headers: {
@@ -54,26 +54,9 @@ export const getCompanyDetail = async (bno) => {
  // company API 끝 
 
 // 이미지 (단일)조회
-export const getImg = async (bno) => {
-    try {
-        const response = await axiosInstance.get(`/api/images/${bno}`);
-        console.log(response);
-        return [response.data]; // 이미지 데이터를 배열로 감싸서 반환
-        
-    } catch (error) {
-        if (error.response && error.response.status === 404) {
-           
-            // 이미지가 없는 경우, 빈 배열로 처리
-            return []; // 빈 배열 반환
-        }
-        throw error; // 다른 오류는 그대로 throw
-    }
-}
-
-// 이미지 (단일)조회
 // export const getImg = async (bno) => {
 //     try {
-//         const response = await axiosInstance.get(`/api/images/${bno}`, { responseType: "blob" });
+//         const response = await axiosInstance.get(`/api/image/${bno}`);
 //         console.log(response);
 //         return [response.data]; // 이미지 데이터를 배열로 감싸서 반환
         
@@ -86,6 +69,21 @@ export const getImg = async (bno) => {
 //         throw error; // 다른 오류는 그대로 throw
 //     }
 // }
+
+export const getImg = async (bno) => {
+    try {
+        const response = await axiosInstance.get(`/api/images/${bno}`, { responseType: 'arraybuffer' });
+        console.log(response);
+        const blob = new Blob([response.data], { type: response.headers['content-type'] });
+
+        return blob; // Blob 반환
+    } catch (error) {
+        if (error.response && error.response.status === 404) {
+            return null; 
+        }
+        throw error; 
+    }
+}
 
 // 게시글 작성
 export const postBoardWrite = async (formData) => {
