@@ -37,7 +37,7 @@ function ChangeInfo(props) {
         alert("인증번호를 입력해주세요.");
         return;
       }
-      const response = await axios.post("http://localhost:8081/signup/verifyCode", {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/verifyCode`, {
         verificationCode: verificationCode,
         }
       );
@@ -71,7 +71,7 @@ function ChangeInfo(props) {
   // 이메일로 인증 코드를 보내는 함수
   const sendVerificationCode = async () => {
     try {
-      const response = await axios.post("http://localhost:8081/signup/sendMail", {
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/sendMail`, {
           email: memberInfo.email,
         }
       );
