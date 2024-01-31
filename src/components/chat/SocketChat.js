@@ -19,7 +19,7 @@ const SocketChat = ({ onClose }) => {
       const decodedToken = jwtDecode(accessToken);
       const userId = decodedToken.id;
 
-      const apiUrl = `http://localhost:8081/members/${userId}`;
+      const apiUrl = `${process.env.REACT_APP_BASE_URL}members/${userId}`;
 
       axios
         .get(apiUrl, {
@@ -34,7 +34,9 @@ const SocketChat = ({ onClose }) => {
           setUserName(retrievedUserName);
 
           // WebSocket 연결 열고 사용자 이름 전송
-          const newSocket = new WebSocket("ws://localhost:8081/socket");
+          const newSocket = new WebSocket(
+            `${process.env.REACT_APP_BASE_URL.replace(/^http/, "ws")}/socket`
+          );
           newSocket.onopen = (event) => {
             console.log("WebSocket 연결이 열렸습니다.");
             newSocket.send(
