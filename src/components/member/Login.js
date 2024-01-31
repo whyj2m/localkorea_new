@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { googleLogin, postLogin } from "../../api/MemberApi";
+import { googleLogin, kakaoLogin, postLogin } from "../../api/MemberApi";
 import "../../styles/Member.scss";
 import { Form, Button } from "react-bootstrap";
 import FindId from "./modal/FindId";
@@ -16,6 +16,14 @@ function Login() {
   const openFindPwModal = () => {
     setShowFindPwModal(true);
   };
+
+  const handleGoogleLogin = async () => {
+    try {
+      await googleLogin();
+    } catch (error) {
+      console.error("Google login error:", error);
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -71,7 +79,7 @@ function Login() {
           </Form>
           <hr />
           <div className="otherlogin">
-            <a href="http://localhost:8081/oauth2/authorization/google" onClick={googleLogin}>
+            <a href={`${process.env.REACT_APP_BASE_URL}/oauth2/authorization/google`} onClick={handleGoogleLogin}>
               <div className="google">
                 <div className="g-icon">
                   <img src="../../assets/member/google.png" alt="" />
@@ -79,12 +87,14 @@ function Login() {
                 Sign with Google
               </div>
             </a>
-            <div className="kakao">
-              <div className="k-icon">
-                <img src="../../assets/member/kakao.png" alt="" />
+            <a href={`${process.env.REACT_APP_BASE_URL}/oauth2/authorization/kakao`} onClick={kakaoLogin}>
+              <div className="kakao">
+                <div className="k-icon">
+                  <img src="../../assets/member/kakao.png" alt="" />
+                </div>
+                Sign with Kakao
               </div>
-              Sign with Kakao
-            </div>
+            </a>
           </div>
           <div className="help">
             <h4>
