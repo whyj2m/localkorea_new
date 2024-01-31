@@ -8,7 +8,7 @@ function FindPw(props) {
     const [error, setError] = useState("");
 
     const handleSendMail = () => {
-        axios.post("http://localhost:8081/sendFindPwMail", { id, email })
+        axios.post(`${process.env.REACT_APP_BASE_URL}/sendFindPwMail`, { id, email })
             .then(response => {
                 alert("입력한 이메일 주소로 임시 비밀번호를 발송했습니다.");
             })

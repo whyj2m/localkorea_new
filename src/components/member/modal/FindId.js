@@ -7,7 +7,7 @@ function FindId(props) {
     const [email, setEmail] = useState("");
 
     const handleSendMail = () => {
-        axios.post("http://localhost:8081/sendFindIdMail", { name, email })
+        axios.post(`${process.env.REACT_APP_BASE_URL}/sendFindIdMail`, { name, email })
             .then(response => {
                 alert("입력한 이메일 주소로 회원님의 ID를 발송했습니다.");
             })

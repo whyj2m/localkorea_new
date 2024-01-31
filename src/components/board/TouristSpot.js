@@ -10,6 +10,7 @@ import '../../styles/board/touristSpot.scss';
 
 // API
 import { getTourBaordList } from '../../api/BoardApi';
+import { getImg } from "../../api/BoardApi";
 
 // component
 import BoardCate from './BoardCate';
@@ -139,33 +140,38 @@ function TouristSpot() {
             try {
                 const promises = currentItems.map(async (item) => {
                     if (!imageSrcMap[item.bno]) {
-                        const response = await fetch(`http://localhost:8081/api/images/${item.bno}`);
-                        if (response.ok) {
-                            const blob = await response.blob();
-                            const imageUrl = URL.createObjectURL(blob);
-                            setImageSrcMap((prevImageSrcMap) => ({
-                                ...prevImageSrcMap,
-                                [item.bno]: imageUrl,
-                            }));
-                        }
-                        else {
-                            setImageSrc('../../assets/test/noImg.png'); // 대체이미지
-                            return;
+                        try {
+                            const response = await getImg(item.bno);
+                            if (response) {
+                                const blob = new Blob([response], { type: 'image/png' });
+                                const imageUrl = URL.createObjectURL(blob);
+                                setImageSrcMap((prevImageSrcMap) => ({
+                                    ...prevImageSrcMap,
+                                    [item.bno]: imageUrl,
+                                }));
+                            } else {
+                                setImageSrcMap((prevImageSrcMap) => ({
+                                    ...prevImageSrcMap,
+                                    [item.bno]: '../../assets/test/noImg.png', // 대체이미지
+                                }));
+                            }
+                        } catch (error) {
+                            console.error('이미지를 불러오는 중 오류 발생:', error);
                         }
                     }
                 });
-
+    
                 await Promise.all(promises);
             } catch (error) {
+                console.error('fetchImages에서 오류 발생:', error);
             }
         };
-
+    
         if (currentItems.length > 0) {
             fetchImages();
         }
-
     }, [currentItems, imageSrcMap]);
-
+    
     return (
         <>
             <BoardCate />

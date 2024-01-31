@@ -49,7 +49,7 @@ export const getWeatherData = async () => {
     const weatherId = res.data.weather[0].id;
     const weatherKo = weatherDescKo[weatherId];
     const weatherIcon = res.data.weather[0].icon;
-    const weatherIconAdrs = `http://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
+    const weatherIconAdrs = `https://openweathermap.org/img/wn/${weatherIcon}@2x.png`;
     const temp = Math.round(res.data.main.temp);
 
     const currentDate = formatCurrentDate();
