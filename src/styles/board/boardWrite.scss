@@ -14,7 +14,6 @@
         .instructions-explanation{
     
             font-size: 25px;
-            // margin-bottom: 30px;
             padding-top: 10px;
             padding-bottom: 22px;
             font-family: "S-Core Dream";
@@ -25,11 +24,6 @@
             .instructions-content{
                 padding-bottom: 10px;
                 font-size: 18px;
-                // overflow: hidden;
-                // white-space: nowrap;
-                // text-overflow: ellipsis;
-    
-              
             }
         }
     }
@@ -42,7 +36,6 @@
     .underline{
         margin: 7px 0 7px 0;
         color: #ede7e746;
-        // width: 1096px;
         width: 100%;
         
         @media (max-width: 768px) {
