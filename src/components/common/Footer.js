@@ -1,7 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import "../../styles/Footer.css";
 
-import { LuExternalLink } from "react-icons/lu";
 import { FaGithub } from "react-icons/fa";
 import { SiNotion } from "react-icons/si";
 import { IoLogoYoutube } from "react-icons/io";
