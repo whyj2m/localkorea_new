@@ -44,7 +44,7 @@ const ChatWidget = () => {
         <SocketChat onClose={closeChat} />
       ) : (
         <div className="chaticon" onClick={toggleChat}>
-          <img src="assets/etc/chat.png" alt="Chat Icon" />
+          <img src="/assets/etc/chat.png" alt="Chat Icon" />
         </div>
       )}
     </div>

@@ -135,7 +135,7 @@ function Header() {
       // console.log("JWT에서 추출한 사용자 ID:", userId);
 
       // API 호출을 위한 주소
-      const apiUrl = `http://localhost:8081/members/${userId}`;
+      const apiUrl = `${process.env.REACT_APP_BASE_URL}members/${userId}`;
 
       // API 호출
       axios
