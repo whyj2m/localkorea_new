@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 // css
 import { Button, Form, Row, Col } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "../../styles/board/boardWrite.scss";
+import "../../styles/board/BoardWrite.scss";
 
 // API
 import { postBoardWrite } from "../../api/BoardApi";

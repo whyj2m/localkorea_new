@@ -7,7 +7,7 @@ import axios from "axios";
 // css
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import '../../styles/board/boardEdit.scss';
+import '../../styles/board/BoardEdit.scss';
 
 // API
 import { getTourBaordDetail, putBoard } from '../../api/BoardApi';

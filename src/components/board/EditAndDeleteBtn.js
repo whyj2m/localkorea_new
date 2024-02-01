@@ -1,7 +1,5 @@
 // css
-// import "../../styles/board/touristSpotView.scss";
-import "../../styles/board/editAndDeleteBtn.scss";
-
+import "../../styles/board/EditAndDeleteBtn.scss";
 import { Col, Button } from "react-bootstrap";
 
 // react
