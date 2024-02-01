@@ -21,7 +21,7 @@ function Footer() {
       <div className="wrap-footer">
         <hr />
         <div className="container">
-          <h2 className="screen-out">하단 메뉴</h2>
+          <h2 className="screen-out"></h2>
           <ul className="inner-service">
             <li className="wrap-service">
               <div className="title">
