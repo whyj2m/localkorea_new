@@ -1,12 +1,10 @@
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
-import NavDropdown from "react-bootstrap/NavDropdown";
+
 import "../../styles/Header.css";
 
 import { FaSearch } from "react-icons/fa";
 import { IoPeople } from "react-icons/io5";
-import { FaHeart } from "react-icons/fa";
-import { GrLogin } from "react-icons/gr";
 
 import Swal from "sweetalert2";
 import { getWeatherData } from "../../api/Weather";

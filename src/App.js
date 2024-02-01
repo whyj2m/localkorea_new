@@ -2,8 +2,8 @@ import React, { Suspense, lazy } from "react";
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min";
-import "./index.css";
-import "./reset.scss";
+import "../src/styles/index.css";
+import "../src/styles/reset.scss";
 
 import Header from "./components/common/Header";
 import Footer from "./components/common/Footer.js";
@@ -25,7 +25,9 @@ const FestivalView = lazy(() => import("./components/festival/FestivalView"));
 const BoardWrite = lazy(() => import("./components/board/BoardWrite"));
 const BoardEdit = lazy(() => import("./components/board/BoardEdit"));
 const TouristSpot = lazy(() => import("./components/board/TouristSpot"));
-const TouristSpotView = lazy(() => import("./components/board/TouristSpotView"));
+const TouristSpotView = lazy(() =>
+  import("./components/board/TouristSpotView")
+);
 const Company = lazy(() => import("./components/board/Company"));
 const CompanyView = lazy(() => import("./components/board/CompanyView.js"));
 const Notice = lazy(() => import("./components/board/Notice"));
@@ -57,12 +59,17 @@ function App() {
           <Route path="/place/:localNo" element={<PlaceMain />} />
           <Route path="/place/:localNo/:placeNo" element={<PlcaeView />} />
           <Route path="/festival/:localNo" element={<FestivalMain />} />
-          <Route path="/festival/:localNo/:festivalNo" element={<FestivalView />}
+          <Route
+            path="/festival/:localNo/:festivalNo"
+            element={<FestivalView />}
           />
 
           {/* Board */}
           <Route path="/board/touristSpot" element={<TouristSpot />} />
-          <Route path="/board/touristSpotView/:bno" element={<TouristSpotView />} />
+          <Route
+            path="/board/touristSpotView/:bno"
+            element={<TouristSpotView />}
+          />
           <Route path="/board/company" element={<Company />} />
           <Route path="/board/companyView/:bno" element={<CompanyView />} />
           <Route path="/board/notice" element={<Notice />} />
