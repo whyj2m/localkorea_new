@@ -10,14 +10,12 @@ import SouthKoreaMap from "../common/SouthKoreaMap.js";
 import Video from "./Video.js";
 import axios from "axios";
 import { Link, useLocation } from "react-router-dom";
-import { FaRegEye } from "react-icons/fa";
 import "../../styles/Main.css";
 
 //  스와이퍼 부분
 import { Navigation, Autoplay, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { getCompanyBaordList, getTourBaordList } from "../../api/BoardApi.js";
-import SocketChat from "../chat/SocketChat.js";
 
 const baseURL = process.env.REACT_APP_BASE_URL;
 const axiosInstance = axios.create({
