@@ -593,7 +593,7 @@ ul.tourisspotList {
 }
 .section4-background {
   position: absolute;
-  width: 1920px;
+  width: 1899px;
   height: 120.5%;
   left: -300px;
   top: -60px;
@@ -627,6 +627,7 @@ ul.tourisspotList {
 @media (min-width: 1200px) and (max-width: 1400px) {
   .section4-background {
     height: 119.5%;
+    width: 136%;
   }
 }
 @media (max-width: 1000px) {
@@ -674,7 +675,7 @@ ul.tourisspotList {
     font-size: 25px;
   }
   .section4-background {
-    height: 114.5%;
+    height: 112.5%;
   }
 }
 
@@ -796,7 +797,8 @@ ul.tourisspotList {
     padding-left: 12px;
   }
   .section4-background {
-    height: 114.5%;
+    height: 111.5%;
+    width: 168%;
   }
   .section1-headname h3 > strong {
     font-size: 20px;

@@ -1,4 +1,4 @@
-@import "../../reset.scss"; 
+@import '../reset.scss';
 @import url("https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700,800,900&display=swap");
 
 .touriSpot-cotent{
@@ -121,7 +121,6 @@
         }
 
         .each{
-            // display: flex;
             .content-viewCnt{
                 p{
                     text-align: end;

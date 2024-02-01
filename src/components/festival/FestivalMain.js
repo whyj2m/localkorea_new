@@ -1,10 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import "../../styles/festival/FestivalMain.css";
 import Location2 from "../common/Location2";
-import {
-  getLocalFestival,
-  getLocalFestivals,
-} from "../../api/LocalFestivalApi";
+import { getLocalFestival } from "../../api/LocalFestivalApi";
 import { useEffect, useState } from "react";
 import { getLocation } from "../../api/locationApi";
 
