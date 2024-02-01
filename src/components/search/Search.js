@@ -1,5 +1,4 @@
 import "../../styles/Search.scss";
-import Nav from "react-bootstrap/Nav";
 import { IoSearch } from "react-icons/io5";
 import { Container } from "react-bootstrap";
 import { useState } from "react";

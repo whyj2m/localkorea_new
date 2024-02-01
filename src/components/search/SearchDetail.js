@@ -1,7 +1,5 @@
-import Button from "react-bootstrap/Button";
 import { Container, Row, Col, Nav } from "react-bootstrap";
 import "../../styles/Search.scss";
-import { FaAngleRight } from "react-icons/fa6";
 import { BsEye } from "react-icons/bs";
 import Search from "./Search";
 import { useEffect, useRef, useState } from "react";
