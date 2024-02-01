@@ -4,7 +4,7 @@ import React from "react";
 
 // css
 import { Card, Col, Row, Container, Button, Form } from 'react-bootstrap';
-import '../../styles/board/company.scss';
+import '../../styles/board/Company.scss';
 import { useNavigate } from 'react-router-dom';
 import { IoEyeSharp } from "react-icons/io5"; // 조회수
 

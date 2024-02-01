@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { Link } from 'react-router-dom';
 
 // css
-import '../../styles/board/companyView.scss';
+import '../../styles/board/CompanyView.scss';
 import { MdOutlineLocationOn, MdDateRange } from "react-icons/md";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { BsSend } from "react-icons/bs";

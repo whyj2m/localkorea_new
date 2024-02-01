@@ -5,8 +5,8 @@ import { Link, useNavigate } from 'react-router-dom';
 
 // css
 import { Form, Button, Card, Col, Row, Pagination } from 'react-bootstrap';
-import '../../styles/board/board.scss';
-import '../../styles/board/touristSpot.scss';
+import '../../styles/board/Board.scss';
+import '../../styles/board/TouristSpot.scss';
 
 // API
 import { getTourBaordList } from '../../api/BoardApi';
