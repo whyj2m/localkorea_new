@@ -1,5 +1,5 @@
 // css
-import "../../styles/board/touristSpotView.scss";
+import "../../styles/board/TouristSpotView.scss";
 import { Row, Col, Button } from "react-bootstrap";
 import { BiConversation } from "react-icons/bi";
 import { FaExclamationCircle } from "react-icons/fa";
@@ -11,11 +11,11 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 
 // api
-import { getTourBaordDetail, deleteBoard, getReply, postReply, deleteReply, getImg  } from "../../api/BoardApi";
+import { getTourBaordDetail, getReply, postReply, deleteReply, getImg  } from "../../api/BoardApi";
 import EditAndDeleteBtn from "./EditAndDeleteBtn";
 
 // 시간
@@ -69,28 +69,6 @@ useEffect(() => {
 
     fetchImage();
 }, [bno]);
-
-    
-    // useEffect(() => {
-    //     const fetchImage = async () => {
-    //         try {
-    //             const response = await axios.get(
-    //                 `http://localhost:8081/api/images/${bno}`,
-    //                 { responseType: "blob" }
-    //             );
-    //             // const response = await getImg(bno);
-
-    //             if (response.status === 200 && response.data.size > 0) {
-    //                 const imageUrl = URL.createObjectURL(response.data);
-    //                 setImageSrc(imageUrl);
-    //             } else {
-    //             }
-    //         } catch (error) {
-    //         }
-    //     };
-
-    //     fetchImage();
-    // }, [bno]);
 
     // 댓글 조회
     const fetchReplyData = async () => {

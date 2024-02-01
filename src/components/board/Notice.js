@@ -1,4 +1,4 @@
-import '../../styles/board/notice.scss'
+import '../../styles/board/Notice.scss'
 
 import React, { useState } from 'react';
 import { Accordion, Card } from 'react-bootstrap';
