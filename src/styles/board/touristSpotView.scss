@@ -1,4 +1,4 @@
-@import "../../reset.scss";
+@import '../reset.scss';
 
 .touristSpotView{
 
@@ -137,30 +137,6 @@
         margin: 10px 0 10px 0;
       }
     }
-  
-    // .boardView-btn {
-    //   display: flex;
-    //   justify-content: center;
-    //   align-items: center;
-    //   margin-top: 10px;
-  
-    //   @media (min-width: 992px) {
-    //     flex-direction: row;
-    //   }
-  
-    //   a,
-    //   button {
-    //     white-space: nowrap;
-    //   }
-  
-    //   button:disabled {
-    //     white-space: nowrap;
-    //   }
-    // }
-  
-    // @media (max-width: 992px) {
-    //   padding: 10px;
-    // }
   }
   
   .btn {
@@ -229,7 +205,6 @@
   .reply-list {
     margin: 10px;
     flex: 1;
-    // overflow-y: auto;
 
     .comment-count{
       display: flex;
