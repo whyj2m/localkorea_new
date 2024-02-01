@@ -4,7 +4,6 @@ import { Container, Row, Col, Pagination } from "react-bootstrap";
 import { BsEye } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa";
 import Search from "./Search";
-import { Link } from "react-router-dom";
 
 function SearchLocal() {
   const [searchTerm, setSearchTerm] = useState(""); // 검색어 상태 추가
