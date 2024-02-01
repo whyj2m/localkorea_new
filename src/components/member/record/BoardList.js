@@ -116,12 +116,6 @@ function BoardList() {
   };
 
   // 다음 페이지로 이동하는 핸들러
-  // const handleNextPage = () => {
-  //   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  //   if (currentPage < totalPages) {
-  //       setCurrentPage(currentPage + 1);
-  //   }
-  // };
   const handleNextPage = (section, totalPages) => {
     if (section === "tourspot") {
       if (currentPage < totalPages) {
