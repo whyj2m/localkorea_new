@@ -16,6 +16,7 @@ import {
 import Kakaomap from "../../api/Kakaomap";
 import { jwtDecode } from "jwt-decode";
 import Swal from "sweetalert2";
+import ClipboardJS from "clipboard";
 
 function PlaceView() {
   const { localNo, placeNo } = useParams();
@@ -130,26 +131,34 @@ function PlaceView() {
     }
   };
 
-  const handleCopyUrlClick = async () => {
+  function handleCopyUrlClick() {
     try {
-      await navigator.clipboard.writeText(shareUrl);
-      Swal.fire({
-        icon: "success",
-        title: "URL이 복사되었습니다.",
-        text: "원하는 곳에 붙여넣기(Ctrl+V)하여 공유하세요.",
-        timer: 2000,
-        timerProgressBar: true,
-        showConfirmButton: false, // 확인 버튼을 숨깁니다.
+      const clipboard = new ClipboardJS(".btns");
+
+      clipboard.on("success", function (e) {
+        console.log(e);
+        Swal.fire({
+          icon: "success",
+          title: "URL이 복사되었습니다.",
+          text: "원하는 곳에 붙여넣기(Ctrl+V)하여 공유하세요.",
+          timer: 2000,
+          timerProgressBar: true,
+          showConfirmButton: false,
+        });
+      });
+
+      clipboard.on("error", function (e) {
+        console.log(e);
+        Swal.fire({
+          icon: "error",
+          title: "URL 복사 실패",
+          text: "URL을 복사하는 중에 오류가 발생했습니다.",
+        });
       });
     } catch (error) {
-      console.error("URL 복사 오류:", error);
-      Swal.fire({
-        icon: "error",
-        title: "URL 복사 실패",
-        text: "URL을 복사하는 중에 오류가 발생했습니다.",
-      });
+      console.error("ClipboardJS 초기화 오류:", error);
     }
-  };
+  }
 
   // placeNo에 해당하는 하트 갯수를 가져오는 함수
   function getHeartCountForPlaceNo(placeNo) {
@@ -175,7 +184,7 @@ function PlaceView() {
               {isHearted ? <FaHeart /> : <CiHeart className="heart-icon " />}
               <p>{getHeartCountForPlaceNo(placeNo)}</p>
             </span>
-            <span onClick={handleCopyUrlClick}>
+            <span className="btns" onClick={handleCopyUrlClick}>
               <FaLink />
             </span>
           </div>
