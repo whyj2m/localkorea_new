@@ -36,6 +36,7 @@ function RegionfoodRandom({ localFoodsAll, slidesPerView }) {
   // console.log("랜덤 데이터:", slicedLocalFoods);
   return (
     <Swiper
+      key="regionfoodrandom"
       style={{
         height: "100%",
         width: "100%",

@@ -74,8 +74,10 @@ const BoardEdit = () => {
 
    // 업데이트
    const handleChange = (e) => {
-      const { name, value } = e.target;
-      let newLocation = 'updateDate.location';
+      const { name, value } = e.target; // 카테고리 선택시 변경되도록
+      // let newLocation = 'updateDate.location'; 
+      let newLocation = '';
+
       
       // 문자열 시작에 공백 여러개면 제거
       const trimmedInput = (name === 'title' || name === 'content') ? value.replace(/^\s+/g, '') : value;

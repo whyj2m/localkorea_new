@@ -34,12 +34,13 @@ function Section2Swiper({
   return (
     <div className="swiper-container">
       <Swiper
+        key="section2Swiper"
         className="swiper-wrapper"
         modules={[Autoplay, Pagination]}
         spaceBetween={50}
         slidesPerView={slidesPerView}
         autoplay={{ delay: 3000 }}
-        loop={true}
+        loop={false}
         pagination={{ type: "bullets", clickable: true }}
       >
         {festivalData.slice(0, 5).map((festival, index) => (
@@ -71,6 +72,7 @@ function Section2Swiper({
 function Section3Swiper({ foods, localNo, slidesPerView }) {
   return (
     <Swiper
+      key="section3Swiper"
       style={{
         height: "100%",
         width: "100%",
@@ -152,6 +154,7 @@ function Section4Swiper() {
 
   return (
     <Swiper
+      key="section4Swiper"
       style={{
         width: "100%", // 변경된 부분
         position: "relative",

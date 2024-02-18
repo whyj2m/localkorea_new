@@ -23,6 +23,7 @@ import { getLocalFestival } from "../../api/LocalFestivalApi";
 function LocalmainSwiper({ places, localNo, slidesPerView }) {
   return (
     <Swiper
+      key="localmainswiper"
       style={{
         height: "100%",
         width: "100%",
@@ -57,6 +58,7 @@ function LocalmainSwiper({ places, localNo, slidesPerView }) {
 function LocalmainSwiper2({ festivals, localNo, slidesPerView }) {
   return (
     <Swiper
+      key="localmainswiper2"
       style={{
         height: "100%",
         width: "100%",
