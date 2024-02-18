@@ -83,10 +83,10 @@ export const getMember = async ()=> {
             const response = await axiosInstance.get(`/mypage/${userId}`)
             return response
         } 
-        // else {
-        //     alert("유효하지 않은 요청입니다. 로그인 페이지로 이동합니다.");
-        //     window.location.href = "/login"; // 로그인 페이지로 이동
-        // }
+        else {
+            alert("유효하지 않은 요청입니다. 로그인 페이지로 이동합니다.");
+            window.location.href = "/login"; // 로그인 페이지로 이동
+        }
     } catch (error) {
         throw error
     }
