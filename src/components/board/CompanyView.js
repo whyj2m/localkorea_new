@@ -84,10 +84,10 @@ function CompanyView({ replyCnt }) {
     if (userId == null) {
       alert('로그인이 필요합니다. 로그인 후 다시 시도해주세요.');
     } else {
-      console.log('userId:', userId);
+      // console.log('userId:', userId);
       setIsTextareaDisabled(false);
       try {
-        console.log('Textarea enabled');
+        // console.log('Textarea enabled');
 
         const commentData = {
           content: commentContent,
