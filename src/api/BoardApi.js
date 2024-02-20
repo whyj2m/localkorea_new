@@ -57,7 +57,6 @@ export const getCompanyDetail = async (bno) => {
 // export const getImg = async (bno) => {
 //     try {
 //         const response = await axiosInstance.get(`/api/image/${bno}`);
-//         console.log(response);
 //         return [response.data]; // 이미지 데이터를 배열로 감싸서 반환
         
 //     } catch (error) {
@@ -73,7 +72,6 @@ export const getCompanyDetail = async (bno) => {
 export const getImg = async (bno) => {
     try {
         const response = await axiosInstance.get(`/api/images/${bno}`, { responseType: 'arraybuffer' });
-        console.log(response);
         const blob = new Blob([response.data], { type: response.headers['content-type'] });
 
         return blob; // Blob 반환

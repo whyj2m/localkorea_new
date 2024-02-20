@@ -2,15 +2,20 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../../styles/SouthKoreaMap.css";
 
+// axios 인스턴스 생성
+const axiosInstance = axios.create({
+  baseURL: process.env.REACT_APP_BASE_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 function SouthKoreaMap({ onLocationClick }) {
   const [selectedLocation, setSelectedLocation] = useState(1);
 
   async function handleLocationClick(localNo) {
     try {
-      const response = await axios.get(
-        `http://localhost:8081/localPlaces/${localNo}`
-      );
-
+      const response = await axiosInstance.get(`/localPlaces/${localNo}`);
       // 기존에 선택된 지역이 있다면 클래스 제거
       if (selectedLocation) {
         const prevSelectedElement = document.querySelectorAll(
