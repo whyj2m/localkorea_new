@@ -5,7 +5,6 @@ const { kakao } = window;
 
 function Kakaomap2({ location }) {
   const mapContainer = useRef(null);
-  const findRoadButtonRef = useRef(null);
   const [latitude, setLatitude] = useState("");
   const [longlatitude, setLongLatitude] = useState("");
 
@@ -13,24 +12,18 @@ function Kakaomap2({ location }) {
     const getLocationFromAddress = async (address) => {
       try {
         const geocoder = new kakao.maps.services.Geocoder();
-        const result = await new Promise((resolve, reject) => {
+        return new Promise((resolve, reject) => {
           geocoder.addressSearch(address, (result, status) => {
             if (status === kakao.maps.services.Status.OK) {
-              resolve(result[0]);
+              resolve({
+                latitude: result[0].y,
+                longitude: result[0].x,
+              });
             } else {
               reject(new Error("주소로부터 좌표를 가져오지 못했습니다."));
             }
           });
         });
-
-        if (result) {
-          return {
-            latitude: result.y,
-            longitude: result.x,
-          };
-        } else {
-          throw new Error("지오코더로부터 유효하지 않은 응답을 받았습니다.");
-        }
       } catch (error) {
         console.error("주소로부터 좌표를 가져오는 중 오류 발생:", error);
         throw error;
@@ -59,8 +52,6 @@ function Kakaomap2({ location }) {
         const markerPosition = new kakao.maps.LatLng(latitude, longitude);
         const marker = new kakao.maps.Marker({ position: markerPosition });
         marker.setMap(map);
-
-        const findRoadButton = findRoadButtonRef.current;
       } catch (error) {
         console.error("지도 초기화 중 오류 발생:", error);
       }

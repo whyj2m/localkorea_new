@@ -16,6 +16,7 @@ import Kakaomap2 from "../../api/Kakaomap2";
 function FestivalViewSwiper({ festivals, localNo, slidesPerView }) {
   return (
     <Swiper
+      key="festivalviewswiper"
       style={{
         height: "300px",
         width: "100%",

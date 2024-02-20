@@ -120,7 +120,7 @@ function Signup() {
     setErrorMsg({ ...errorMsg, [e.target.name]: "" });
 
     if (e.target.name === "vc") {
-      console.log("현재 입력된 인증번호:", e.target.value);
+      // console.log("현재 입력된 인증번호:", e.target.value);
       setVcSuccess(false);
     }
 
@@ -139,7 +139,7 @@ function Signup() {
         verificationCode: formData.vc,
       });
 
-      console.log("서버 응답 확인:", response.data);
+      // console.log("서버 응답 확인:", response.data);
   
       if (response.data.status === 200 && formData.vc === codeFromEmail) {
         setVcSuccess(true); 
@@ -188,8 +188,8 @@ function Signup() {
       } else {
         alert("회원가입 실패");
       }
-      console.log("사용자 입력값:", formData.vc);
-      console.log("서버에서 받은 인증번호:", codeFromEmail);
+      // console.log("사용자 입력값:", formData.vc);
+      // console.log("서버에서 받은 인증번호:", codeFromEmail);
 
     } catch (error) {
       console.error("회원가입 에러:", error);
@@ -206,7 +206,7 @@ function Signup() {
       });
   
       // 확인: 서버 응답 로그
-      console.log(response);
+      // console.log(response);
       // 이메일로부터 받은 코드를 상태에 저장
       setCodeFromEmail(response.data);
     } catch (error) {
@@ -235,7 +235,7 @@ function Signup() {
   }
 
   useEffect(() => {
-    console.log("Code from Email:", codeFromEmail);
+    // console.log("Code from Email:", codeFromEmail);
   }, [codeFromEmail]);
 
   useEffect(() => {
