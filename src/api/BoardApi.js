@@ -1,10 +1,13 @@
 import axios from "axios";
 
 const baseURL = process.env.REACT_APP_BASE_URL;
+const ACCESS_TOKEN = localStorage.getItem('ACCESS_TOKEN');
+
 const axiosInstance = axios.create({
     baseURL,
     headers: {
         'Content-Type': 'application/json',
+        'Authorization' : ACCESS_TOKEN ? `Bearer ${ACCESS_TOKEN}` : ''
     }
 })
 
@@ -86,13 +89,19 @@ export const getImg = async (bno) => {
 // 게시글 작성
 export const postBoardWrite = async (formData) => {
     try {
+        if(!ACCESS_TOKEN){
+            alert("로그인 후 게시글 작성이 가능합니다.");
+            window.location.href = "/login"; 
+            return;
+        }
+
         const response = await axiosInstance.post("/board/boardWrite", formData, {
             headers: {
                 'Content-Type': 'multipart/form-data' 
             }
         });
         
-        console.log(response);
+        // console.log(response);
         return response;
     } catch (error) {
         throw error;
@@ -102,6 +111,12 @@ export const postBoardWrite = async (formData) => {
 // put 게시글 수정
 export const putBoard = async (bno, updateDate, location) => {
     try {
+        if(!ACCESS_TOKEN){
+            alert("로그인 후 게시글 수정이 가능합니다.");
+            window.location.href = "/login"; 
+            return;
+        }
+
         const response = await axiosInstance.put(`/board/edit/${bno}`, {...updateDate, location})
         return response;
     } catch (error) {
