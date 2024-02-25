@@ -25,19 +25,32 @@ function BoardWrite() {
   const [boardCno, setBoardCno] = useState("1");
   const [locationCno, setLocationCno] = useState("1");
 
-  // 토큰 가져오기
   const accessToken = localStorage.getItem("ACCESS_TOKEN");
-  const decodedToken = jwtDecode(accessToken); // jwt 디코딩하여 페이로드에 엑세스
-  const userId = decodedToken.id; // 사용자id에 엑세스
+let decodedToken = null;
+if (accessToken) {
+  decodedToken = jwtDecode(accessToken);
+}
+const userId = decodedToken?.id || null;
 
   useEffect(() => {
+    const currentPath = window.location.pathname;
+
+    const checkTokenAndAlert = () => {
+      if (!accessToken) {
+        alert("로그인 후 게시글 작성이 가능합니다.");
+        window.location.href = "/login";
+      }
+    };
+
     if (boardCno === "2") {
-      // 여행 메이트 카테고리 선택 시
-      setIsFileUploadDisabled(true); // 파일 업로드 비활성화
+      setIsFileUploadDisabled(true);
+      checkTokenAndAlert();
     } else {
-      setIsFileUploadDisabled(false); // 다른 카테고리 선택 시 파일 업로드 활성화
+      setIsFileUploadDisabled(false);
+      checkTokenAndAlert();
     }
-  }, [boardCno]);
+
+  }, [boardCno, accessToken]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -116,22 +129,21 @@ function BoardWrite() {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
 
-    if (boardCno === "1" && uploadedFiles.length === 0) {
-      alert("여행 메이트 카테고리는 이미지를 첨부해야합니다!");
-      return;
-    }
+  const handleSubmit = async (e) => {
+
+    e.preventDefault();
 
     const formData = new FormData();
 
-    if (uploadedFiles.length > 0) {
-      uploadedFiles.forEach((fileObject, index) => {
-        formData.append(`files`, fileObject.file);
-      });
+    try {
+      
+      if (uploadedFiles.length > 0) {
+        uploadedFiles.forEach((fileObject, index) => {
+            formData.append(`files`, fileObject.file);
+        });
     } else {
-      formData.append("files", []); // 빈 배열 전송
+        formData.append("files", []); // 빈 배열 전송
     }
 
     formData.append("title", title);
@@ -141,15 +153,15 @@ function BoardWrite() {
     formData.append("location", getLocationName(locationCno));
     formData.append("id", userId);
 
-    try {
-      // API 요청 시에 헤더를 함께 전송할 필요 없음
-      const response = await postBoardWrite(formData);
+    const response = await postBoardWrite(formData);
 
-      alert("게시글 작성 성공");
-      navigate("/board/touristSpot"); // useNavigate 사용하여 경로 변경
-    } catch (error) {
-      alert("게시글 작성 실패");
-    }
+    alert("게시글 작성 성공");
+    navigate("/board/touristSpot"); // useNavigate 사용하여 경로 변경
+} catch (error) {
+    console.error("프론트 글작성에러", error);
+    alert("게시글 작성 실패");
+}
+
   };
 
   return (
