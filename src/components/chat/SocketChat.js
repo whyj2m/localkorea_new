@@ -34,8 +34,8 @@ const SocketChat = ({ onClose }) => {
           setUserName(retrievedUserName);
 
           // WebSocket 연결 열고 사용자 이름 전송
-          const newSocket = new WebSocket("ws://3.35.217.163:8080/socket");
-          // const newSocket = new WebSocket("ws://localhost:8081/socket");
+          // const newSocket = new WebSocket("ws://3.35.217.163:8080/socket");
+          const newSocket = new WebSocket("ws://localhost:8081/socket");
           newSocket.onopen = (event) => {
             console.log("WebSocket 연결이 열렸습니다.");
             newSocket.send(
