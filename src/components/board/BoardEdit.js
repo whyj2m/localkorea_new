@@ -15,6 +15,9 @@ import { getTourBaordDetail, putBoard } from '../../api/BoardApi';
 // component
 import BoardCate from './BoardCate';
 
+// 토큰
+import { jwtDecode } from 'jwt-decode';
+
 const BoardEdit = () => {
    const { bno } = useParams(); // URL에서 bno 가져오기
    const navigate = useNavigate(); // 페이지이동
@@ -28,6 +31,18 @@ const BoardEdit = () => {
       locationCno: '1',
       location: '서울'
    });
+
+   const accessToken = localStorage.getItem("ACCESS_TOKEN");
+
+   // 토큰이 있는 경우에만 디코딩
+   let decodedToken = null;
+   if (accessToken) {
+     try {
+       decodedToken = jwtDecode(accessToken);
+     } catch (error) {
+       console.error("Invalid token:", error);
+      }
+   }
 
    const handleSubmit = async (e) => {
 
@@ -45,17 +60,58 @@ const BoardEdit = () => {
       }
    };
 
+   // useEffect(() => {
+   //    const fetchTourBaordDetailData = async () => {
+   //       try {
+   //          const response = await getTourBaordDetail(bno);
+   //          const data = response.data;
+   //          setTourBaordDetailData(Array.isArray(data) ? data : [data]);
+   //       } catch (error) {
+   //       }
+   //    };
+   //    fetchTourBaordDetailData();
+   // }, [bno]);
    useEffect(() => {
       const fetchTourBaordDetailData = async () => {
-         try {
-            const response = await getTourBaordDetail(bno);
-            const data = response.data;
-            setTourBaordDetailData(Array.isArray(data) ? data : [data]);
-         } catch (error) {
-         }
+        try {
+          // 토큰이 없을 경우에 alert를 실행하고 함수 종료
+          if (!accessToken) {
+            alert("토큰이 없습니다. 로그인이 필요합니다.");
+            return;
+          }
+    
+          const response = await getTourBaordDetail(bno);
+          const data = response.data;
+          setTourBaordDetailData(Array.isArray(data) ? data : [data]);
+    
+          // 데이터가 유효한 경우에만 상태 업데이트
+          if (data) {
+            const { title, content, boardCno, locationCno, location } = data;
+    
+            setUpdateDate({
+              title,
+              content,
+              boardCno,
+              locationCno,
+              location
+            });
+    
+            // 여행 메이트 카테고리 선택 여부에 따라 파일 업로드 활성화/비활성화
+            setIsFileUploadDisabled(boardCno === "2");
+          }
+    
+          if (decodedToken) {
+            console.log("User ID:", decodedToken.id);
+          }
+        } catch (error) {
+          // 에러 처리 로직 추가
+        }
       };
+    
       fetchTourBaordDetailData();
-   }, [bno]);
+    }, [bno, accessToken, decodedToken]);
+    
+    
 
    // 초기값
    useEffect(() => {
